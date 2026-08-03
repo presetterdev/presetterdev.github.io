@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 48" role="img" aria-label="Presetter">
+  <rect x="0" y="14" width="8" height="20" rx="4" fill="#9775fa" />
+  <rect x="14" y="6" width="8" height="36" rx="4" fill="#9775fa" />
+  <rect x="28" y="18" width="8" height="12" rx="4" fill="#9775fa" />
+  <text x="50" y="33" font-family="system-ui, sans-serif" font-size="26" font-weight="600" fill="#f1f3f5">presetter</text>
+</svg>

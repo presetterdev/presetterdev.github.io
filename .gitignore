@@ -1,0 +1,23 @@
+# Dependencies. There are no sub-packages, so a node_modules anywhere else is
+# an anomaly and should stay visible.
+/node_modules/
+
+# Build output.
+/dist/
+
+# macOS.
+.DS_Store
+
+# Debug logs, written into whichever directory npm was run from.
+npm-debug.log*
+
+# Local env files.
+/.env*.local
+
+# TypeScript incremental build state.
+*.tsbuildinfo
+
+# OpenTofu artifacts. State is per-user and adopted by import, never shared.
+/terraform/.terraform/
+/terraform/terraform.tfstate
+/terraform/terraform.tfstate.backup

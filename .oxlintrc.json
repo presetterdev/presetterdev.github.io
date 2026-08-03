@@ -1,0 +1,83 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["react", "typescript", "unicorn", "oxc", "import"],
+  "jsPlugins": ["eslint-plugin-comment-length"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error",
+    "perf": "error",
+    "style": "warn"
+  },
+  "options": {
+    "typeAware": true,
+    "typeCheck": true
+  },
+  "env": {
+    "browser": true
+  },
+  "ignorePatterns": ["dist", "node_modules", "src/routeTree.gen.ts"],
+  "rules": {
+    "comment-length/limit-single-line-comments": [
+      "error",
+      {
+        "mode": "overflow-only",
+        "maxLength": 80,
+        "ignoreUrls": true,
+        "ignoreCommentsWithCode": true
+      }
+    ],
+    "comment-length/limit-multi-line-comments": [
+      "error",
+      {
+        "mode": "overflow-only",
+        "maxLength": 80,
+        "ignoreUrls": true,
+        "ignoreCommentsWithCode": true
+      }
+    ],
+    "typescript/no-explicit-any": "error",
+    "typescript/no-non-null-assertion": "error",
+    "typescript/no-unsafe-argument": "error",
+    "typescript/no-unsafe-assignment": "error",
+    "typescript/no-unsafe-call": "error",
+    "typescript/no-unsafe-enum-comparison": "error",
+    "typescript/no-unsafe-function-type": "error",
+    "typescript/no-unsafe-member-access": "error",
+    "typescript/no-unsafe-return": "error",
+    "typescript/no-unsafe-type-assertion": "error",
+    "typescript/consistent-type-assertions": "error",
+    "typescript/no-misused-promises": "error",
+    "typescript/require-await": "error",
+    "typescript/switch-exhaustiveness-check": "error",
+    "typescript/explicit-function-return-type": [
+      "error",
+      { "allowExpressions": true }
+    ],
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
+    "react/jsx-key": "error",
+    "react/react-in-jsx-scope": "off",
+    "import/no-named-export": "off",
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "off",
+    "import/group-exports": "off",
+    "import/no-unassigned-import": "off",
+    "import/exports-last": "off",
+    "import/consistent-type-specifier-style": "off",
+    "unicorn/filename-case": "off",
+    "unicorn/prefer-global-this": "off",
+    "eslint/sort-imports": "off",
+    "eslint/capitalized-comments": "off",
+    "eslint/func-style": "off",
+    "eslint/no-magic-numbers": "off",
+    "eslint/id-length": "off",
+    "eslint/sort-keys": "off",
+    "eslint/no-ternary": "off",
+    "eslint/no-continue": "off",
+    "eslint/max-lines-per-function": "off",
+    "eslint/max-statements": "off",
+    "eslint/curly": "off",
+    "typescript/prefer-readonly-parameter-types": "off",
+    "typescript/consistent-return": "off"
+  }
+}

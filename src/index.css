@@ -1,0 +1,9 @@
+/* Matches MantineProvider's defaultColorScheme so the first paint is not a
+   flash of white. */
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+}

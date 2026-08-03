@@ -1,0 +1,10 @@
+{
+  "globs": ["**/*.md"],
+  "gitignore": true,
+  "config": {
+    // Prettier owns line width: it wraps prose at 80 and leaves long URLs and
+    // table rows alone, which MD013 would flag.
+    "MD013": false,
+    "MD046": { "style": "fenced" },
+  },
+}
