@@ -60,6 +60,15 @@ resource "github_branch_protection" "main" {
   repository_id = github_repository.repo.node_id
   pattern       = local.protected_branch
 
+  # Organization owners keep a deliberate override: stepping outside the rules
+  # below takes an admin clicking past a warning, rather than a rule quietly
+  # not applying.
+  enforce_admins = false
+
+  # No merge commits on main. Squash is already the only merge button the
+  # repository offers; this is the guarantee at the branch itself.
+  required_linear_history = true
+
   required_status_checks {
     strict   = true
     contexts = ["check"]
