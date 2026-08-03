@@ -7,7 +7,10 @@ variable "github_owner" {
 variable "github_repository_name" {
   description = "Name of the repository."
   type        = string
-  default     = "presetterdev.github.io"
+  # Use the actual site name for a cleaner pages URL (i.e. with no
+  # subpath in the URL. When we have a custom domain, we're free to
+  # change this to something more current.
+  default = "presetterdev.github.io"
 }
 
 locals {
