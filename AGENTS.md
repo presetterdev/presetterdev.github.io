@@ -51,3 +51,8 @@ choices belong in `src/theme.ts`.
 ## Commits
 
 Conventional Commits, with a body saying why. No period on the subject.
+
+A squash merge takes the pull request's title and description as the commit
+message, so write those the way you would write a commit. Rebase merging is
+there for when the individual commits are worth keeping, and then each of them
+has to stand on its own.

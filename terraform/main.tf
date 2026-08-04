@@ -33,10 +33,21 @@ resource "github_repository" "repo" {
   has_projects = false
   has_wiki     = false
 
+  # Squash for the usual single logical change, rebase when the individual
+  # commits are worth keeping. Both leave main linear; merge commits do not,
+  # and GitHub offers no way to mark one of the two as the default -- it lists
+  # squash first and then remembers each person's last choice.
   allow_merge_commit     = false
-  allow_rebase_merge     = false
+  allow_rebase_merge     = true
   allow_squash_merge     = true
   delete_branch_on_merge = true
+
+  # Make a squash commit read like a commit someone wrote, rather than the
+  # defaults, which take the title from the sole commit when a pull request
+  # has exactly one and concatenate every work-in-progress message into the
+  # body otherwise.
+  squash_merge_commit_title   = "PR_TITLE"
+  squash_merge_commit_message = "PR_BODY"
 }
 
 # Pages serves the artifact the CI workflow uploads, not a branch.
