@@ -1,10 +1,13 @@
 # Conventions
 
-## Before committing
+## Making a change
 
-Run `npm run check`. It must exit zero, and it is what CI runs. For formatting
-complaints, `npm run format` fixes them; for overlong comments,
-`npx oxlint --fix` rewraps them.
+Work on a branch. Before pushing it, run `npm run check`; it must exit zero, and
+it is what CI runs. `npm run format` fixes formatting complaints and
+`npx oxlint --fix` rewraps overlong comments.
+
+Then open a pull request. Nothing else reaches `main`, and it will not merge
+until CI is green.
 
 ## Do not weaken the checks
 
