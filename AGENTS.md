@@ -56,6 +56,7 @@ choices belong in `src/theme.ts`.
 Conventional Commits, with a body saying why. No period on the subject.
 
 A squash merge takes the pull request's title and description as the commit
-message, so write those the way you would write a commit. Rebase merging is
-there for when the individual commits are worth keeping, and then each of them
-has to stand on its own.
+message, so write those the way you would write a commit. CI rejects a title
+that is not a valid Conventional Commit. Rebase merging is there for when the
+individual commits are worth keeping, and then each of them has to stand on its
+own — nothing checks those, so the care has to come from you.

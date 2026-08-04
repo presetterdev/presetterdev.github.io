@@ -23,6 +23,13 @@ jobs:
       # The build regenerates the route tree; a diff means it was committed
       # stale.
       - run: git diff --exit-code src/routeTree.gen.ts
+      # A squash merge makes the title the commit subject on main, so it has
+      # to read like one. The title goes through the environment rather than
+      # into the script text, where a crafted one would be executed.
+      - if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s' "$PR_TITLE" | npx commitlint
       # Pages has no server-side routing, so every deep link must fall back to
       # the app shell.
       - run: cp dist/index.html dist/404.html

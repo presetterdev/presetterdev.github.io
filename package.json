@@ -24,6 +24,8 @@
     "react-dom": "^19.2.8"
   },
   "devDependencies": {
+    "@commitlint/cli": "^21.2.1",
+    "@commitlint/config-conventional": "^21.2.0",
     "@tanstack/router-plugin": "^1.168.23",
     "@tsconfig/strictest": "^2.0.8",
     "@tsconfig/vite-react": "^8.1.1",
