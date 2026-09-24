@@ -1,0 +1,19 @@
+.root {
+  display: inline-flex;
+  align-items: center;
+  gap: rem(9px);
+}
+
+.bars {
+  height: rem(22px);
+  width: auto;
+  display: block;
+}
+
+.word {
+  font-size: rem(20px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--mantine-color-white);
+  line-height: 1;
+}

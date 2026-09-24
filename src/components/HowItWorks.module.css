@@ -1,0 +1,39 @@
+.steps {
+  list-style: none;
+  margin: rem(32px) 0 0;
+  padding: 0;
+  display: grid;
+  gap: rem(22px);
+  counter-reset: step;
+}
+
+.step {
+  counter-increment: step;
+  display: grid;
+  grid-template-columns: rem(32px) minmax(0, 1fr);
+  gap: rem(14px);
+  border-top: 1px solid var(--pt-line);
+  padding-top: rem(18px);
+}
+
+.step::before {
+  content: counter(step);
+  font-size: rem(15px);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--mantine-color-violet-3);
+  padding-top: rem(2px);
+}
+
+.stepTitle {
+  font-size: rem(19px);
+  font-weight: 600;
+  color: var(--mantine-color-white);
+  margin: 0 0 rem(6px);
+}
+
+.stepBody {
+  margin: 0;
+  color: var(--mantine-color-dark-1);
+  line-height: 1.55;
+}

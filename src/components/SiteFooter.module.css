@@ -1,0 +1,47 @@
+.footer {
+  border-top: 1px solid var(--pt-line);
+  padding-block: rem(48px) rem(40px);
+  background: var(--pt-panel);
+}
+
+.grid {
+  display: grid;
+  gap: rem(32px);
+}
+
+.heading {
+  font-size: rem(13px);
+  font-weight: 600;
+  color: var(--mantine-color-white);
+  margin: 0 0 rem(12px);
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: rem(8px);
+}
+
+.link {
+  color: var(--mantine-color-dark-1);
+  text-decoration: none;
+  font-size: rem(14px);
+}
+
+.link:hover {
+  color: var(--mantine-color-white);
+}
+
+.bottom {
+  margin-top: rem(40px);
+  padding-top: rem(20px);
+  border-top: 1px solid var(--pt-line);
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .grid {
+    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
+  }
+}

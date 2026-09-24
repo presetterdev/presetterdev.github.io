@@ -1,0 +1,156 @@
+/* Small UI fragments that sit above each feature. Same vocabulary as the
+   hero mock, so they read as the same product. */
+
+.tile {
+  height: rem(124px);
+  background: var(--pt-panel-raised);
+  border: 1px solid var(--pt-line);
+  border-radius: rem(10px);
+  padding: rem(16px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: rem(10px);
+  font-size: rem(13.5px);
+  color: var(--mantine-color-dark-0);
+  overflow: hidden;
+}
+
+.filterLine {
+  display: flex;
+  align-items: center;
+  gap: rem(6px);
+}
+
+.filterLine .muted {
+  width: rem(64px);
+  flex: none;
+}
+
+.mapRow {
+  display: grid;
+  grid-template-columns: rem(78px) minmax(0, 1fr) rem(16px) auto;
+  align-items: center;
+  gap: rem(8px);
+  color: var(--mantine-color-white);
+}
+
+.knobs {
+  display: flex;
+  align-items: center;
+  gap: rem(8px);
+}
+
+.knob {
+  width: rem(18px);
+  height: rem(18px);
+  border-radius: 50%;
+  border: 2px solid var(--pt-line-strong);
+  position: relative;
+}
+
+.knob::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 1px;
+  width: 2px;
+  height: 6px;
+  margin-left: -1px;
+  background: var(--mantine-color-violet-3);
+  transform-origin: 50% 100%;
+}
+
+.knob:nth-child(2)::after {
+  transform: rotate(40deg);
+  transform-origin: 1px 7px;
+}
+
+.knob:nth-child(3)::after {
+  transform: rotate(-60deg);
+  transform-origin: 1px 7px;
+}
+
+.muted {
+  color: var(--mantine-color-dark-2);
+  font-size: rem(12.5px);
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(6px);
+}
+
+.pill {
+  font-size: rem(12.5px);
+  line-height: 1;
+  padding: rem(6px) rem(10px);
+  border-radius: rem(999px);
+  border: 1px solid var(--pt-line-strong);
+  color: var(--mantine-color-dark-1);
+  white-space: nowrap;
+}
+
+.pillActive {
+  composes: pill;
+  background: rgba(121, 80, 242, 0.18);
+  border-color: var(--mantine-color-violet-6);
+  color: var(--mantine-color-violet-1);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: rem(20px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: rem(10px);
+}
+
+.rowName {
+  color: var(--mantine-color-white);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.icon {
+  display: flex;
+  color: var(--mantine-color-violet-3);
+}
+
+.wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: rem(14px);
+}
+
+.bar {
+  width: 2px;
+  background: currentColor;
+  border-radius: 1px;
+}
+
+.kind {
+  font-size: rem(11px);
+  padding: rem(3px) rem(7px);
+  border-radius: rem(4px);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--mantine-color-dark-1);
+}
+
+.load {
+  display: flex;
+  align-items: center;
+  gap: rem(12px);
+}
+
+.pluginChip {
+  font-size: rem(12.5px);
+  padding: rem(6px) rem(10px);
+  border-radius: rem(6px);
+  background: rgba(121, 80, 242, 0.18);
+  border: 1px solid rgba(121, 80, 242, 0.5);
+  color: var(--mantine-color-violet-1);
+}

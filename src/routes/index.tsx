@@ -1,25 +1,47 @@
-import { Image, Stack, Text, Title } from "@mantine/core";
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
-import wordmark from "../media/images/wordmark.svg";
+import { EarlyAccess } from "../components/EarlyAccess";
+import { Faq } from "../components/Faq";
+import { Features } from "../components/Features";
+import { Hero } from "../components/Hero";
+import { HowItWorks } from "../components/HowItWorks";
+import { MidCta } from "../components/MidCta";
+import { Origin } from "../components/Origin";
+import { Positioning } from "../components/Positioning";
+import { Pricing } from "../components/Pricing";
+import { Rediscovery } from "../components/Rediscovery";
+import { Specs } from "../components/Specs";
+import { WorksWith } from "../components/WorksWith";
+import { midCta } from "../content";
 
 export const Route = createFileRoute("/")({ component: Home });
 
+// The order is the argument: what you get, where it fits next to Live 12,
+// how it works, what it does, the plugins, the specs, the price, the doubts,
+// who built it, the ask.
 function Home(): ReactElement {
   return (
-    <Stack align="center" gap="lg" mt="xl">
-      <Image src={wordmark} alt="Presetter" w={280} />
-      <Title order={1} ta="center">
-        Every preset you own, in one place
-      </Title>
-      <Text c="dimmed" ta="center" maw={520}>
-        Presetter turns the presets already sitting on your drive into a
-        browsable, taggable Ableton Live pack.
-      </Text>
-      <Text size="sm" c="dimmed">
-        Placeholder copy — the real site is on its way.
-      </Text>
-    </Stack>
+    <>
+      <Hero />
+      <Positioning />
+      <MidCta
+        title={midCta.afterComparison.title}
+        body={midCta.afterComparison.body}
+      />
+      <HowItWorks />
+      <Features />
+      <MidCta
+        title={midCta.afterFeatures.title}
+        body={midCta.afterFeatures.body}
+      />
+      <Rediscovery />
+      <WorksWith />
+      <Specs />
+      <Pricing />
+      <Faq />
+      <Origin />
+      <EarlyAccess />
+    </>
   );
 }

@@ -1,0 +1,25 @@
+.section {
+  padding-block: rem(64px);
+  /* Decorative glows may spill sideways; sections clip them, not the page. */
+  overflow-x: clip;
+}
+
+.band {
+  background: var(--pt-panel);
+  border-top: 1px solid var(--pt-line);
+  border-bottom: 1px solid var(--pt-line);
+}
+
+.tight {
+  padding-top: rem(48px);
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .section {
+    padding-block: rem(104px);
+  }
+
+  .tight {
+    padding-top: rem(72px);
+  }
+}
