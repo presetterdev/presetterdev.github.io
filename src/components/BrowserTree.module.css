@@ -1,0 +1,65 @@
+/* Live's browser tree, before and after. */
+
+.panel {
+  background: var(--pt-panel);
+  font-size: rem(13.5px);
+}
+
+.path {
+  display: flex;
+  align-items: center;
+  gap: rem(6px);
+  padding: rem(10px) rem(16px);
+  border-bottom: 1px solid var(--pt-line);
+  color: var(--mantine-color-dark-2);
+  font-size: rem(12.5px);
+}
+
+.pathLast {
+  color: var(--mantine-color-white);
+  font-weight: 600;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: rem(4px) 0;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: rem(16px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: rem(10px);
+  padding: rem(8px) rem(16px) rem(8px) rem(28px);
+}
+
+.chevron {
+  color: var(--mantine-color-dark-3);
+  display: flex;
+}
+
+.name {
+  color: var(--mantine-color-dark-0);
+}
+
+.after .name {
+  color: var(--mantine-color-white);
+}
+
+.detail {
+  color: var(--mantine-color-dark-2);
+  font-size: rem(12.5px);
+  font-variant-numeric: tabular-nums;
+}
+
+.after .detail {
+  color: var(--mantine-color-violet-2);
+}
+
+.caption {
+  margin: rem(12px) 0 0;
+  color: var(--mantine-color-dark-1);
+  font-size: rem(14px);
+  line-height: 1.5;
+}

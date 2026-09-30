@@ -1,0 +1,38 @@
+# Presetter
+
+> Presetter is a macOS utility for Ableton Live 12 that puts every preset from every third-party plugin you own inside Live's browser — filtered with Live's own tags, previewed without loading anything, and loaded into the original plugin when you drag one in.
+
+## What it does
+
+- Reads the presets already installed on your Mac for every supported instrument and effect, and the categories each manufacturer gave them.
+- Converts each preset into a format Ableton Live loads directly, maps the manufacturer's categories and descriptors onto Live 12's Sounds and Character tags, and renders a short audio preview from your own copy of the plugin.
+- Builds one Ableton Pack that appears under Packs in Live's browser, beside Ableton's own content. Presets are filterable by sound, character, and vendor, previewable without loading a plugin, and load into the original plugin with macros mapped.
+- Runs once; run it again when you install a new plugin. Nothing runs inside Live. Nothing is uploaded or redistributed.
+
+## Supported plugins
+
+- Xfer Records: Serum, Serum 2
+- Spectrasonics: Omnisphere, Keyscape
+- Native Instruments: Kontakt, Massive, Massive X, FM8, Battery 4, Guitar Rig; effects Driver, Replika XT, Raum, Phasis, Flair, Freak, Choral, Bite, Dirt
+- Arturia: Pigments, V Collection
+- Valhalla DSP: ValhallaVintageVerb, ValhallaSupermassive, ValhallaSpaceModulator
+- Every NKS-ready plugin (Native Instruments' preset standard; 250+ developers, 2,000+ instruments and effects), including u-he Diva, Zebra, Hive, UVI Falcon, Rob Papen, Heavyocity, Output.
+
+## Requirements
+
+- macOS 11 Big Sur or later, Intel Core i5 or Apple silicon, 8 GB RAM (the same requirements as Ableton Live 12)
+- Ableton Live 12.0 or later
+- The plugins themselves, installed and licensed on the same Mac
+- Windows is planned, not available at launch
+
+## Pricing
+
+- One-time purchase, $149. Launch price $79 for the early-access list. No subscription. All sales final.
+
+## Links
+
+- Home: https://presetter.audio/
+- Early access: https://presetter.audio/#early-access
+- FAQ: https://presetter.audio/#faq
+
+Presetter is independent software and is not affiliated with or endorsed by Ableton or any plugin vendor. Product names are trademarks of their respective owners.

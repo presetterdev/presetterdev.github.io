@@ -26,7 +26,7 @@ provider "github" {
 resource "github_repository" "repo" {
   name         = var.github_repository_name
   description  = "Presetter's website."
-  homepage_url = "https://presetterdev.github.io"
+  homepage_url = "https://presetter.audio"
   visibility   = "public"
 
   has_issues   = true
@@ -50,10 +50,15 @@ resource "github_repository" "repo" {
   squash_merge_commit_message = "PR_BODY"
 }
 
-# Pages serves the artifact the CI workflow uploads, not a branch.
+# Pages serves the artifact the CI workflow uploads, not a branch, at the
+# custom domain. DNS for presetter.audio lives at the registrar: A records
+# for the apex to GitHub Pages' four IPs, and a CNAME for www to
+# presetterdev.github.io. public/CNAME carries the same name into every
+# deploy so a settings change can't silently drop it.
 resource "github_repository_pages" "repo" {
   repository = github_repository.repo.name
   build_type = "workflow"
+  cname      = "presetter.audio"
 }
 
 resource "github_repository_vulnerability_alerts" "repo" {

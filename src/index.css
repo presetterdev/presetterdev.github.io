@@ -2,8 +2,47 @@
    flash of white. */
 :root {
   color-scheme: dark;
+  /* Keeps content clear of phone system bars on notched screens. */
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* A deeper base than Mantine's default so panels and the product mock
+   read as layers rather than the same grey. */
+[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #161617;
+  --pt-panel: #1f1f21;
+  --pt-panel-raised: #262629;
+  --pt-line: rgba(255, 255, 255, 0.09);
+  --pt-line-strong: rgba(255, 255, 255, 0.16);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(72px + env(safe-area-inset-top, 0px));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+html,
+body {
+  /* The hero glow extends past its column; never let it add sideways scroll. */
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings at h2 size on phones. */
+@media (max-width: 48em) {
+  .mantine-Title-root[data-order="2"] {
+    font-size: 1.85rem;
+  }
 }

@@ -1,0 +1,32 @@
+.pair {
+  display: grid;
+  gap: rem(28px);
+  margin-top: rem(48px);
+  align-items: start;
+}
+
+.label {
+  font-size: rem(13px);
+  font-weight: 600;
+  color: var(--mantine-color-dark-1);
+  margin: 0 0 rem(12px);
+}
+
+.labelAfter {
+  composes: label;
+  color: var(--mantine-color-violet-2);
+}
+
+.caption {
+  margin: rem(14px) 0 0;
+  color: var(--mantine-color-dark-1);
+  font-size: rem(14px);
+  line-height: 1.5;
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .pair {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: rem(36px);
+  }
+}

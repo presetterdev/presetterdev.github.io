@@ -4,6 +4,7 @@
 
 # Build output.
 /dist/
+/dist-ssr/
 
 # macOS.
 .DS_Store

@@ -1,0 +1,65 @@
+.groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(rem(230px), 1fr));
+  gap: rem(22px) rem(32px);
+  margin-top: rem(32px);
+}
+
+.vendor {
+  font-size: rem(12.5px);
+  font-weight: 600;
+  color: var(--mantine-color-dark-1);
+  margin: 0 0 rem(8px);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(6px);
+}
+
+.chip {
+  font-size: rem(13px);
+  font-weight: 500;
+  padding: rem(6px) rem(10px);
+  border-radius: rem(7px);
+  background: var(--pt-panel-raised);
+  border: 1px solid var(--pt-line-strong);
+  color: var(--mantine-color-white);
+  white-space: nowrap;
+}
+
+.chipMore {
+  composes: chip;
+  color: var(--mantine-color-violet-1);
+  background: rgba(121, 80, 242, 0.14);
+  border-color: rgba(121, 80, 242, 0.5);
+}
+
+.effects {
+  margin: rem(8px) 0 0;
+  font-size: rem(13px);
+  line-height: 1.5;
+  color: var(--mantine-color-dark-2);
+}
+
+.nks {
+  margin-top: rem(36px);
+  padding-top: rem(24px);
+  border-top: 1px solid var(--pt-line);
+  display: grid;
+  gap: rem(12px);
+}
+
+.nksTitle {
+  font-size: rem(18px);
+  font-weight: 600;
+  color: var(--mantine-color-white);
+  margin: 0;
+}
+
+.nksBody {
+  margin: 0;
+  color: var(--mantine-color-dark-1);
+  max-width: 60ch;
+}

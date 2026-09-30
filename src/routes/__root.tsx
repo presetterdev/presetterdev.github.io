@@ -1,14 +1,20 @@
-import { Container } from "@mantine/core";
 import { Outlet, createRootRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
+
 export const Route = createRootRoute({ component: RootLayout });
 
-// Wraps every page. Site-wide chrome (header, footer, nav) goes here.
+// Wraps every page: header above, footer below. Sections size themselves.
 function RootLayout(): ReactElement {
   return (
-    <Container size="md" py="xl">
-      <Outlet />
-    </Container>
+    <>
+      <SiteHeader />
+      <main>
+        <Outlet />
+      </main>
+      <SiteFooter />
+    </>
   );
 }

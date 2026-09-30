@@ -1,0 +1,57 @@
+.title {
+  font-size: rem(56px);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  color: var(--mantine-color-white);
+  margin: 0;
+}
+
+.line {
+  display: block;
+}
+
+.lede {
+  font-size: rem(19px);
+  line-height: 1.5;
+  color: var(--mantine-color-dark-0);
+  max-width: 30em;
+}
+
+.visual {
+  position: relative;
+  isolation: isolate;
+  max-width: rem(520px);
+}
+
+/* The one glow on the page, behind the product. */
+.visual::before {
+  content: "";
+  position: absolute;
+  inset: -18% -14%;
+  z-index: -1;
+  background: radial-gradient(
+    ellipse at 50% 45%,
+    rgba(121, 80, 242, 0.32),
+    rgba(121, 80, 242, 0.08) 45%,
+    transparent 70%
+  );
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+  .title {
+    font-size: rem(40px);
+  }
+
+  .line {
+    display: inline;
+  }
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .visual {
+    margin-left: auto;
+  }
+}

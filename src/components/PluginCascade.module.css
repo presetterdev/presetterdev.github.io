@@ -1,0 +1,102 @@
+/* Today: one window per plugin, stacked the way they pile up on a desk.
+   Generic chrome; vendor names only. */
+
+.stack {
+  position: relative;
+  height: rem(444px);
+}
+
+.window {
+  position: absolute;
+  width: 80%;
+  background: var(--pt-panel);
+  border: 1px solid var(--pt-line-strong);
+  border-radius: rem(10px);
+  overflow: hidden;
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.8);
+  font-size: rem(13px);
+}
+
+/* Each window steps down far enough that its title bar and category row
+   stay visible under the next one. */
+.window:nth-child(1) {
+  left: 0;
+  top: 0;
+  opacity: 0.7;
+}
+
+.window:nth-child(2) {
+  left: 5%;
+  top: rem(64px);
+  opacity: 0.8;
+}
+
+.window:nth-child(3) {
+  left: 10%;
+  top: rem(128px);
+  opacity: 0.9;
+}
+
+.window:nth-child(4) {
+  left: 15%;
+  top: rem(192px);
+}
+
+.window:nth-child(5) {
+  left: 20%;
+  top: rem(256px);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: rem(6px);
+  padding: rem(8px) rem(12px);
+  border-bottom: 1px solid var(--pt-line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.dot {
+  width: rem(9px);
+  height: rem(9px);
+  border-radius: 50%;
+  background: var(--mantine-color-dark-4);
+}
+
+.vendor {
+  margin-left: rem(6px);
+  color: var(--mantine-color-white);
+  font-weight: 600;
+  font-size: rem(12.5px);
+}
+
+.category {
+  display: flex;
+  justify-content: space-between;
+  padding: rem(8px) rem(12px);
+  border-bottom: 1px solid var(--pt-line);
+  color: var(--mantine-color-dark-1);
+  font-size: rem(12px);
+}
+
+.categoryValue {
+  color: var(--mantine-color-white);
+  font-weight: 500;
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: rem(4px) 0;
+}
+
+.preset {
+  padding: rem(6px) rem(12px);
+  color: var(--mantine-color-dark-0);
+}
+
+@media (max-width: $mantine-breakpoint-sm) {
+  .window {
+    width: 82%;
+  }
+}

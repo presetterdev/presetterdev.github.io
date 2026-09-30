@@ -1,0 +1,30 @@
+.grid {
+  display: grid;
+  gap: rem(40px) rem(32px);
+  margin-top: rem(48px);
+}
+
+.title {
+  font-size: rem(18px);
+  font-weight: 600;
+  color: var(--mantine-color-white);
+  margin: rem(16px) 0 rem(6px);
+}
+
+.body {
+  margin: 0;
+  color: var(--mantine-color-dark-1);
+  line-height: 1.55;
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

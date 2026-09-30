@@ -1,0 +1,77 @@
+.card {
+  position: relative;
+  border: 1px solid rgba(121, 80, 242, 0.45);
+  border-radius: rem(14px);
+  padding: rem(32px);
+  max-width: rem(520px);
+  margin-top: rem(40px);
+  background: var(--pt-panel);
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 40px 80px -40px rgba(121, 80, 242, 0.45);
+}
+
+.badge {
+  display: inline-block;
+  font-size: rem(12px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: rem(5px) rem(10px);
+  border-radius: rem(999px);
+  background: rgba(121, 80, 242, 0.18);
+  color: var(--mantine-color-violet-1);
+  border: 1px solid rgba(121, 80, 242, 0.5);
+}
+
+.price {
+  display: flex;
+  align-items: baseline;
+  gap: rem(12px);
+  margin-top: rem(16px);
+  color: var(--mantine-color-white);
+  font-size: rem(56px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.regular {
+  font-size: rem(18px);
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--mantine-color-dark-2);
+}
+
+.regular s {
+  text-decoration-color: var(--mantine-color-dark-3);
+}
+
+.note {
+  margin: rem(10px) 0 0;
+  color: var(--mantine-color-dark-0);
+}
+
+.includes {
+  list-style: none;
+  margin: rem(24px) 0 0;
+  padding: 0;
+}
+
+.includes li {
+  display: flex;
+  gap: rem(10px);
+  align-items: baseline;
+  padding: rem(10px) 0;
+  border-top: 1px solid var(--pt-line);
+  color: var(--mantine-color-dark-0);
+}
+
+.includes li::before {
+  content: "";
+  width: rem(6px);
+  height: rem(6px);
+  border-radius: 50%;
+  background: var(--mantine-color-violet-4);
+  flex: none;
+  transform: translateY(-2px);
+}
