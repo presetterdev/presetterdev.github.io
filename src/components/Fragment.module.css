@@ -57,7 +57,7 @@
   width: 2px;
   height: 6px;
   margin-left: -1px;
-  background: var(--mantine-color-violet-3);
+  background: var(--pt-accent);
   transform-origin: 50% 100%;
 }
 
@@ -92,11 +92,20 @@
   white-space: nowrap;
 }
 
+/* As in the hero mock: an active pill takes its category's colour. */
 .pillActive {
   composes: pill;
-  background: rgba(121, 80, 242, 0.18);
-  border-color: var(--mantine-color-violet-6);
-  color: var(--mantine-color-violet-1);
+  background: color-mix(
+    in srgb,
+    var(--chip, var(--pt-accent)) 16%,
+    transparent
+  );
+  border-color: color-mix(
+    in srgb,
+    var(--chip, var(--pt-accent)) 55%,
+    transparent
+  );
+  color: color-mix(in srgb, var(--chip, var(--pt-accent)) 78%, white);
 }
 
 .row {
@@ -116,7 +125,7 @@
 
 .icon {
   display: flex;
-  color: var(--mantine-color-violet-3);
+  color: var(--pt-accent);
 }
 
 .wave {
@@ -150,7 +159,7 @@
   font-size: rem(12.5px);
   padding: rem(6px) rem(10px);
   border-radius: rem(6px);
-  background: rgba(121, 80, 242, 0.18);
-  border: 1px solid rgba(121, 80, 242, 0.5);
-  color: var(--mantine-color-violet-1);
+  background: var(--pt-accent-soft);
+  border: 1px solid var(--pt-accent-line);
+  color: var(--pt-accent-text);
 }
