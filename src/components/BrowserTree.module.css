@@ -54,7 +54,7 @@
 }
 
 .after .detail {
-  color: var(--mantine-color-violet-2);
+  color: var(--pt-accent);
 }
 
 .caption {

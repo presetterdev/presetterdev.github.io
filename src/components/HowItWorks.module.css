@@ -21,7 +21,7 @@
   font-size: rem(15px);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
-  color: var(--mantine-color-violet-3);
+  color: var(--pt-accent);
   padding-top: rem(2px);
 }
 

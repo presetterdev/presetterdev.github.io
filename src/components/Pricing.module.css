@@ -1,6 +1,6 @@
 .card {
   position: relative;
-  border: 1px solid rgba(121, 80, 242, 0.45);
+  border: 1px solid var(--pt-accent-line);
   border-radius: rem(14px);
   padding: rem(32px);
   max-width: rem(520px);
@@ -8,7 +8,7 @@
   background: var(--pt-panel);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.3),
-    0 40px 80px -40px rgba(121, 80, 242, 0.45);
+    0 40px 80px -40px var(--pt-accent-line);
 }
 
 .badge {
@@ -18,9 +18,9 @@
   letter-spacing: 0.01em;
   padding: rem(5px) rem(10px);
   border-radius: rem(999px);
-  background: rgba(121, 80, 242, 0.18);
-  color: var(--mantine-color-violet-1);
-  border: 1px solid rgba(121, 80, 242, 0.5);
+  background: var(--pt-accent-soft);
+  color: var(--pt-accent-text);
+  border: 1px solid var(--pt-accent-line);
 }
 
 .price {
@@ -71,7 +71,7 @@
   width: rem(6px);
   height: rem(6px);
   border-radius: 50%;
-  background: var(--mantine-color-violet-4);
+  background: var(--pt-accent);
   flex: none;
   transform: translateY(-2px);
 }

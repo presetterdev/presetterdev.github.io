@@ -16,7 +16,8 @@ export const cta = {
   href: "/#early-access",
   // Tally form id; every CTA opens it as a modal, with the anchor as fallback.
   tallyId: "gD2NoO",
-  micro: "$79 launch price for the list. First build first. No spam.",
+  micro:
+    "Join the list: $79 launch price, first in line for the beta. No spam.",
 } as const;
 
 // Repeated after the sections that build belief.
@@ -32,25 +33,26 @@ export const midCta = {
 } as const;
 
 export const hero = {
-  // Rendered as two lines on wide screens.
-  titleLines: ["Stop opening plugin after plugin", "to find a sound."],
+  // Rendered as three lines on wide screens, so the headline can be the
+  // largest type on the page without an orphaned word.
+  titleLines: ["Stop opening", "plugin after plugin", "to find a sound."],
   lede:
     "Every preset you own, inside Live 12's browser — filtered with Live's " +
-    "own tags, heard before anything loads, dragged in when you're sure.",
+    "own tags, previewed without loading a thing.",
   trust:
     "For macOS and Ableton Live 12. Runs locally; nothing leaves your Mac.",
 } as const;
 
-// The hero illustration: Live's browser once Presetter has built the Pack.
+// The hero illustration: Live's browser once Presetter has built the pack.
 export const mock = {
   filters: [
     {
       group: "Sounds",
       options: [
-        { label: "Pad", active: true },
-        { label: "Keys", active: false },
-        { label: "Bass", active: false },
-        { label: "Lead", active: false },
+        { label: "Pad", active: true, category: "pad" },
+        { label: "Keys", active: false, category: "keys" },
+        { label: "Bass", active: false, category: "bass" },
+        { label: "Lead", active: false, category: "lead" },
       ],
     },
     {
@@ -72,6 +74,8 @@ export const mock = {
       ],
     },
   ],
+  // Every row is a pad, since that is the filter; the category colours the
+  // preview icon.
   rows: [
     { preset: "Analog Halo", plugin: "Pigments", playing: true },
     { preset: "Dust Choir", plugin: "Omnisphere", playing: false },
@@ -80,6 +84,7 @@ export const mock = {
     { preset: "Tape Pad", plugin: "FM8", playing: false },
     { preset: "Warm Vinyl", plugin: "Massive X", playing: false },
   ],
+  rowCategory: "pad",
   status: "6 of 4,812 presets, from 14 plugins",
 } as const;
 
@@ -146,7 +151,7 @@ export const positioning = {
   ],
 } as const;
 
-// Where the Pack shows up in Live's browser: the folder Presetter built,
+// Where the pack shows up in Live's browser: the folder Presetter built,
 // added to Places. "Presetter" is the example name; the user picks it.
 export const tree = {
   path: ["Places", "Presetter"],
@@ -281,28 +286,6 @@ export const features: { title: string; items: readonly Feature[] } = {
   ],
 };
 
-export const rediscovery = {
-  title: "Which synths do you own but never open?",
-  body:
-    "Every producer can name one without hesitation. Instruments bought in a " +
-    "bundle or for a single track end up behind a browser that never gets " +
-    "opened — and outside the template. Presetter lists their presets beside " +
-    "everything else, so the whole collection is back in play.",
-  shelf: {
-    heading: "Last opened",
-    rows: [
-      { plugin: "Serum 2", opened: "Today" },
-      { plugin: "Omnisphere", opened: "2 weeks ago" },
-      { plugin: "Kontakt", opened: "3 months ago" },
-      { plugin: "Pigments", opened: "7 months ago" },
-      { plugin: "Diva", opened: "14 months ago" },
-      { plugin: "Massive X", opened: "2 years ago" },
-      { plugin: "FM8", opened: "Never" },
-    ],
-    result: "With Presetter: all 7, in one filter.",
-  },
-} as const;
-
 export interface Vendor {
   name: string;
   plugins: readonly string[];
@@ -320,7 +303,7 @@ export const worksWith: {
   disclaimer: string;
 } = {
   title: "Works with the plugins you already own.",
-  intro: "Tested end to end.",
+  intro: "Each one run through Presetter and checked inside Live.",
   vendors: [
     { name: "Xfer Records", plugins: ["Serum", "Serum 2"] },
     { name: "Spectrasonics", plugins: ["Omnisphere", "Keyscape"] },
@@ -390,7 +373,7 @@ export const specs: { title: string; items: readonly Spec[] } = {
         "— the same requirements as Ableton Live 12",
     },
     { term: "Host", value: "Ableton Live 12.0 or later" },
-    { term: "Plugin formats", value: "[VST3 and Audio Units]" },
+    { term: "Plugin formats", value: "VST3" },
     {
       term: "Requires",
       value: "The plugins themselves, installed and licensed on the same Mac",
@@ -398,9 +381,9 @@ export const specs: { title: string; items: readonly Spec[] } = {
     {
       term: "Output",
       value:
-        "One Ableton Pack: every preset converted for direct loading in Live, " +
-        "the manufacturer's categories and descriptors mapped to Live 12 " +
-        "tags, and an audio preview per preset",
+        "One pack folder for Live's browser: every preset converted for " +
+        "direct loading in Live, the manufacturer's categories and " +
+        "descriptors mapped to Live 12 tags, and an audio preview per preset",
     },
     { term: "Windows", value: "Planned. Not available at launch." },
     {
@@ -435,7 +418,7 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
       question: "Does Presetter copy or distribute presets or sounds?",
       answer:
         "No. Presetter reads preset files already installed on your Mac and " +
-        "writes them into an Ableton Pack on the same machine. Previews are " +
+        "writes them into a pack folder on the same machine. Previews are " +
         "rendered locally from your own licensed copy of each plugin. Nothing " +
         "is uploaded and nothing is redistributed.",
     },
@@ -464,7 +447,7 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
       question: "Is Presetter a plugin?",
       answer:
         "No. It's a standalone macOS application. It runs when you build or " +
-        "update your Pack. Nothing runs inside Live, and it has no effect on " +
+        "update your pack. Nothing runs inside Live, and it has no effect on " +
         "Live's performance.",
     },
     {
@@ -484,7 +467,7 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
       answer:
         "It depends on the size of your library. Because Presetter renders a " +
         "preview for every preset, a large collection can take 30 minutes or " +
-        "more. [Subsequent runs only process what's new.]",
+        "more. Let it run; it's a one-time job.",
     },
     {
       question: "Are effects supported?",
@@ -519,29 +502,22 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
         "come with a free, time-limited license key.",
     },
     {
-      question: "Is there a trial?",
-      answer:
-        "[Under consideration: free for the first 20 presets of each plugin, " +
-        "so you can check your library before you buy.]",
-    },
-    {
       question: "What is the refund policy?",
       answer:
         "All sales are final. Presetter delivers its full output the first " +
-        "time it runs — the Pack stays on your Mac whether or not the app " +
-        "does — so a license can't be returned. [Check your library with the " +
-        "free tier before you buy.]",
+        "time it runs — the pack stays on your Mac whether or not the app " +
+        "does — so a license can't be returned. Check the plugin list and " +
+        "the specifications before you buy.",
     },
   ],
 };
 
 export const origin = {
-  title: "Built in a working studio.",
+  title: "Built for our own sessions.",
   body:
-    "Presetter started as a tool we built for our own sessions — producers " +
-    "with large plugin collections and no single place to find a sound. It " +
-    "has been in daily use in our studio for over a year, and it's being " +
-    "tested now with working producers in New York, Berlin, and Los Angeles.",
+    "Presetter started as a tool we built for ourselves: a plugin " +
+    "collection too big to browse one window at a time. It's now in closed " +
+    "beta with working producers in the US and Germany.",
 } as const;
 
 export const earlyAccess = {
@@ -570,6 +546,10 @@ export const footer = {
         { label: "Early access", href: "/#early-access" },
         { label: "License agreement", href: "/license" },
         { label: "Privacy", href: "/privacy" },
+        {
+          label: "support@presetter.audio",
+          href: "mailto:support@presetter.audio",
+        },
       ],
     },
   ],

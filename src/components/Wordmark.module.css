@@ -1,19 +1,20 @@
 .root {
   display: inline-flex;
   align-items: center;
-  gap: rem(9px);
+  gap: rem(10px);
 }
 
-.bars {
-  height: rem(22px);
+.mark {
+  height: rem(24px);
   width: auto;
   display: block;
+  color: var(--pt-accent);
 }
 
 .word {
   font-size: rem(20px);
   font-weight: 600;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--mantine-color-white);
   line-height: 1;
 }
