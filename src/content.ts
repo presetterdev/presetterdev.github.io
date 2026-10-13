@@ -910,3 +910,62 @@ export const privacy: LegalDoc = {
     },
   ],
 };
+
+// The password-gated download page at /beta. It is not linked from the
+// site, not in the sitemap, and carries a noindex tag; testers get the URL
+// and the password in their invitation. `download` is printed by
+// scripts/seal-beta.mjs — rerun it for each build and paste the result.
+export const beta = {
+  title: "Presetter beta",
+  lede:
+    "This page is for invited testers. Enter the password from your " +
+    "invitation to download the current build.",
+  passwordLabel: "Password",
+  unlock: "Unlock",
+  states: {
+    checking: "Checking…",
+    fetching: "Downloading the build…",
+    decrypting: "Unlocking…",
+    wrong: "That password didn't work. Check your invitation and try again.",
+    failed:
+      "The download didn't complete. Reload the page and try again; if " +
+      "it keeps failing, email support@presetter.audio.",
+  },
+  ready: {
+    title: "Your download is ready.",
+    body: "If it didn't start on its own, use the button.",
+    button: "Download",
+  },
+  stepsTitle: "Installing",
+  steps: [
+    "Open the disk image and drag Presetter into Applications.",
+    "Open Presetter. If macOS asks for access to your Documents folder, " +
+      "allow it — some plugins keep their presets there.",
+    "Enter the license key from your invitation. It works on one Mac and " +
+      "expires on the date in the invitation.",
+    "Back up your Ableton User Library before building your first pack. " +
+      "This is a beta.",
+  ],
+  afterSteps: "Then follow the five steps on the home page.",
+  howToLabel: "How it works",
+  howToHref: "/#how-it-works",
+  agreement:
+    "Downloading means you accept the license agreement, beta terms " +
+    "included.",
+  agreementLabel: "Read the license agreement",
+  agreementHref: "/license",
+  download: {
+    file: "/dl/Presetter_0.2.0_universal.enc",
+    name: "Presetter_0.2.0_universal.dmg",
+    version: "0.2.0",
+    size: 25416439,
+    sha256: "1e9a58c6d3280e0159992ae6b979390031fa61a5b1278f78e4da36575ea55cea",
+    iterations: 600000,
+    salt: "NJmbXObHHhb/8a1d5TLplw==",
+    iv: "uuYBo5mnQgqPMNZb",
+    check: {
+      iv: "PQNbNTc3AfMiumB/",
+      data: "74NepbRxEt40/V2aS/mGSTVsdj05KKo96JzvFh1j",
+    },
+  },
+} as const;

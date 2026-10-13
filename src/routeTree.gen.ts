@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BetaRouteImport } from './routes/beta'
 import { Route as LicenseRouteImport } from './routes/license'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BetaRoute = BetaRouteImport.update({
+  id: '/beta',
+  path: '/beta',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LicenseRoute = LicenseRouteImport.update({
@@ -31,30 +37,34 @@ const PrivacyRoute = PrivacyRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/beta': typeof BetaRoute
   '/license': typeof LicenseRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/beta': typeof BetaRoute
   '/license': typeof LicenseRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/beta': typeof BetaRoute
   '/license': typeof LicenseRoute
   '/privacy': typeof PrivacyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/license' | '/privacy'
+  fullPaths: '/' | '/beta' | '/license' | '/privacy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/license' | '/privacy'
-  id: '__root__' | '/' | '/license' | '/privacy'
+  to: '/' | '/beta' | '/license' | '/privacy'
+  id: '__root__' | '/' | '/beta' | '/license' | '/privacy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BetaRoute: typeof BetaRoute
   LicenseRoute: typeof LicenseRoute
   PrivacyRoute: typeof PrivacyRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beta': {
+      id: '/beta'
+      path: '/beta'
+      fullPath: '/beta'
+      preLoaderRoute: typeof BetaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/license': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BetaRoute: BetaRoute,
   LicenseRoute: LicenseRoute,
   PrivacyRoute: PrivacyRoute,
 }
