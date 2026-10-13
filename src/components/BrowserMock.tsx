@@ -5,7 +5,7 @@ import classes from "./BrowserMock.module.css";
 
 interface FilterRowProps {
   group: string;
-  options: readonly { label: string; active: boolean }[];
+  options: readonly { label: string; active: boolean; category?: string }[];
 }
 
 function FilterRow({ group, options }: FilterRowProps): ReactElement {
@@ -17,6 +17,7 @@ function FilterRow({ group, options }: FilterRowProps): ReactElement {
           <span
             key={option.label}
             className={option.active ? classes["tagActive"] : classes["tag"]}
+            data-category={option.category}
           >
             {option.label}
           </span>
@@ -75,6 +76,7 @@ export function BrowserMock(): ReactElement {
           <li
             key={row.preset}
             className={row.playing ? classes["rowPlaying"] : classes["row"]}
+            data-category={mock.rowCategory}
           >
             <span className={classes["icon"]}>
               {row.playing ? <Waveform /> : <PlayIcon />}

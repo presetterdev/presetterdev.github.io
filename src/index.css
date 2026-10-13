@@ -15,6 +15,24 @@
   --pt-panel-raised: #262629;
   --pt-line: rgba(255, 255, 255, 0.09);
   --pt-line-strong: rgba(255, 255, 255, 0.16);
+
+  /* The accent is the brand palette in theme.ts; these are its forms for
+     plain CSS: solid, as text on dark, as a tint, as a border, as a glow. */
+  --pt-accent: var(--mantine-color-brand-4);
+  --pt-accent-text: var(--mantine-color-brand-1);
+  --pt-accent-soft: rgba(125, 211, 252, 0.14);
+  --pt-accent-line: rgba(125, 211, 252, 0.45);
+  --pt-accent-glow: rgba(125, 211, 252, 0.2);
+
+  /* Sound categories, used only inside product illustrations: each kind of
+     sound keeps one colour across every mock, so the tags read as a system
+     rather than a decoration. */
+  --pt-cat-pad: #34d3b5;
+  --pt-cat-keys: #f4b740;
+  --pt-cat-bass: #a78bfa;
+  --pt-cat-lead: #ff7aa8;
+  --pt-cat-strings: #5bc0ff;
+  --pt-cat-fx: #ff8a5b;
 }
 
 html {
@@ -45,4 +63,30 @@ body {
   .mantine-Title-root[data-order="2"] {
     font-size: 1.85rem;
   }
+}
+
+/* Product illustrations tag an element with its sound category; the chip
+   colour follows. Values live with the palette above. */
+[data-category="pad"] {
+  --chip: var(--pt-cat-pad);
+}
+
+[data-category="keys"] {
+  --chip: var(--pt-cat-keys);
+}
+
+[data-category="bass"] {
+  --chip: var(--pt-cat-bass);
+}
+
+[data-category="lead"] {
+  --chip: var(--pt-cat-lead);
+}
+
+[data-category="strings"] {
+  --chip: var(--pt-cat-strings);
+}
+
+[data-category="fx"] {
+  --chip: var(--pt-cat-fx);
 }

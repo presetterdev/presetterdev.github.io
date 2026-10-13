@@ -9,6 +9,9 @@
 .window {
   position: absolute;
   width: 80%;
+  /* The pain, animated once: windows pile up one after another. The
+     Presetter side of the comparison stays still. */
+  animation: settle 0.5s ease both;
   background: var(--pt-panel);
   border: 1px solid var(--pt-line-strong);
   border-radius: rem(10px);
@@ -22,29 +25,53 @@
 .window:nth-child(1) {
   left: 0;
   top: 0;
-  opacity: 0.7;
+  --settled: 0.7;
+  animation-delay: 0.1s;
 }
 
 .window:nth-child(2) {
   left: 5%;
   top: rem(64px);
-  opacity: 0.8;
+  --settled: 0.8;
+  animation-delay: 0.3s;
 }
 
 .window:nth-child(3) {
   left: 10%;
   top: rem(128px);
-  opacity: 0.9;
+  --settled: 0.9;
+  animation-delay: 0.5s;
 }
 
 .window:nth-child(4) {
   left: 15%;
   top: rem(192px);
+  animation-delay: 0.7s;
 }
 
 .window:nth-child(5) {
   left: 20%;
   top: rem(256px);
+  animation-delay: 0.9s;
+}
+
+@keyframes settle {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: var(--settled, 1);
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .window {
+    animation: none;
+    opacity: var(--settled, 1);
+  }
 }
 
 .bar {
