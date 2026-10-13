@@ -20,7 +20,7 @@ function Chevron(): ReactElement {
   );
 }
 
-// Where the Pack lands: Packs › Presetter in Live's browser.
+// Where the pack lands: Places › <folder name> in Live's browser.
 export function BrowserTree(): ReactElement {
   const last = tree.path[tree.path.length - 1];
   return (

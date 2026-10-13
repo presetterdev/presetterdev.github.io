@@ -11,7 +11,7 @@ export function SiteHeader(): ReactElement {
     <Box component="header" className={classes["header"]}>
       <Container size={1080}>
         <Group justify="space-between" h={64} wrap="nowrap">
-          <a href="#top" className={classes["brand"]}>
+          <a href="/" className={classes["brand"]}>
             <Wordmark />
           </a>
           <Group gap="xl" visibleFrom="sm" component="nav">
