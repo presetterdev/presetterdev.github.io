@@ -598,9 +598,9 @@ export interface LegalDoc {
   sections: readonly LegalSection[];
 }
 
-// [Bracketed] until the entity is settled: pre-incorporation, the licensor
-// is a person doing business as Presetter.
-export const legalEntity = "[Justin Siegel, doing business as Presetter]";
+// The licensor as named on the legal pages. Pre-incorporation this is the
+// product name alone; becomes the entity's legal name once it exists.
+export const legalEntity = "Presetter";
 
 export const license: LegalDoc = {
   slug: "license",
@@ -609,9 +609,9 @@ export const license: LegalDoc = {
   intro: [
     "This agreement is between " +
       legalEntity +
-      ' ("Presetter," "we") and you. It covers the Presetter ' +
-      "application for macOS, including pre-release (beta) builds, " +
-      'updates, and documentation (together, the "Software").',
+      ' ("we") and you. It covers the Presetter application for macOS, ' +
+      "including pre-release (beta) builds, updates, and documentation " +
+      '(together, the "Software").',
     "By installing or using the Software you agree to this agreement. " +
       "If you don't agree, don't install or use it.",
   ],
