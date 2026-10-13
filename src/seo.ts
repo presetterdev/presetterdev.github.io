@@ -74,7 +74,16 @@ function attr(value: string): string {
   return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
 }
 
-// Tags injected into <head> at build time by scripts/prerender.mjs.
+// Tags for a secondary page such as /license: a canonical URL and nothing
+// else, since the social and structured data describe the product, not the
+// page.
+export function pageHeadTags(path: string): string {
+  const url = site.url + path.replace(/^\//, "");
+  return `<link rel="canonical" href="${attr(url)}" />`;
+}
+
+// Tags injected into the home page's <head> at build time by
+// src/prerender.ts.
 export function headTags(): string {
   const json = JSON.stringify(structuredData()).replaceAll(
     "<",

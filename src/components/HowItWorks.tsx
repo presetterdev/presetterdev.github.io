@@ -1,4 +1,4 @@
-import { Grid, Title } from "@mantine/core";
+import { Grid, Text, Title } from "@mantine/core";
 import type { ReactElement } from "react";
 
 import { howItWorks } from "../content";
@@ -12,6 +12,9 @@ export function HowItWorks(): ReactElement {
       <Grid gap={{ base: 40, md: 64 }} align="center">
         <Grid.Col span={{ base: 12, md: 7 }}>
           <Title order={2}>{howItWorks.title}</Title>
+          <Text size="lg" mt="lg" maw={560} lh={1.55}>
+            {howItWorks.lede}
+          </Text>
           <ol className={classes["steps"]}>
             {howItWorks.steps.map((step) => (
               <li key={step.title} className={classes["step"]}>

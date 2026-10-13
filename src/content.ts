@@ -2,17 +2,18 @@
 // change is an edit to this file and nothing else. [Brackets] mark facts
 // still to be confirmed.
 
+// Anchors carry the path so they also work from /license and /privacy.
 export const nav = [
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Plugins", href: "#plugins" },
-  { label: "Specs", href: "#specs" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "FAQ", href: "#faq" },
+  { label: "How it works", href: "/#how-it-works" },
+  { label: "Plugins", href: "/#plugins" },
+  { label: "Specs", href: "/#specs" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "FAQ", href: "/#faq" },
 ] as const;
 
 export const cta = {
   label: "Get early access",
-  href: "#early-access",
+  href: "/#early-access",
   // Tally form id; every CTA opens it as a modal, with the anchor as fallback.
   tallyId: "gD2NoO",
   micro: "$79 launch price for the list. First build first. No spam.",
@@ -145,9 +146,10 @@ export const positioning = {
   ],
 } as const;
 
-// Where the Pack shows up in Live's browser.
+// Where the Pack shows up in Live's browser: the folder Presetter built,
+// added to Places. "Presetter" is the example name; the user picks it.
 export const tree = {
-  path: ["Packs", "Presetter"],
+  path: ["Places", "Presetter"],
   rows: [
     { name: "Serum 2", detail: "1,204 presets" },
     { name: "Omnisphere", detail: "2,116 presets" },
@@ -156,8 +158,8 @@ export const tree = {
     { name: "Diva", detail: "1,980 presets" },
   ],
   caption:
-    "The Pack sits under Packs in Live's browser, beside Ableton's own " +
-    "content. Every preset carries its maker's categories and a preview.",
+    "The pack folder sits under Places in Live's browser, beside your own " +
+    "folders. Every preset carries its maker's categories and a preview.",
 } as const;
 
 export interface Step {
@@ -165,33 +167,50 @@ export interface Step {
   body: string;
 }
 
-export const howItWorks: { title: string; steps: readonly Step[] } = {
+// The literal sequence a new user follows, in order. Steps are the product's
+// actual flow, not a summary of it; change them only when the app changes.
+export const howItWorks: {
+  title: string;
+  lede: string;
+  steps: readonly Step[];
+} = {
   title: "Run it once. Use it every day.",
+  lede:
+    "Presetter builds a pack from the plugins you already own and hands it " +
+    "to Ableton Live. After that, you look for sounds in Live — not in " +
+    "plugin windows.",
   steps: [
     {
-      title: "Scan your plugins.",
-      body:
-        "Point Presetter at your plugins and choose which to include — skip " +
-        "demos and anything you don't use. It reads the presets already " +
-        "installed on your Mac, and the categories each manufacturer gave " +
-        "them.",
+      title: "Download and install Presetter.",
+      body: "macOS, with Ableton Live 12 or later.",
     },
     {
-      title: "Build the Pack.",
+      title: "Presetter scans your system for plugins.",
       body:
-        "Presetter converts each preset into a format Live loads directly, " +
-        "maps the manufacturer's categories and descriptors onto Live 12's " +
-        "tags, and renders a short audio preview from your own copy of the " +
-        "plugin. A large library takes 30 minutes or more; it's a one-time " +
-        "job.",
+        "Automatic — nothing to configure. It finds the instruments and " +
+        "effects installed on your Mac.",
     },
     {
-      title: "Browse in Live.",
+      title: "Pick the plugins you want and add them to a pack.",
       body:
-        "The Pack appears in Live 12's browser. Filter by type, character, or " +
-        "vendor, hear the preview, and drag it in — the plugin loads with the " +
-        "preset and its macros ready to tweak. When you install something " +
-        "new, run Presetter again.",
+        "Name the pack folder. That name is what you'll see in Live's " +
+        "browser.",
+    },
+    {
+      title: "Presetter generates the pack.",
+      body:
+        "A pack is a folder Ableton Live knows how to browse. Presetter " +
+        "writes every preset from the plugins you picked into it, with each " +
+        "manufacturer's own categories carried across as Live 12 tags and a " +
+        "rendered preview for each sound.",
+    },
+    {
+      title: "Drag the new folder into Places in Live's browser sidebar.",
+      body:
+        "Done. Your presets are now searchable by tag and previewable inside " +
+        "Live without loading a plugin. When you update the pack in " +
+        "Presetter — a new plugin, new presets — the changes show up in Live " +
+        "on their own.",
     },
   ],
 };
@@ -382,7 +401,10 @@ export const specs: { title: string; items: readonly Spec[] } = {
         "tags, and an audio preview per preset",
     },
     { term: "Windows", value: "Planned. Not available at launch." },
-    { term: "Delivery", value: "Direct download, [notarized for macOS]" },
+    {
+      term: "Delivery",
+      value: "Direct download, signed and notarized for macOS",
+    },
   ],
 };
 
@@ -487,6 +509,14 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
         "software is required.",
     },
     {
+      question: "Is there a beta?",
+      answer:
+        "Yes. A closed beta is running now on macOS. Testers come from the " +
+        "early-access list and are picked to cover different plugin " +
+        "collections, so tell us what you own when you join. Beta builds " +
+        "come with a free, time-limited license key.",
+    },
+    {
       question: "Is there a trial?",
       answer:
         "[Under consideration: free for the first 20 presets of each plugin, " +
@@ -524,18 +554,20 @@ export const footer = {
     {
       heading: "Product",
       links: [
-        { label: "How it works", href: "#how-it-works" },
-        { label: "Plugins", href: "#plugins" },
-        { label: "Specifications", href: "#specs" },
-        { label: "Pricing", href: "#pricing" },
-        { label: "FAQ", href: "#faq" },
+        { label: "How it works", href: "/#how-it-works" },
+        { label: "Plugins", href: "/#plugins" },
+        { label: "Specifications", href: "/#specs" },
+        { label: "Pricing", href: "/#pricing" },
+        { label: "FAQ", href: "/#faq" },
       ],
     },
     {
       heading: "Company",
       links: [
-        { label: "About", href: "#origin" },
-        { label: "Early access", href: "#early-access" },
+        { label: "About", href: "/#origin" },
+        { label: "Early access", href: "/#early-access" },
+        { label: "License agreement", href: "/license" },
+        { label: "Privacy", href: "/privacy" },
       ],
     },
   ],
@@ -547,3 +579,345 @@ export const footer = {
     "solely to identify the products Presetter works with and do not suggest " +
     "affiliation, sponsorship, or endorsement.",
 } as const;
+
+// Legal pages. Each renders as /<slug>. Paragraphs are plain text; a section
+// may carry a bullet list and paragraphs after it. The licensor is one
+// constant so the entity change at incorporation is a one-line edit.
+export interface LegalSection {
+  heading: string;
+  paragraphs: readonly string[];
+  bullets?: readonly string[];
+  after?: readonly string[];
+}
+
+export interface LegalDoc {
+  slug: string;
+  title: string;
+  updated: string;
+  intro: readonly string[];
+  sections: readonly LegalSection[];
+}
+
+// [Bracketed] until the entity is settled: pre-incorporation, the licensor
+// is a person doing business as Presetter.
+export const legalEntity = "[Justin Siegel, doing business as Presetter]";
+
+export const license: LegalDoc = {
+  slug: "license",
+  title: "Presetter License Agreement",
+  updated: "October 13, 2026",
+  intro: [
+    "This agreement is between " +
+      legalEntity +
+      ' ("Presetter," "we") and you. It covers the Presetter ' +
+      "application for macOS, including pre-release (beta) builds, " +
+      'updates, and documentation (together, the "Software").',
+    "By installing or using the Software you agree to this agreement. " +
+      "If you don't agree, don't install or use it.",
+  ],
+  sections: [
+    {
+      heading: "Beta builds",
+      paragraphs: [
+        "This section applies to any pre-release build, and takes " +
+          "precedence over the rest of the agreement while you use one.",
+      ],
+      bullets: [
+        "Beta builds are unfinished. They may have bugs, may change " +
+          "without notice, and may stop working when the beta ends or " +
+          "your beta key expires.",
+        "Beta license keys are free, personal, and expire on the date " +
+          "we give you. When a key expires the Software stops running; " +
+          "it doesn't remove the pack it already built.",
+        "Don't share the build or your key with anyone, and don't " +
+          "post either anywhere. Beta builds are for you, on Macs you " +
+          "own.",
+        "Back up your Ableton User Library before you run a beta " +
+          "build, as you would before running any pre-release software.",
+        "Anything you tell us about the Software — bugs, ideas, " +
+          "suggestions, what you saw in a session — we may use freely " +
+          "to improve it, with no obligation to you.",
+        "A beta key doesn't entitle you to a release license or a " +
+          "price, and we may end the beta at any time.",
+      ],
+      after: [
+        "When the beta ends, this section stops applying, and the " +
+          "rest of this agreement governs any release version you " +
+          "license.",
+      ],
+    },
+    {
+      heading: "Your license",
+      paragraphs: [
+        "Subject to this agreement — and, for a release version, " +
+          "payment of the license fee — we grant you a perpetual, " +
+          "non-exclusive, non-transferable license to install and use " +
+          "the version of the Software you're licensed for, on up to " +
+          "[two] Macs you own or control, for your own music " +
+          "production. Anything beyond that, such as use across a " +
+          "studio or an organization, needs a separate license from us.",
+        "The Software is licensed, not sold. We keep every right in " +
+          "it that this agreement doesn't expressly give you.",
+      ],
+    },
+    {
+      heading: "License keys",
+      paragraphs: [
+        "The Software activates with a license key and confirms the " +
+          "key with our licensing service when it runs, which needs an " +
+          "internet connection at that moment. Don't share, sell, or " +
+          "publish your key. We may deactivate keys that are shared, " +
+          "exceed their activation limit, or were obtained by fraud, " +
+          "chargeback, or a breach of this agreement.",
+      ],
+    },
+    {
+      heading: "What the Software does with your presets",
+      paragraphs: [
+        "The Software reads the preset files of plugins installed and " +
+          "licensed on your Mac and writes them into a folder Ableton " +
+          "Live can browse, for your own use. It writes a new folder; " +
+          "it doesn't upload your files, and it doesn't modify your " +
+          "plugins or their original presets.",
+        "You're responsible for holding valid licenses to every " +
+          "plugin whose presets you process, and for complying with " +
+          "those plugins' own terms. Presetter is independent software: " +
+          "it isn't affiliated with, endorsed by, or connected to any " +
+          "plugin or software vendor. Product and company names are " +
+          "their owners' trademarks and are used only to say what the " +
+          "Software works with.",
+      ],
+    },
+    {
+      heading: "What you may not do",
+      paragraphs: [
+        "Except where this agreement allows it, or the law allows it " +
+          "regardless of this agreement, you may not:",
+      ],
+      bullets: [
+        "resell, rent, lend, sublicense, or otherwise transfer the " +
+          "Software or your license key;",
+        "reverse engineer, decompile, or disassemble the Software, or " +
+          "try to derive its source code;",
+        "get around or disable the license key, activation, or any " +
+          "other licensing or security mechanism;",
+        "remove or alter proprietary notices; or",
+        "use the Software to infringe anyone's rights or to break the " +
+          "law.",
+      ],
+    },
+    {
+      heading: "Updates",
+      paragraphs: [
+        "A release license includes updates and newly added plugin " +
+          "support for twelve months from purchase. After that, the " +
+          "last version you received keeps working, with no obligation " +
+          "to upgrade. We're not obliged to release any particular " +
+          "update, plugin support, or future version.",
+      ],
+    },
+    {
+      heading: "Privacy",
+      paragraphs: [
+        "The Software runs on your Mac and your preset files stay " +
+          "there. The little we do collect — a license key, an " +
+          "identifier for your Mac, the app version — is described in " +
+          "the Presetter Privacy Policy, which is part of this " +
+          "agreement.",
+      ],
+    },
+    {
+      heading: "No refunds",
+      paragraphs: [
+        "All sales of a release license are final. The Software " +
+          "delivers its full output the first time it runs — the pack " +
+          "stays on your Mac whether or not the Software does — so a " +
+          "license can't be returned. Check the plugin list and the " +
+          "system requirements before you buy.",
+      ],
+    },
+    {
+      heading: "No warranty",
+      paragraphs: [
+        'THE SOFTWARE IS PROVIDED "AS IS" AND "AS AVAILABLE," ' +
+          "WITHOUT WARRANTIES OF ANY KIND, EXPRESS, IMPLIED, OR " +
+          "STATUTORY, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, " +
+          "FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE " +
+          "DON'T WARRANT THAT THE SOFTWARE WILL BE ERROR-FREE, THAT IT " +
+          "WILL CORRECTLY PROCESS ANY PARTICULAR PLUGIN OR PRESET, OR " +
+          "THAT IT WILL KEEP WORKING WITH FUTURE VERSIONS OF MACOS, " +
+          "ABLETON LIVE, OR ANY PLUGIN.",
+      ],
+    },
+    {
+      heading: "Limitation of liability",
+      paragraphs: [
+        "TO THE FULLEST EXTENT THE LAW ALLOWS, WE WON'T BE LIABLE FOR " +
+          "ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR " +
+          "PUNITIVE DAMAGES, OR FOR LOST DATA, LOST PROFITS, OR LOST " +
+          "GOODWILL, ARISING FROM THE SOFTWARE OR THIS AGREEMENT. OUR " +
+          "TOTAL LIABILITY WON'T EXCEED THE AMOUNT YOU PAID US FOR THE " +
+          "SOFTWARE IN THE TWELVE MONTHS BEFORE THE CLAIM, OR FIFTY US " +
+          "DOLLARS IF YOU PAID NOTHING. SOME JURISDICTIONS DON'T ALLOW " +
+          "SOME OF THESE LIMITS, SO SOME MAY NOT APPLY TO YOU.",
+      ],
+    },
+    {
+      heading: "Ending this agreement",
+      paragraphs: [
+        "This agreement lasts until it ends. It ends automatically if " +
+          "you break it, and a beta license ends when the beta or your " +
+          "key does. When it ends, stop using the Software and delete " +
+          "it; we may deactivate your key. The sections on your " +
+          "presets, what you may not do, privacy, refunds, warranty, " +
+          "liability, governing law, and everything else survive.",
+      ],
+    },
+    {
+      heading: "Governing law",
+      paragraphs: [
+        "This agreement is governed by the laws of the State of New " +
+          "York, without regard to its conflict-of-laws rules. Any " +
+          "dispute about it will be brought in the state or federal " +
+          "courts located in New York County, New York, and you and we " +
+          "each consent to those courts.",
+      ],
+    },
+    {
+      heading: "Everything else",
+      paragraphs: [
+        "This is the whole agreement between you and us about the " +
+          "Software, and it replaces anything earlier. We may update it " +
+          "for new versions of the Software; the version you accepted " +
+          "governs the version you have, unless you accept a later one. " +
+          "If part of it can't be enforced, the rest still applies. You " +
+          "may not assign it; we may, as part of a sale, merger, or " +
+          "reorganization of the business. Not enforcing a term isn't a " +
+          "waiver of it.",
+        "Questions: support@presetter.audio.",
+      ],
+    },
+  ],
+};
+
+export const privacy: LegalDoc = {
+  slug: "privacy",
+  title: "Presetter Privacy Policy",
+  updated: "October 13, 2026",
+  intro: [
+    "Presetter is built to run on your Mac and keep your files there. " +
+      "This policy says what little we collect, why, and who handles " +
+      "it. It's issued by " +
+      legalEntity +
+      ' ("we"), and it applies to presetter.audio and to the Presetter ' +
+      "application.",
+  ],
+  sections: [
+    {
+      heading: "The short version",
+      paragraphs: [],
+      bullets: [
+        "Your presets and your pack never leave your Mac.",
+        "We collect an email address if you give us one, and a " +
+          "license-key check when the app runs.",
+        "We don't sell data, and the site sets no analytics or " +
+          "advertising cookies.",
+      ],
+    },
+    {
+      heading: "What we collect on the website",
+      paragraphs: [
+        "The early-access form asks for your email address and which " +
+          "plugins you own, plus anything else you choose to tell us. " +
+          "The form is run by Tally, which stores the answers for us. " +
+          "We use them to send beta invitations, launch news, and " +
+          "product emails about Presetter, and to decide which plugins " +
+          "to support next. Every email we send has an unsubscribe " +
+          "link, and you can ask us to delete your answers at any time.",
+        "The site is hosted on GitHub Pages. Like any web host, " +
+          "GitHub may log the IP address and browser details of " +
+          "visitors under its own privacy statement. We run no " +
+          "analytics or advertising cookies on the site. If that " +
+          "changes, this policy will say so first.",
+      ],
+    },
+    {
+      heading: "What we collect in the app",
+      paragraphs: [
+        "The app reads the preset files of the plugins on your Mac " +
+          "and writes a pack folder on the same Mac. Those files are " +
+          "never uploaded to us or to anyone else.",
+        "When you activate the app or run it, it sends your license " +
+          "key, an identifier for your Mac, and the app's version to " +
+          "our licensing service, Keygen, to confirm that the key is " +
+          "valid and within its activation limit. That's what makes a " +
+          "license work on your Macs and not on everyone else's.",
+        "The app doesn't send us usage statistics or crash reports. " +
+          "If we add either, it will be opt-in, and this policy will " +
+          "describe it.",
+      ],
+    },
+    {
+      heading: "Email and support",
+      paragraphs: [
+        "If you email us, we keep the conversation so we can help you " +
+          "and see the history if you write again. Our email runs on " +
+          "Google Workspace.",
+      ],
+    },
+    {
+      heading: "Who handles data for us",
+      paragraphs: [],
+      bullets: [
+        "Tally — the early-access form.",
+        "Keygen — license keys and activation.",
+        "Google Workspace — email.",
+        "GitHub — website hosting.",
+      ],
+      after: [
+        "Each handles data only to provide its service to us, under " +
+          "its own privacy terms. We don't sell personal information, " +
+          "and we don't share it with anyone else unless the law " +
+          "requires it.",
+      ],
+    },
+    {
+      heading: "Keeping and deleting",
+      paragraphs: [
+        "We keep form answers and email while Presetter exists or " +
+          "until you ask us to delete them. License records are kept " +
+          "while the license is active and for our own records after " +
+          "that. To unsubscribe, use the link in any email; to ask for " +
+          "a copy of your data or have it deleted, write to " +
+          "support@presetter.audio.",
+      ],
+    },
+    {
+      heading: "Children",
+      paragraphs: [
+        "Presetter isn't directed at children under 13, and we don't " +
+          "knowingly collect their information. If you think a child " +
+          "has given us some, tell us and we'll delete it.",
+      ],
+    },
+    {
+      heading: "Do Not Track",
+      paragraphs: [
+        "We don't track visitors across other sites, so there's " +
+          "nothing for a Do Not Track signal to switch off.",
+      ],
+    },
+    {
+      heading: "Changes",
+      paragraphs: [
+        "If this policy changes, we'll update the date at the top, " +
+          "and for anything significant we'll say so by email or on the " +
+          "site.",
+      ],
+    },
+    {
+      heading: "Contact",
+      paragraphs: ["support@presetter.audio"],
+    },
+  ],
+};
