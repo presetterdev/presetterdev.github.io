@@ -520,6 +520,15 @@ export const origin = {
     "beta with working producers in the US and Germany.",
 } as const;
 
+// The page an unknown address lands on. Pages serves it for any path that
+// has no file, so it is prerendered to 404.html.
+export const notFound = {
+  title: "There's nothing here.",
+  body: "That address doesn't exist. The home page has everything that does.",
+  cta: "Go to the home page",
+  href: "/",
+} as const;
+
 export const earlyAccess = {
   title: "Get early access",
   body:
