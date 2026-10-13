@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
-import { license, privacy } from "./content";
+import { beta, license, privacy } from "./content";
 import { render } from "./entry-server";
 import { site } from "./seo";
 
@@ -17,7 +17,7 @@ const rootTag = '<div id="root"></div>';
 interface Page {
   path: string;
   // The home page keeps the title and description index.html carries.
-  head: { title: string; description: string } | undefined;
+  head: { title: string; description: string; noindex?: boolean } | undefined;
 }
 
 const pages: readonly Page[] = [
@@ -37,6 +37,14 @@ const pages: readonly Page[] = [
         "What Presetter collects and why: your presets stay on your Mac; an " +
         "email address if you give one; a license-key check when the app " +
         "runs.",
+    },
+  },
+  {
+    path: "/beta",
+    head: {
+      title: beta.title,
+      description: "Download page for invited Presetter beta testers.",
+      noindex: true,
     },
   },
 ];
@@ -68,6 +76,12 @@ async function prerender(page: Page): Promise<void> {
         /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
         `<meta name="description" content="${escape(page.head.description)}" />`,
       );
+    if (page.head.noindex === true) {
+      output = output.replace(
+        "</head>",
+        '    <meta name="robots" content="noindex, nofollow" />\n  </head>',
+      );
+    }
   }
   const file =
     page.path === "/" ? templatePath : join(dist, page.path, "index.html");
