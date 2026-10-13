@@ -31,9 +31,9 @@
 
 .chipMore {
   composes: chip;
-  color: var(--mantine-color-violet-1);
-  background: rgba(121, 80, 242, 0.14);
-  border-color: rgba(121, 80, 242, 0.5);
+  color: var(--pt-accent-text);
+  background: var(--pt-accent-soft);
+  border-color: var(--pt-accent-line);
 }
 
 .effects {

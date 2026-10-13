@@ -1,7 +1,7 @@
 .title {
   font-size: rem(56px);
-  line-height: 1.02;
-  letter-spacing: -0.025em;
+  line-height: 1;
+  letter-spacing: -0.03em;
   font-weight: 600;
   color: var(--mantine-color-white);
   margin: 0;
@@ -32,8 +32,8 @@
   z-index: -1;
   background: radial-gradient(
     ellipse at 50% 45%,
-    rgba(121, 80, 242, 0.32),
-    rgba(121, 80, 242, 0.08) 45%,
+    var(--pt-accent-glow),
+    rgba(125, 211, 252, 0.05) 45%,
     transparent 70%
   );
   filter: blur(24px);
@@ -51,6 +51,12 @@
 }
 
 @media (min-width: $mantine-breakpoint-md) {
+  /* The loudest thing on the page by a clear margin; section headings
+     stay at the theme's h2 size. */
+  .title {
+    font-size: rem(66px);
+  }
+
   .visual {
     margin-left: auto;
   }

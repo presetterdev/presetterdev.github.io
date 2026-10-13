@@ -40,7 +40,9 @@ function Filters(): ReactElement {
     <>
       <div className={classes["filterLine"]}>
         <span className={classes["muted"]}>Sounds</span>
-        <span className={classes["pillActive"]}>Synth Bass</span>
+        <span className={classes["pillActive"]} data-category="bass">
+          Synth Bass
+        </span>
         <span className={classes["pill"]}>Pad</span>
         <span className={classes["pill"]}>Lead</span>
       </div>
@@ -93,7 +95,9 @@ function Mapping(): ReactElement {
         <span className={classes["icon"]}>
           <ArrowIcon />
         </span>
-        <span className={classes["pillActive"]}>Pad</span>
+        <span className={classes["pillActive"]} data-category="pad">
+          Pad
+        </span>
       </div>
       <div className={classes["mapRow"]}>
         <span className={classes["muted"]}>Omnisphere</span>
@@ -101,7 +105,9 @@ function Mapping(): ReactElement {
         <span className={classes["icon"]}>
           <ArrowIcon />
         </span>
-        <span className={classes["pillActive"]}>Pad</span>
+        <span className={classes["pillActive"]} data-category="pad">
+          Pad
+        </span>
       </div>
       <div className={classes["mapRow"]}>
         <span className={classes["muted"]}>Kontakt</span>
@@ -109,7 +115,9 @@ function Mapping(): ReactElement {
         <span className={classes["icon"]}>
           <ArrowIcon />
         </span>
-        <span className={classes["pillActive"]}>Pad</span>
+        <span className={classes["pillActive"]} data-category="pad">
+          Pad
+        </span>
       </div>
     </>
   );

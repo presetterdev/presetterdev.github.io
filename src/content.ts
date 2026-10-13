@@ -32,8 +32,9 @@ export const midCta = {
 } as const;
 
 export const hero = {
-  // Rendered as two lines on wide screens.
-  titleLines: ["Stop opening plugin after plugin", "to find a sound."],
+  // Rendered as three lines on wide screens, so the headline can be the
+  // largest type on the page without an orphaned word.
+  titleLines: ["Stop opening", "plugin after plugin", "to find a sound."],
   lede:
     "Every preset you own, inside Live 12's browser — filtered with Live's " +
     "own tags, heard before anything loads, dragged in when you're sure.",
@@ -47,10 +48,10 @@ export const mock = {
     {
       group: "Sounds",
       options: [
-        { label: "Pad", active: true },
-        { label: "Keys", active: false },
-        { label: "Bass", active: false },
-        { label: "Lead", active: false },
+        { label: "Pad", active: true, category: "pad" },
+        { label: "Keys", active: false, category: "keys" },
+        { label: "Bass", active: false, category: "bass" },
+        { label: "Lead", active: false, category: "lead" },
       ],
     },
     {
@@ -72,6 +73,8 @@ export const mock = {
       ],
     },
   ],
+  // Every row is a pad, since that is the filter; the category colours the
+  // preview icon.
   rows: [
     { preset: "Analog Halo", plugin: "Pigments", playing: true },
     { preset: "Dust Choir", plugin: "Omnisphere", playing: false },
@@ -80,6 +83,7 @@ export const mock = {
     { preset: "Tape Pad", plugin: "FM8", playing: false },
     { preset: "Warm Vinyl", plugin: "Massive X", playing: false },
   ],
+  rowCategory: "pad",
   status: "6 of 4,812 presets, from 14 plugins",
 } as const;
 
@@ -278,28 +282,6 @@ export const features: { title: string; items: readonly Feature[] } = {
     },
   ],
 };
-
-export const rediscovery = {
-  title: "Which synths do you own but never open?",
-  body:
-    "Every producer can name one without hesitation. Instruments bought in a " +
-    "bundle or for a single track end up behind a browser that never gets " +
-    "opened — and outside the template. Presetter lists their presets beside " +
-    "everything else, so the whole collection is back in play.",
-  shelf: {
-    heading: "Last opened",
-    rows: [
-      { plugin: "Serum 2", opened: "Today" },
-      { plugin: "Omnisphere", opened: "2 weeks ago" },
-      { plugin: "Kontakt", opened: "3 months ago" },
-      { plugin: "Pigments", opened: "7 months ago" },
-      { plugin: "Diva", opened: "14 months ago" },
-      { plugin: "Massive X", opened: "2 years ago" },
-      { plugin: "FM8", opened: "Never" },
-    ],
-    result: "With Presetter: all 7, in one filter.",
-  },
-} as const;
 
 export interface Vendor {
   name: string;
