@@ -972,11 +972,11 @@ export const beta = {
     size: 25416439,
     sha256: "1e9a58c6d3280e0159992ae6b979390031fa61a5b1278f78e4da36575ea55cea",
     iterations: 600000,
-    salt: "a5Gqcj3zJMZooQSBylH01w==",
-    iv: "EmC44l5D4FYQox7r",
+    salt: "NJmbXObHHhb/8a1d5TLplw==",
+    iv: "uuYBo5mnQgqPMNZb",
     check: {
-      iv: "29WnIkPu0Wk9yzUO",
-      data: "8YhvkvjWWeB7u6pqyC3uMvHRgTxuytKCtXaTMZbw",
+      iv: "PQNbNTc3AfMiumB/",
+      data: "74NepbRxEt40/V2aS/mGSTVsdj05KKo96JzvFh1j",
     },
   },
 } as const;
