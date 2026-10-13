@@ -1,8 +1,9 @@
-import { Button, Stack, Text, Title } from "@mantine/core";
+import { Anchor, Button, Stack, Text, Title } from "@mantine/core";
 import { type ReactElement, useEffect } from "react";
 
 import { notFound } from "../content";
 import { site } from "../seo";
+import { openEvent } from "./PocketSynth";
 import { Section } from "./Section";
 
 // Rendered by the router for any path without a route, inside the usual
@@ -24,6 +25,21 @@ export function NotFound(): ReactElement {
         </Title>
         <Text size="lg" lh={1.55}>
           {notFound.body}
+        </Text>
+        <Text size="sm" c="dimmed">
+          {notFound.hint}{" "}
+          <Anchor
+            component="button"
+            type="button"
+            size="sm"
+            c="dimmed"
+            underline="always"
+            onClick={() => {
+              window.dispatchEvent(new Event(openEvent));
+            }}
+          >
+            {notFound.hintAction}
+          </Anchor>
         </Text>
         <Button component="a" href={notFound.href} mt="sm">
           {notFound.cta}

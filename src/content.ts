@@ -525,8 +525,38 @@ export const origin = {
 export const notFound = {
   title: "There's nothing here.",
   body: "That address doesn't exist. The home page has everything that does.",
+  // The only hint to the hidden synth on the site; the action opens it, so
+  // phones without a P key get there too.
+  hint: "Well, almost.",
+  hintAction: "Press P.",
   cta: "Go to the home page",
   href: "/",
+} as const;
+
+// The hidden synth. Pressing P on any page opens it; nothing on the site
+// points to it except the not-found page.
+export const pocketSynth = {
+  title: "You found the synth.",
+  lede:
+    "The mark is a grid of dots. Each dot is a step: columns are time, rows " +
+    "are notes, and the P is the first riff.",
+  presetLabel: "Preset",
+  presets: [
+    { id: "pad", label: "Warm Pad" },
+    { id: "keys", label: "Glass Keys" },
+    { id: "bass", label: "Sub Bass" },
+    { id: "lead", label: "Saw Lead" },
+  ],
+  play: "Play",
+  stop: "Stop",
+  reset: "Reset to P",
+  clear: "Clear",
+  tempo: "Tempo",
+  scale: "C minor pentatonic, C4 at the bottom",
+  size: "16 steps · 7 notes",
+  keysTitle: "Play over it",
+  keysHelp: "A to K are the white notes, W E T Y U the black ones. Or tap.",
+  dismiss: "Esc closes it. P brings it back.",
 } as const;
 
 export const earlyAccess = {
