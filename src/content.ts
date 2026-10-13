@@ -188,7 +188,9 @@ export const howItWorks: {
       title: "Presetter scans your system for plugins.",
       body:
         "Automatic — nothing to configure. It finds the instruments and " +
-        "effects installed on your Mac.",
+        "effects installed on your Mac. If macOS asks for access to your " +
+        "Documents folder, allow it: some plugins keep their presets " +
+        "there.",
     },
     {
       title: "Pick the plugins you want and add them to a pack.",
@@ -652,10 +654,10 @@ export const license: LegalDoc = {
         "Subject to this agreement — and, for a release version, " +
           "payment of the license fee — we grant you a perpetual, " +
           "non-exclusive, non-transferable license to install and use " +
-          "the version of the Software you're licensed for, on up to " +
-          "[two] Macs you own or control, for your own music " +
-          "production. Anything beyond that, such as use across a " +
-          "studio or an organization, needs a separate license from us.",
+          "the version of the Software you're licensed for, on one Mac " +
+          "you own or control, for your own music production. Anything " +
+          "beyond that — a second machine, a studio, an organization — " +
+          "needs a separate license from us.",
         "The Software is licensed, not sold. We keep every right in " +
           "it that this agreement doesn't expressly give you.",
       ],
@@ -721,9 +723,9 @@ export const license: LegalDoc = {
       paragraphs: [
         "The Software runs on your Mac and your preset files stay " +
           "there. The little we do collect — a license key, an " +
-          "identifier for your Mac, the app version — is described in " +
-          "the Presetter Privacy Policy, which is part of this " +
-          "agreement.",
+          "identifier for your Mac, the app version, and a crash " +
+          "report if the Software fails — is described in the " +
+          "Presetter Privacy Policy, which is part of this agreement.",
       ],
     },
     {
@@ -818,8 +820,8 @@ export const privacy: LegalDoc = {
       paragraphs: [],
       bullets: [
         "Your presets and your pack never leave your Mac.",
-        "We collect an email address if you give us one, and a " +
-          "license-key check when the app runs.",
+        "We collect an email address if you give us one, a license-key " +
+          "check when the app runs, and a crash report if it fails.",
         "We don't sell data, and the site sets no analytics or " +
           "advertising cookies.",
       ],
@@ -851,10 +853,16 @@ export const privacy: LegalDoc = {
           "key, an identifier for your Mac, and the app's version to " +
           "our licensing service, Keygen, to confirm that the key is " +
           "valid and within its activation limit. That's what makes a " +
-          "license work on your Macs and not on everyone else's.",
-        "The app doesn't send us usage statistics or crash reports. " +
-          "If we add either, it will be opt-in, and this policy will " +
-          "describe it.",
+          "license work on your Mac and not on everyone else's.",
+        "If the app hits an error, it sends a crash report to Sentry, " +
+          "our error-tracking service: what went wrong, where in the " +
+          "app, and your macOS and app versions. Reports don't include " +
+          "your preset files or their contents. [Confirm with Kevin " +
+          "exactly what the Sentry client attaches — breadcrumbs, " +
+          "device fields, any user fields — and whether PII defaults " +
+          "are off.]",
+        "The app doesn't send usage statistics. If we add them, they " +
+          "will be opt-in, and this policy will describe them.",
       ],
     },
     {
@@ -871,6 +879,7 @@ export const privacy: LegalDoc = {
       bullets: [
         "Tally — the early-access form.",
         "Keygen — license keys and activation.",
+        "Sentry — crash reports from the app.",
         "Google Workspace — email.",
         "GitHub — website hosting.",
       ],
