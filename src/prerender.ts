@@ -1,7 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
-import { beta, license, privacy } from "./content";
+import { beta, license, notFound, privacy } from "./content";
 import { render } from "./entry-server";
 import { site } from "./seo";
 
@@ -18,6 +18,8 @@ interface Page {
   path: string;
   // The home page keeps the title and description index.html carries.
   head: { title: string; description: string; noindex?: boolean } | undefined;
+  // Where the page lands, when not dist/<path>/index.html.
+  file?: string;
 }
 
 const pages: readonly Page[] = [
@@ -46,6 +48,17 @@ const pages: readonly Page[] = [
       description: "Download page for invited Presetter beta testers.",
       noindex: true,
     },
+  },
+  {
+    // No route matches this path, so the router renders the not-found page;
+    // Pages serves 404.html for every address without a file.
+    path: "/404",
+    head: {
+      title: notFound.title,
+      description: notFound.body,
+      noindex: true,
+    },
+    file: join(dist, "404.html"),
   },
 ];
 
@@ -84,7 +97,8 @@ async function prerender(page: Page): Promise<void> {
     }
   }
   const file =
-    page.path === "/" ? templatePath : join(dist, page.path, "index.html");
+    page.file ??
+    (page.path === "/" ? templatePath : join(dist, page.path, "index.html"));
   await mkdir(dirname(file), { recursive: true });
   await writeFile(file, output);
 }
