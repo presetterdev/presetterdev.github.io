@@ -1,4 +1,4 @@
-import { faq, features, hero, pricing, specs, worksWith } from "./content";
+import { faq, hero, lean, pricing, worksWith } from "./content";
 
 // Everything a crawler needs that isn't the page itself. Change the URL here
 // when the custom domain lands; index.html carries no absolute URLs.
@@ -40,8 +40,8 @@ export function structuredData(): readonly Record<string, unknown>[] {
       description: site.description,
       applicationCategory: "MultimediaApplication",
       operatingSystem: "macOS",
-      softwareRequirements: specs.items.map((item) => item.value).join("; "),
-      featureList: features.items.map((item) => item.title),
+      softwareRequirements: lean.specs,
+      featureList: lean.items,
       keywords: [
         "Ableton Live 12",
         "preset browser",
@@ -49,13 +49,17 @@ export function structuredData(): readonly Record<string, unknown>[] {
         "plugin presets",
         ...plugins,
       ].join(", "),
-      offers: {
-        "@type": "Offer",
-        price: pricing.regularPrice.replace("$", ""),
-        priceCurrency: "USD",
-        availability: "https://schema.org/PreOrder",
-        url: `${site.url}#pricing`,
-      },
+      ...(pricing.showPrice
+        ? {
+            offers: {
+              "@type": "Offer",
+              price: pricing.regular.price.replace("$", ""),
+              priceCurrency: "USD",
+              availability: "https://schema.org/PreOrder",
+              url: `${site.url}#price`,
+            },
+          }
+        : {}),
       slogan: hero.titleLines.join(" "),
     },
     {

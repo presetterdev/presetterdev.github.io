@@ -1,27 +1,22 @@
-import { Accordion, Text, Title } from "@mantine/core";
 import type { ReactElement } from "react";
 
 import { faq } from "../content";
+import classes from "./Faq.module.css";
 import { Section } from "./Section";
 
+// Questions and answers side by side, all open, like the back page of a
+// manual. Nothing to click.
 export function Faq(): ReactElement {
   return (
-    <Section id="faq">
-      <Title order={2}>{faq.title}</Title>
-      <Accordion mt="xl" maw={760} chevronPosition="right">
+    <Section id="faq" title={faq.title} wide>
+      <dl className={classes["list"]}>
         {faq.items.map((item) => (
-          <Accordion.Item key={item.question} value={item.question}>
-            <Accordion.Control>
-              <Text fw={600}>{item.question}</Text>
-            </Accordion.Control>
-            <Accordion.Panel>
-              <Text c="dimmed" lh={1.55}>
-                {item.answer}
-              </Text>
-            </Accordion.Panel>
-          </Accordion.Item>
+          <div key={item.question} className={classes["row"]}>
+            <dt className={classes["question"]}>{item.question}</dt>
+            <dd className={classes["answer"]}>{item.answer}</dd>
+          </div>
         ))}
-      </Accordion>
+      </dl>
     </Section>
   );
 }

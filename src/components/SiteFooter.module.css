@@ -1,27 +1,20 @@
 .footer {
   border-top: 1px solid var(--pt-line);
-  padding-block: rem(48px) rem(40px);
-  background: var(--pt-panel);
+  padding-block: rem(40px) rem(32px);
 }
 
-.grid {
-  display: grid;
-  gap: rem(32px);
-}
-
-.heading {
-  font-size: rem(13px);
-  font-weight: 600;
-  color: var(--mantine-color-white);
-  margin: 0 0 rem(12px);
+.top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: rem(20px) rem(32px);
 }
 
 .links {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: rem(8px);
+  display: flex;
+  flex-wrap: wrap;
+  gap: rem(8px) rem(20px);
 }
 
 .link {
@@ -35,13 +28,32 @@
 }
 
 .bottom {
-  margin-top: rem(40px);
+  position: relative;
+  margin-top: rem(32px);
   padding-top: rem(20px);
   border-top: 1px solid var(--pt-line);
 }
 
-@media (min-width: $mantine-breakpoint-sm) {
-  .grid {
-    grid-template-columns: minmax(0, 2fr) repeat(2, minmax(0, 1fr));
-  }
+/* The second hint to the hidden synth, as quiet as the first. */
+.hint {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  margin-top: rem(16px);
+  font: inherit;
+  font-size: rem(12px);
+  color: var(--mantine-color-dark-3);
+  cursor: pointer;
+}
+
+.hint:hover {
+  color: var(--mantine-color-dark-0);
+}
+
+.hint:focus-visible {
+  color: var(--mantine-color-dark-0);
+  outline: 2px solid var(--pt-accent);
+  outline-offset: 3px;
 }

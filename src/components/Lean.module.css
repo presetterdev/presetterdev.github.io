@@ -1,0 +1,25 @@
+.list {
+  list-style: none;
+  margin: rem(24px) 0 0;
+  padding: 0;
+}
+
+.item {
+  position: relative;
+  padding: rem(12px) 0 rem(12px) rem(26px);
+  border-top: 1px solid var(--pt-line);
+  color: var(--mantine-color-dark-0);
+  line-height: 1.5;
+}
+
+/* One lit dot from the mark's grid, as the bullet. */
+.item::before {
+  content: "";
+  position: absolute;
+  left: rem(4px);
+  top: rem(21px);
+  width: rem(8px);
+  height: rem(8px);
+  border-radius: 50%;
+  background: var(--pt-accent);
+}

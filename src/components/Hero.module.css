@@ -1,63 +1,83 @@
+.copy {
+  max-width: rem(760px);
+}
+
 .title {
-  font-size: rem(56px);
+  font-size: rem(44px);
   line-height: 1;
   letter-spacing: -0.03em;
   font-weight: 600;
   color: var(--mantine-color-white);
   margin: 0;
+  /* On phones the lines run on; balance keeps the last from being one
+     word. */
+  text-wrap: balance;
 }
 
 .line {
-  display: block;
+  display: inline;
 }
 
 .lede {
   font-size: rem(19px);
   line-height: 1.5;
   color: var(--mantine-color-dark-0);
-  max-width: 30em;
+  max-width: 32em;
+  margin: rem(24px) 0 0;
 }
 
-.visual {
-  position: relative;
-  isolation: isolate;
-  max-width: rem(520px);
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: rem(12px) rem(18px);
+  margin-top: rem(28px);
 }
 
-/* The one glow on the page, behind the product. */
-.visual::before {
-  content: "";
-  position: absolute;
-  inset: -18% -14%;
-  z-index: -1;
-  background: radial-gradient(
-    ellipse at 50% 45%,
-    var(--pt-accent-glow),
-    rgba(125, 211, 252, 0.05) 45%,
-    transparent 70%
-  );
-  filter: blur(24px);
-  pointer-events: none;
+.micro {
+  margin: 0;
+  font-size: rem(14px);
+  color: var(--mantine-color-dark-2);
 }
 
-@media (max-width: $mantine-breakpoint-sm) {
+.contact {
+  margin: rem(14px) 0 0;
+  font-size: rem(14px);
+  color: var(--mantine-color-dark-2);
+}
+
+.email {
+  color: var(--mantine-color-dark-0);
+  text-decoration: underline;
+  text-decoration-color: var(--pt-line-strong);
+  text-underline-offset: 3px;
+}
+
+.email:hover {
+  color: var(--mantine-color-white);
+}
+
+.readout {
+  margin-top: rem(40px);
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
   .title {
-    font-size: rem(40px);
+    font-size: rem(60px);
   }
 
   .line {
-    display: inline;
+    display: block;
   }
 }
 
 @media (min-width: $mantine-breakpoint-md) {
-  /* The loudest thing on the page by a clear margin; section headings
-     stay at the theme's h2 size. */
+  /* The loudest thing on the page by a clear margin. */
   .title {
-    font-size: rem(66px);
+    font-size: rem(76px);
   }
 
-  .visual {
-    margin-left: auto;
+  .readout {
+    margin-top: rem(56px);
   }
 }

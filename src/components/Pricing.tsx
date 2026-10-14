@@ -1,31 +1,44 @@
-import { Title } from "@mantine/core";
+import { Text } from "@mantine/core";
 import type { ReactElement } from "react";
 
-import { pricing } from "../content";
+import { type PriceLine, pricing } from "../content";
 import { CtaButton } from "./CtaButton";
 import classes from "./Pricing.module.css";
 import { Section } from "./Section";
 
+function Line({ line }: { line: PriceLine }): ReactElement {
+  return (
+    <div className={classes["line"]}>
+      <span className={classes["price"]}>{line.price}</span>
+      <span className={classes["note"]}>{line.note}</span>
+    </div>
+  );
+}
+
 export function Pricing(): ReactElement {
   return (
-    <Section id="pricing" band>
-      <Title order={2}>{pricing.title}</Title>
-      <div className={classes["card"]}>
-        <span className={classes["badge"]}>{pricing.badge}</span>
-        <div className={classes["price"]}>
-          <span>{pricing.launchPrice}</span>
-          <span className={classes["regular"]}>
-            <s>{pricing.regularPrice}</s> after launch
-          </span>
+    <Section id="price" title={pricing.title}>
+      {pricing.showPrice ? (
+        <div className={classes["lines"]}>
+          <Line line={pricing.launch} />
+          <Line line={pricing.regular} />
         </div>
-        <p className={classes["note"]}>{pricing.note}</p>
-        <ul className={classes["includes"]}>
-          {pricing.includes.map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-        <CtaButton size="md" mt="xl" />
-      </div>
+      ) : undefined}
+      <Text size="lg" lh={1.55} c="white" mt={pricing.showPrice ? "lg" : 0}>
+        {pricing.model}
+      </Text>
+      {pricing.showPrice ? undefined : (
+        <Text size="lg" lh={1.55} mt="md">
+          {pricing.unpriced}
+        </Text>
+      )}
+      <Text size="lg" lh={1.55} mt="md">
+        {pricing.beta}
+      </Text>
+      <Text c="dimmed" lh={1.55} mt="md">
+        {pricing.opinion}
+      </Text>
+      <CtaButton size="md" mt="xl" />
     </Section>
   );
 }

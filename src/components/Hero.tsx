@@ -1,42 +1,37 @@
-import { Grid, Text } from "@mantine/core";
 import type { ReactElement } from "react";
 
-import { cta, hero } from "../content";
-import { BrowserMock } from "./BrowserMock";
+import { contact, cta, hero } from "../content";
 import { CtaButton } from "./CtaButton";
 import classes from "./Hero.module.css";
+import { Readout } from "./Readout";
 import { Section } from "./Section";
-import { WindowFrame } from "./WindowFrame";
 
 export function Hero(): ReactElement {
   return (
     <Section id="top" tight>
-      <Grid gap={{ base: 40, md: 56 }} align="center">
-        <Grid.Col span={{ base: 12, md: 7 }}>
-          <h1 className={classes["title"]}>
-            {hero.titleLines.map((line) => (
-              <span key={line} className={classes["line"]}>
-                {line}{" "}
-              </span>
-            ))}
-          </h1>
-          <p className={classes["lede"]}>{hero.lede}</p>
-          <CtaButton size="lg" mt="md" />
-          <Text size="sm" c="dimmed" mt="sm" maw={440}>
-            {cta.micro}
-          </Text>
-          <Text size="xs" c="dimmed" mt="md" maw={420}>
-            {hero.trust}
-          </Text>
-        </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 5 }}>
-          <div className={classes["visual"]}>
-            <WindowFrame title="Ableton Live 12">
-              <BrowserMock />
-            </WindowFrame>
-          </div>
-        </Grid.Col>
-      </Grid>
+      <div className={classes["copy"]}>
+        <h1 className={classes["title"]}>
+          {hero.titleLines.map((line) => (
+            <span key={line} className={classes["line"]}>
+              {line}{" "}
+            </span>
+          ))}
+        </h1>
+        <p className={classes["lede"]}>{hero.lede}</p>
+        <div className={classes["actions"]}>
+          <CtaButton size="lg" />
+          <p className={classes["micro"]}>{cta.micro}</p>
+        </div>
+        <p className={classes["contact"]}>
+          {hero.questions}{" "}
+          <a href={contact.href} className={classes["email"]}>
+            {contact.email}
+          </a>
+        </p>
+      </div>
+      <div className={classes["readout"]}>
+        <Readout />
+      </div>
     </Section>
   );
 }

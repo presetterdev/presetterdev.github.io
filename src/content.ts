@@ -2,34 +2,27 @@
 // change is an edit to this file and nothing else. [Brackets] mark facts
 // still to be confirmed.
 
+import type { PresetId } from "./synth";
+
 // Anchors carry the path so they also work from /license and /privacy.
 export const nav = [
   { label: "How it works", href: "/#how-it-works" },
   { label: "Plugins", href: "/#plugins" },
-  { label: "Specs", href: "/#specs" },
-  { label: "Pricing", href: "/#pricing" },
+  { label: "Price", href: "/#price" },
   { label: "FAQ", href: "/#faq" },
 ] as const;
 
-export const cta = {
-  label: "Get early access",
-  href: "/#early-access",
-  // Tally form id; every CTA opens it as a modal, with the anchor as fallback.
-  tallyId: "gD2NoO",
-  micro:
-    "Join the list: $79 launch price, first in line for the beta. No spam.",
+export const contact = {
+  email: "support@presetter.audio",
+  href: "mailto:support@presetter.audio",
 } as const;
 
-// Repeated after the sections that build belief.
-export const midCta = {
-  afterComparison: {
-    title: "See it with your own library.",
-    body: "Early access gets the first build and the launch price.",
-  },
-  afterFeatures: {
-    title: "Every plugin you own, one browser.",
-    body: "Join the list and we'll tell you when your plugins are covered.",
-  },
+export const cta = {
+  label: "Join the beta list",
+  href: "/#beta-list",
+  // Tally form id; every CTA opens it as a modal, with the anchor as fallback.
+  tallyId: "gD2NoO",
+  micro: "Closed beta. Mac, Live 12. Free while it's a beta.",
 } as const;
 
 export const hero = {
@@ -37,134 +30,122 @@ export const hero = {
   // largest type on the page without an orphaned word.
   titleLines: ["Stop opening", "plugin after plugin", "to find a sound."],
   lede:
-    "Every preset you own, inside Live 12's browser — filtered with Live's " +
-    "own tags, previewed without loading a thing.",
-  trust:
-    "For macOS and Ableton Live 12. Runs locally; nothing leaves your Mac.",
+    "Presetter puts every preset from every plugin you own into Ableton " +
+    "Live's browser. Filter by the kind of sound you're after, hit play to " +
+    "hear it, drag it in. No plugin windows.",
+  questions: "Questions:",
 } as const;
 
-// The hero illustration: Live's browser once Presetter has built the pack.
-export const mock = {
-  filters: [
+export interface ReadoutFrame {
+  // What Live's filters are set to, and one preset they turn up.
+  tags: readonly string[];
+  preset: string;
+  plugin: string;
+  // The pocket synth's patch that plays when the display is tapped.
+  patch: PresetId;
+}
+
+// The hero graphic: the mark's dot grid grown into a hardware-style
+// readout. It cycles through presets the same filter turns up in different
+// plugins, which is the whole idea, and it never pretends to be a
+// screenshot. Preset names are invented; plugins are real.
+export const readout: {
+  frames: readonly ReadoutFrame[];
+  caption: string;
+  label: string;
+} = {
+  frames: [
     {
-      group: "Sounds",
-      options: [
-        { label: "Pad", active: true, category: "pad" },
-        { label: "Keys", active: false, category: "keys" },
-        { label: "Bass", active: false, category: "bass" },
-        { label: "Lead", active: false, category: "lead" },
-      ],
+      tags: ["PAD", "WARM"],
+      preset: "ANALOG HALO",
+      plugin: "PIGMENTS",
+      patch: "pad",
     },
     {
-      group: "Character",
-      options: [
-        { label: "Warm", active: true },
-        { label: "Dark", active: false },
-        { label: "Wide", active: false },
-        { label: "Evolving", active: false },
-      ],
+      tags: ["PAD", "WARM"],
+      preset: "DUST CHOIR",
+      plugin: "OMNISPHERE",
+      patch: "pad",
     },
     {
-      group: "Vendor",
-      options: [
-        { label: "All", active: true },
-        { label: "Arturia", active: false },
-        { label: "Spectrasonics", active: false },
-        { label: "u-he", active: false },
-      ],
+      tags: ["PAD", "WARM"],
+      preset: "GLASS PAD",
+      plugin: "SERUM 2",
+      patch: "pad",
+    },
+    {
+      tags: ["PAD", "WARM"],
+      preset: "SLOW BLOOM",
+      plugin: "DIVA",
+      patch: "pad",
+    },
+    {
+      tags: ["BASS", "DEEP"],
+      preset: "SUB PRESSURE",
+      plugin: "SERUM 2",
+      patch: "bass",
+    },
+    {
+      tags: ["BASS", "DEEP"],
+      preset: "RUBBER REESE",
+      plugin: "MASSIVE X",
+      patch: "bass",
+    },
+    {
+      tags: ["BASS", "DEEP"],
+      preset: "TAPE SUB",
+      plugin: "FM8",
+      patch: "bass",
+    },
+    {
+      tags: ["KEYS", "BRIGHT"],
+      preset: "FELT PIANO",
+      plugin: "KEYSCAPE",
+      patch: "keys",
+    },
+    {
+      tags: ["KEYS", "BRIGHT"],
+      preset: "GLASS KEYS",
+      plugin: "PIGMENTS",
+      patch: "keys",
+    },
+    {
+      tags: ["KEYS", "BRIGHT"],
+      preset: "WURLI AIR",
+      plugin: "KONTAKT",
+      patch: "keys",
+    },
+    {
+      tags: ["LEAD", "PLUCKED"],
+      preset: "SAW PLUCK",
+      plugin: "SERUM",
+      patch: "lead",
+    },
+    {
+      tags: ["LEAD", "PLUCKED"],
+      preset: "NYLON LEAD",
+      plugin: "HIVE",
+      patch: "lead",
     },
   ],
-  // Every row is a pad, since that is the filter; the category colours the
-  // preview icon.
-  rows: [
-    { preset: "Analog Halo", plugin: "Pigments", playing: true },
-    { preset: "Dust Choir", plugin: "Omnisphere", playing: false },
-    { preset: "Glass Pad", plugin: "Serum 2", playing: false },
-    { preset: "Slow Bloom", plugin: "Diva", playing: false },
-    { preset: "Tape Pad", plugin: "FM8", playing: false },
-    { preset: "Warm Vinyl", plugin: "Massive X", playing: false },
-  ],
-  rowCategory: "pad",
-  status: "6 of 4,812 presets, from 14 plugins",
-} as const;
+  caption: "One filter, every plugin. Tap the display to hear a sound.",
+  label: "Play the sound on the display",
+};
 
-// The comparison: how a pad gets found today, and with Presetter. The
-// plugin windows are generic chrome with the vendor's name and its own
-// category label; no vendor interface is reproduced.
-export const comparison = {
-  today: {
-    label: "Today",
-    windows: [
-      {
-        vendor: "Serum 2",
-        category: "PADS",
-        presets: ["Warm Halo", "Glass Bed", "Vinyl Pad"],
-      },
-      {
-        vendor: "Omnisphere",
-        category: "Pads + Strings",
-        presets: ["Dust Choir", "Slow Sky", "Felt Pad"],
-      },
-      {
-        vendor: "Kontakt",
-        category: "Synth Pad",
-        presets: ["Analog Wash", "Tape Ensemble", "Air"],
-      },
-      {
-        vendor: "Pigments",
-        category: "Pad",
-        presets: ["Analog Halo", "Bloom", "Soft Wall"],
-      },
-      {
-        vendor: "Diva",
-        category: "Pads",
-        presets: ["Slow Bloom", "Juno Bed", "Warm Sea"],
-      },
-    ],
-    caption:
-      "Five plugins, five browsers, five names for a pad — opened one at a " +
-      "time.",
-  },
-  withPresetter: {
-    label: "With Presetter",
-    caption:
-      "One browser. One set of filters. Every plugin's pads in one list, " +
-      "with a preview for each.",
-  },
-} as const;
-
-export const positioning = {
-  title: "The template is the workaround.",
+export const whatItIs = {
+  title: "What it is",
   body: [
-    "Hunting one sound across five plugin browsers takes a few minutes on a " +
-      "good day and half an hour on a bad one, and most producers have " +
-      "forgotten most of what they own. So they stop hunting and build a " +
-      "template: the same synths pre-loaded, the same go-to presets, every " +
-      "session. It's fast. It's also why the rest of the collection never " +
-      "gets opened, and why track twelve sounds like track three.",
-    "Presetter makes Live's browser the template. Every preset from every " +
-      "plugin you own, filed under its maker's own categories, filtered the " +
-      "way Live filters everything else. Previews are rendered audio, so you " +
-      "audition without loading a plugin and the session starts light. Drag " +
-      "in only what makes the cut. Less time in plugin browsers, more time " +
-      "on the track.",
+    "You own thousands of presets and use the same forty. Finding the " +
+      "rest means opening Serum, scrolling, closing it, opening Omnisphere, " +
+      "scrolling, closing it, opening Kontakt and waiting.",
+    "Presetter reads every preset on your Mac once and writes them into a " +
+      "folder Live's browser understands. From then on you look for sounds " +
+      "in Live, not in plugin windows: filter by Pad, Bass, Keys. Hit a " +
+      "preset to hear it. Drag it in and the plugin opens on that sound, " +
+      "ready to tweak.",
+    "Nothing new to learn and nothing new to buy. It's the sounds you " +
+      "already paid for, in one list.",
   ],
-} as const;
-
-// Where the pack shows up in Live's browser: the folder Presetter built,
-// added to Places. "Presetter" is the example name; the user picks it.
-export const tree = {
-  path: ["Places", "Presetter"],
-  rows: [
-    { name: "Serum 2", detail: "1,204 presets" },
-    { name: "Omnisphere", detail: "2,116 presets" },
-    { name: "Kontakt", detail: "864 presets" },
-    { name: "Pigments", detail: "1,532 presets" },
-    { name: "Diva", detail: "1,980 presets" },
-  ],
-  caption:
-    "The pack folder sits under Places in Live's browser, beside your own " +
-    "folders. Every preset carries its maker's categories and a preview.",
 } as const;
 
 export interface Step {
@@ -178,113 +159,80 @@ export const howItWorks: {
   title: string;
   lede: string;
   steps: readonly Step[];
+  note: string;
 } = {
-  title: "Run it once. Use it every day.",
+  title: "How it works",
   lede:
-    "Presetter builds a pack from the plugins you already own and hands it " +
-    "to Ableton Live. After that, you look for sounds in Live — not in " +
-    "plugin windows.",
+    "You run it once. It takes a while. After that you don't open it again " +
+    "until you buy a new plugin.",
   steps: [
     {
-      title: "Download and install Presetter.",
-      body: "macOS, with Ableton Live 12 or later.",
+      title: "Install Presetter.",
+      body: "Mac, with Ableton Live 12 or newer.",
     },
     {
-      title: "Presetter scans your system for plugins.",
+      title: "It finds your plugins.",
       body:
-        "Automatic — nothing to configure. It finds the instruments and " +
-        "effects installed on your Mac. If macOS asks for access to your " +
-        "Documents folder, allow it: some plugins keep their presets " +
-        "there.",
+        "Presetter scans your Mac for instruments and effects. If macOS asks " +
+        "for access to your Documents folder, say yes: some plugins keep " +
+        "their presets there.",
     },
     {
-      title: "Pick the plugins you want and add them to a pack.",
-      body:
-        "Name the pack folder. That name is what you'll see in Live's " +
-        "browser.",
+      title: "Pick the ones you want and name the pack.",
+      body: "The name is what you'll see in Live's browser.",
     },
     {
-      title: "Presetter generates the pack.",
+      title: "Hit generate and go make a coffee.",
       body:
-        "A pack is a folder Ableton Live knows how to browse. Presetter " +
-        "writes every preset from the plugins you picked into it, with each " +
-        "manufacturer's own categories carried across as Live 12 tags and a " +
-        "rendered preview for each sound.",
+        "Presetter writes every preset from those plugins into the pack " +
+        "folder, with each maker's own categories carried over as Live tags " +
+        "and a short preview rendered for every sound. A big collection " +
+        "takes half an hour or more. Let it run.",
     },
     {
-      title: "Drag the new folder into Places in Live's browser sidebar.",
+      title: "Drag the folder into Places in Live's browser.",
       body:
-        "Done. Your presets are now searchable by tag and previewable inside " +
-        "Live without loading a plugin. When you update the pack in " +
-        "Presetter — a new plugin, new presets — the changes show up in Live " +
-        "on their own.",
+        "That's it. Filter, listen, drag in. When you add a plugin later, " +
+        "regenerate the pack and Live picks up the changes on its own.",
     },
   ],
+  note:
+    "Presetter writes a new folder. Your plugins and their original presets " +
+    "aren't touched.",
 };
 
-export type FeatureKind =
-  "filters" | "preview" | "mapping" | "vendor" | "kinds" | "load";
+// The one honest image on the page: Live 12's browser with a pack open.
+// It renders only once src/media/images/live-browser.png exists.
+export const screenshot = {
+  alt:
+    "Ableton Live 12's browser with a Presetter pack open: tag filters on, " +
+    "a preset selected, its preview playing.",
+  caption: "Live 12's browser with a Presetter pack open.",
+  placeholder:
+    "Screenshot goes here. Save Live's browser with a pack open as " +
+    "src/media/images/live-browser.png and it appears.",
+} as const;
 
-export interface Feature {
-  kind: FeatureKind;
-  title: string;
-  body: string;
-}
-
-export const features: { title: string; items: readonly Feature[] } = {
-  title:
-    "Live 12 tags what Ableton makes. Presetter tags everything else you own.",
+export const lean = {
+  title: "Small on purpose.",
+  lede:
+    "A lot of music software installs a pile of stuff you didn't ask for. " +
+    "Presetter is one app that writes one folder.",
   items: [
-    {
-      kind: "filters",
-      title: "One set of filters for every plugin",
-      body:
-        "Pick a sound and a character in Live 12's filters — Pad and Warm, " +
-        "Lead and Plucked, Synth Bass and Deep, Strings and Evolving — and " +
-        "every match from every plugin you own lands in one list. What used " +
-        "to take five browsers takes one filter.",
-    },
-    {
-      kind: "preview",
-      title: "Audition without loading",
-      body:
-        "Every preset has a rendered preview. Hear it from the browser with " +
-        "nothing loaded, and load the plugin only for the sounds that make " +
-        "the cut. Your session stays light.",
-    },
-    {
-      kind: "mapping",
-      title: "The manufacturer's tags, in Live",
-      body:
-        "Every plugin maker categorizes its presets its own way: Serum says " +
-        "Pads, Omnisphere says Pads + Strings, Kontakt says Synth Pad. " +
-        "Presetter reads each maker's categories and maps them into Live " +
-        "12's tags, so five taxonomies become one.",
-    },
-    {
-      kind: "vendor",
-      title: "Filter by vendor",
-      body:
-        "Narrow the list to one developer — everything from Arturia, or only " +
-        "Serum — with a single tag.",
-    },
-    {
-      kind: "kinds",
-      title: "Instruments and effects",
-      body:
-        "Synths, samplers, sample libraries, and effects are indexed, tagged, " +
-        "and previewed the same way.",
-    },
-    {
-      kind: "load",
-      title: "Tweak without leaving Live",
-      body:
-        "Load a preset and the plugin comes with it, already in your device " +
-        "chain with its macros mapped. Shape the sound in Live instead of " +
-        "hunting through the plugin's own browser.",
-    },
+    "Not a plugin. Nothing runs inside Live and nothing runs in the " +
+      "background.",
+    "No account. No subscription. A license key, and that's it.",
+    "Your presets stay on your Mac. Nothing is uploaded, nothing is shared.",
+    "The output is one folder. Delete it and it's like Presetter was never " +
+      "here.",
+    "Your plugins and their original presets aren't touched.",
+    "Direct download, signed and notarized for macOS.",
   ],
-};
+  specs:
+    "macOS 11 or newer, Intel or Apple silicon. Ableton Live 12 or newer. " +
+    "VST3 plugins, installed and licensed on the same Mac. Windows is " +
+    "planned, not yet.",
+} as const;
 
 export interface Vendor {
   name: string;
@@ -296,14 +244,14 @@ export const worksWith: {
   title: string;
   intro: string;
   vendors: readonly Vendor[];
+  effectsLabel: string;
   nksTitle: string;
   nks: string;
   nksChips: readonly string[];
   request: string;
-  disclaimer: string;
 } = {
-  title: "Works with the plugins you already own.",
-  intro: "Each one run through Presetter and checked inside Live.",
+  title: "Plugins",
+  intro: "Each of these has been run through Presetter and checked in Live.",
   vendors: [
     { name: "Xfer Records", plugins: ["Serum", "Serum 2"] },
     { name: "Spectrasonics", plugins: ["Omnisphere", "Keyscape"] },
@@ -335,10 +283,11 @@ export const worksWith: {
       plugins: ["VintageVerb", "Supermassive", "SpaceModulator"],
     },
   ],
-  nksTitle: "Plus every NKS-ready plugin.",
+  effectsLabel: "Effects",
+  nksTitle: "Plus anything NKS-ready.",
   nks:
-    "NKS is Native Instruments' preset standard: 250+ developers, 2,000+ " +
-    "instruments and effects. If a plugin is NKS-ready, Presetter reads its " +
+    "NKS is Native Instruments' preset standard, and a couple of hundred " +
+    "developers use it. If a plugin is NKS-ready, Presetter reads its " +
     "presets.",
   nksChips: [
     "u-he Diva",
@@ -348,63 +297,48 @@ export const worksWith: {
     "Rob Papen",
     "Heavyocity",
     "Output",
-    "2,000+ more",
   ],
-  request: "Something missing? Request a plugin on the early-access form.",
-  disclaimer:
-    "All manufacturer and product names mentioned on this site are trademarks " +
-    "of their respective owners, which are in no way associated or affiliated " +
-    "with Presetter. They are used solely to identify the products Presetter " +
-    "works with and do not suggest affiliation, sponsorship, or endorsement.",
+  request:
+    "Missing one? Say so on the beta form. Requests decide what gets built " +
+    "next.",
 };
 
-export interface Spec {
-  term: string;
-  value: string;
+export interface PriceLine {
+  price: string;
+  note: string;
 }
 
-export const specs: { title: string; items: readonly Spec[] } = {
-  title: "Specifications",
-  items: [
-    {
-      term: "Platform",
-      value:
-        "macOS 11 Big Sur or later, Intel Core i5 or Apple silicon, 8 GB RAM " +
-        "— the same requirements as Ableton Live 12",
-    },
-    { term: "Host", value: "Ableton Live 12.0 or later" },
-    { term: "Plugin formats", value: "VST3" },
-    {
-      term: "Requires",
-      value: "The plugins themselves, installed and licensed on the same Mac",
-    },
-    {
-      term: "Output",
-      value:
-        "One pack folder for Live's browser: every preset converted for " +
-        "direct loading in Live, the manufacturer's categories and " +
-        "descriptors mapped to Live 12 tags, and an audio preview per preset",
-    },
-    { term: "Windows", value: "Planned. Not available at launch." },
-    {
-      term: "Delivery",
-      value: "Direct download, signed and notarized for macOS",
-    },
-  ],
-};
+export interface Pricing {
+  title: string;
+  // The number is on the page because sign-ups against a price are the
+  // signal we want. Flip this off and the section still reads, minus the
+  // numbers.
+  showPrice: boolean;
+  launch: PriceLine;
+  regular: PriceLine;
+  model: string;
+  unpriced: string;
+  beta: string;
+  opinion: string;
+}
 
-export const pricing = {
-  title: "One license. One payment.",
-  badge: "Launch price for the early-access list",
-  launchPrice: "$79",
-  regularPrice: "$149",
-  note: "One-time purchase. No subscription.",
-  includes: [
-    "Every plugin supported at launch",
-    "New adapters and updates for 12 months",
-    "Perpetual license — keeps working after updates end",
-  ],
-} as const;
+export const pricing: Pricing = {
+  title: "Price",
+  showPrice: true,
+  launch: { price: "$79", note: "if you're on the beta list." },
+  regular: { price: "$149", note: "after launch." },
+  model: "One-time purchase. No subscription.",
+  unpriced:
+    "We haven't locked the number. The beta decides it, so if you have an " +
+    "opinion about what this should cost, we want it: say so on the form, " +
+    "or email us.",
+  beta:
+    "Free while it's a beta. Beta testers get the launch price when it " +
+    "ships.",
+  opinion:
+    "Think that's wrong, either way? Say so on the form or email us. We're " +
+    "two people and we read everything.",
+};
 
 export interface FaqItem {
   question: string;
@@ -415,109 +349,136 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
   title: "FAQ",
   items: [
     {
-      question: "Does Presetter copy or distribute presets or sounds?",
+      question: "Does it copy or share presets?",
       answer:
-        "No. Presetter reads preset files already installed on your Mac and " +
-        "writes them into a pack folder on the same machine. Previews are " +
-        "rendered locally from your own licensed copy of each plugin. Nothing " +
-        "is uploaded and nothing is redistributed.",
-    },
-    {
-      question: "Where do the categories and tags come from?",
-      answer:
-        "From the plugin manufacturers. Each one ships its presets with its " +
-        "own categories and descriptors. Presetter reads them from the preset " +
-        "files and maps them into Live 12's tag system, so you filter every " +
-        "plugin the same way you filter Ableton's own content.",
-    },
-    {
-      question: "What happens when I load a preset?",
-      answer:
-        "The plugin loads in your device chain with the preset already " +
-        "selected and its macros mapped. You can play it and adjust it from " +
-        "Live without opening the plugin's own browser.",
+        "No. It reads preset files already on your Mac and writes them into " +
+        "a folder on the same Mac. Previews are rendered from your own " +
+        "licensed plugins. Nothing is uploaded and nothing is redistributed.",
     },
     {
       question: "Do I still need the plugins?",
       answer:
-        "Yes. A preset is a set of parameter values; the plugin produces the " +
-        "sound. Presets for a plugin that isn't installed won't load.",
+        "Yes. A preset is a list of settings; the plugin makes the sound. " +
+        "Presets for a plugin you don't have won't load.",
     },
     {
-      question: "Is Presetter a plugin?",
+      question: "Where do the tags come from?",
       answer:
-        "No. It's a standalone macOS application. It runs when you build or " +
-        "update your pack. Nothing runs inside Live, and it has no effect on " +
-        "Live's performance.",
+        "From the plugin makers. Serum says Pads, Omnisphere says Pads + " +
+        "Strings, Kontakt says Synth Pad. Presetter reads each maker's " +
+        "categories and maps them onto Live 12's tags, so everything " +
+        "filters the same way.",
     },
     {
-      question: "Which versions of Live are supported?",
+      question: "What happens when I load one?",
       answer:
-        "Ableton Live 12.0 and later. Tag filtering relies on browser " +
-        "features introduced in Live 12.",
+        "The plugin loads in your device chain with the preset selected and " +
+        "its macros mapped. Tweak it from Live, or open the plugin if you " +
+        "want to go deeper.",
     },
     {
-      question: "Is Windows supported?",
+      question: "Is it a plugin? Will it slow Live down?",
       answer:
-        "Not at launch. Windows is planned; join the early-access list to be " +
-        "notified.",
+        "No and no. It's a standalone Mac app you run to build or update " +
+        "the pack. Nothing runs inside Live.",
     },
     {
-      question: "How long does the first build take?",
+      question: "Which versions of Live?",
       answer:
-        "It depends on the size of your library. Because Presetter renders a " +
-        "preview for every preset, a large collection can take 30 minutes or " +
-        "more. Let it run; it's a one-time job.",
+        "Live 12 and newer. The tag filtering uses browser features that " +
+        "arrived in 12.",
     },
     {
-      question: "Are effects supported?",
-      answer:
-        "Yes. Effect presets are indexed, tagged, and previewed the same way " +
-        "as instruments.",
+      question: "Windows?",
+      answer: "Not yet. It's planned. Get on the list and we'll tell you.",
     },
     {
-      question: "My plugin isn't listed.",
+      question: "Effects too?",
       answer:
-        "If it's NKS-ready, it's supported. If it isn't, request it on the " +
-        "early-access form — requests set the adapter roadmap.",
+        "Yes. Effect presets get indexed, tagged and previewed like " +
+        "instruments.",
     },
     {
-      question: "What happens when a plugin changes its preset format?",
+      question: "My plugin isn't on the list.",
       answer:
-        "Run Presetter again. Adapters are maintained as vendors change their " +
-        "formats, and updates are included for the first year.",
+        "If it's NKS-ready, it works. If it isn't, tell us on the form. " +
+        "Requests set the order we build in.",
+    },
+    {
+      question: "What if a plugin changes its preset format?",
+      answer:
+        "Run Presetter again. We keep the adapters current as vendors " +
+        "change things, and a license includes updates for a year.",
     },
     {
       question: "Do I need Komplete Kontrol or other NI software?",
-      answer:
-        "No. Presetter reads preset files directly. No Native Instruments " +
-        "software is required.",
+      answer: "No. Presetter reads the preset files directly.",
     },
     {
-      question: "Is there a beta?",
+      question: "How does the beta work?",
       answer:
-        "Yes. A closed beta is running now on macOS. Testers come from the " +
-        "early-access list and are picked to cover different plugin " +
-        "collections, so tell us what you own when you join. Beta builds " +
-        "come with a free, time-limited license key.",
+        "It's running now, Mac only, closed. We pick testers from the list " +
+        "to cover different plugin collections, so say what you own. Beta " +
+        "builds come with a free license key that expires when the beta " +
+        "ends.",
     },
     {
-      question: "What is the refund policy?",
+      question: "Refunds?",
       answer:
-        "All sales are final. Presetter delivers its full output the first " +
-        "time it runs — the pack stays on your Mac whether or not the app " +
-        "does — so a license can't be returned. Check the plugin list and " +
-        "the specifications before you buy.",
+        "All sales are final. The pack stays on your Mac whether or not " +
+        "the app does, so there's nothing to give back. Check the plugin " +
+        "list before you buy.",
     },
   ],
 };
 
 export const origin = {
-  title: "Built for our own sessions.",
+  title: "Why this exists",
+  body: [
+    "Because one of us got sick of it.",
+    "Late nights, same routine. Open a plugin, scroll through its presets, " +
+      "close it, open the next one, forget what the good one was called. " +
+      "Thousands of sounds, all paid for, and the only way to hear any of " +
+      "them was one window at a time. Live's browser had tags and previews " +
+      "for Ableton's own sounds and nothing for anyone else's.",
+    "So he went looking for something that fixed it. Nothing did. He " +
+      "started hacking on it, got carried away, and at some point it " +
+      "stopped being a hack and became the way he finds sounds. That's " +
+      "Presetter.",
+    "It's in closed beta now with producers in the US and Germany. If " +
+      "something's broken, or there's a plugin that belongs on the list, " +
+      "email us.",
+  ],
+} as const;
+
+export const betaList = {
+  title: "Join the beta list",
   body:
-    "Presetter started as a tool we built for ourselves: a plugin " +
-    "collection too big to browse one window at a time. It's now in closed " +
-    "beta with working producers in the US and Germany.",
+    "Leave an email and the plugins you own. We pick testers by plugin " +
+    "collection, so be specific. Mac and Live 12 only for now, and free " +
+    "while it's a beta.",
+  orEmail: "Or just email us:",
+} as const;
+
+export const footer = {
+  links: [
+    { label: "How it works", href: "/#how-it-works" },
+    { label: "Plugins", href: "/#plugins" },
+    { label: "Price", href: "/#price" },
+    { label: "FAQ", href: "/#faq" },
+    { label: "Beta list", href: "/#beta-list" },
+    { label: "License", href: "/license" },
+    { label: "Privacy", href: "/privacy" },
+  ],
+  copyright: "© 2026 Presetter",
+  disclaimer:
+    "Presetter is independent software. All manufacturer and product names " +
+    "mentioned on this site are trademarks of their respective owners, which " +
+    "are in no way associated or affiliated with Presetter. They are used " +
+    "solely to identify the products Presetter works with and do not suggest " +
+    "affiliation, sponsorship, or endorsement.",
+  // The second hint to the hidden synth, after the not-found page.
+  hint: "Press P.",
 } as const;
 
 // The page an unknown address lands on. Pages serves it for any path that
@@ -557,48 +518,6 @@ export const pocketSynth = {
   keysTitle: "Play over it",
   keysHelp: "A to K are the white notes, W E T Y U the black ones. Or tap.",
   dismiss: "Esc closes it. P brings it back.",
-} as const;
-
-export const earlyAccess = {
-  title: "Get early access",
-  body:
-    "Leave your email and the plugins you own. The list receives the first " +
-    "build and launch pricing.",
-} as const;
-
-export const footer = {
-  columns: [
-    {
-      heading: "Product",
-      links: [
-        { label: "How it works", href: "/#how-it-works" },
-        { label: "Plugins", href: "/#plugins" },
-        { label: "Specifications", href: "/#specs" },
-        { label: "Pricing", href: "/#pricing" },
-        { label: "FAQ", href: "/#faq" },
-      ],
-    },
-    {
-      heading: "Company",
-      links: [
-        { label: "About", href: "/#origin" },
-        { label: "Early access", href: "/#early-access" },
-        { label: "License agreement", href: "/license" },
-        { label: "Privacy", href: "/privacy" },
-        {
-          label: "support@presetter.audio",
-          href: "mailto:support@presetter.audio",
-        },
-      ],
-    },
-  ],
-  copyright: "© 2026 Presetter",
-  disclaimer:
-    "Presetter is independent software. All manufacturer and product names " +
-    "mentioned on this site are trademarks of their respective owners, which " +
-    "are in no way associated or affiliated with Presetter. They are used " +
-    "solely to identify the products Presetter works with and do not suggest " +
-    "affiliation, sponsorship, or endorsement.",
 } as const;
 
 // Legal pages. Each renders as /<slug>. Paragraphs are plain text; a section

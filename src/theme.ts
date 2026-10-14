@@ -43,7 +43,9 @@ export const theme = createTheme({
     fontWeight: "600",
     sizes: {
       h1: { fontSize: rem(56), lineHeight: "1.02" },
-      h2: { fontSize: rem(38), lineHeight: "1.1" },
+      // Section titles sit in the margin beside their content, so they
+      // are a step above body text rather than a second headline.
+      h2: { fontSize: rem(24), lineHeight: "1.2" },
       h3: { fontSize: rem(20), lineHeight: "1.3" },
     },
   },

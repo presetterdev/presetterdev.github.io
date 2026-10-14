@@ -1,0 +1,28 @@
+.figure {
+  margin: rem(36px) 0 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: rem(8px);
+  border: 1px solid var(--pt-line-strong);
+}
+
+.caption {
+  margin: rem(10px) 0 0;
+  font-size: rem(14px);
+  color: var(--mantine-color-dark-2);
+}
+
+/* Development only: where the screenshot will go. */
+.placeholder {
+  margin: rem(36px) 0 0;
+  padding: rem(40px) rem(24px);
+  border: 1px dashed var(--pt-line-strong);
+  border-radius: rem(8px);
+  color: var(--mantine-color-dark-2);
+  font-size: rem(14px);
+  text-align: center;
+}
