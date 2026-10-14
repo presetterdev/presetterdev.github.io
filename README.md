@@ -29,7 +29,9 @@ cannot merge until those pass.
 ## Repository settings
 
 Pages, branch protection and alerts live in `terraform/`, not the web UI. State
-is not committed: the first apply adopts what already exists.
+is not committed: the first apply adopts what already exists. DNS for
+`presetter.audio` is set by hand at Porkbun, and `tofu plan` fails until it
+matches what Pages needs.
 
 ```sh
 gh auth login

@@ -1,7 +1,7 @@
 import { faq, hero, lean, pricing, worksWith } from "./content";
 
-// Everything a crawler needs that isn't the page itself. Change the URL here
-// when the custom domain lands; index.html carries no absolute URLs.
+// Everything a crawler needs that isn't the page itself. index.html carries no
+// absolute URLs.
 export const site = {
   url: "https://presetter.audio/",
   name: "Presetter",

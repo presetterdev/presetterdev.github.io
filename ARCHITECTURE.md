@@ -52,21 +52,22 @@ it belongs on another host.
 
 ## The site is served from the domain root
 
-The repository is named `presetterdev.github.io`, so Pages serves it at the
-organization root and Vite's `base` is `/`. The router derives its `basepath`
-from that value, leaving one place to change for a custom domain or a subpath.
+Pages serves the site at `presetter.audio`, so Vite's `base` is `/`. The router
+derives its `basepath` from that value, leaving one place to change should the
+site ever move under a subpath.
 
 ## Deployment is a workflow artifact
 
 CI uploads `dist/` as a Pages artifact and a second job deploys it; Pages is not
-pointed at a branch. `index.html` is copied to `404.html`: a static host has no
-server-side routing, so unknown paths must return the shell for the router to
-resolve.
+pointed at a branch. Every route is prerendered to its own `index.html`, and
+Pages answers any other address with the prerendered `404.html`.
 
 ## The repository configures itself
 
 `terraform/` describes Pages, branch protection and vulnerability alerts, so
-those settings are reviewable and reproducible rather than remembered.
+those settings are reviewable and reproducible rather than remembered. The
+domain's DNS is kept at Porkbun by hand; the plan reads it and fails when it is
+not what Pages requires.
 
 State is per-user and never committed, and there is no remote backend.
 `terraform/imports.tf` adopts the existing objects instead, so a fresh clone
