@@ -1,0 +1,57 @@
+.figure {
+  margin: 0;
+}
+
+/* The housing: a recessed black panel, the same black as the app icon. */
+.display {
+  display: block;
+  width: 100%;
+  padding: clamp(rem(14px), 2.4vw, rem(26px)) clamp(rem(16px), 3vw, rem(32px));
+  margin: 0;
+  border: 1px solid var(--pt-line);
+  border-radius: rem(10px);
+  background: #0b0b0c;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  text-align: left;
+}
+
+.display:focus-visible {
+  outline: 2px solid var(--pt-accent);
+  outline-offset: 3px;
+}
+
+/* The face is a box of the dot grid's aspect ratio, so the page lays out
+   before the canvas draws. The numbers are the grid: 26 characters by 2
+   lines wide, 15 by 3 narrow, each cell 6 dots by 9 with the trailing
+   gaps dropped. */
+.face {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 89 / 25;
+}
+
+/* Matches the component's wideQuery. */
+@media (min-width: 43.25em) {
+  .face {
+    aspect-ratio: 155 / 16;
+  }
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.caption {
+  margin: rem(12px) 0 0;
+  font-size: rem(14px);
+  color: var(--mantine-color-dark-2);
+}

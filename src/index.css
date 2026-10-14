@@ -58,13 +58,6 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Headings at h2 size on phones. */
-@media (max-width: 48em) {
-  .mantine-Title-root[data-order="2"] {
-    font-size: 1.85rem;
-  }
-}
-
 /* Product illustrations tag an element with its sound category; the chip
    colour follows. Values live with the palette above. */
 [data-category="pad"] {

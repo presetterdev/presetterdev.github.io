@@ -1,45 +1,33 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
-import { EarlyAccess } from "../components/EarlyAccess";
+import { BetaList } from "../components/BetaList";
 import { Faq } from "../components/Faq";
-import { Features } from "../components/Features";
 import { Hero } from "../components/Hero";
 import { HowItWorks } from "../components/HowItWorks";
-import { MidCta } from "../components/MidCta";
+import { Lean } from "../components/Lean";
 import { Origin } from "../components/Origin";
-import { Positioning } from "../components/Positioning";
 import { Pricing } from "../components/Pricing";
-import { Specs } from "../components/Specs";
+import { WhatItIs } from "../components/WhatItIs";
 import { WorksWith } from "../components/WorksWith";
-import { midCta } from "../content";
 
 export const Route = createFileRoute("/")({ component: Home });
 
-// The order is the argument: what you get, why the template is the
-// workaround, how it works, what it does, the plugins, the specs, the price,
-// the doubts, who built it, the ask.
+// The order is the argument: the one line, what it is, how you use it,
+// what it stays out of, whether your plugins are covered, what it costs,
+// the doubts, why it exists, the ask.
 function Home(): ReactElement {
   return (
     <>
       <Hero />
-      <Positioning />
-      <MidCta
-        title={midCta.afterComparison.title}
-        body={midCta.afterComparison.body}
-      />
+      <WhatItIs />
       <HowItWorks />
-      <Features />
-      <MidCta
-        title={midCta.afterFeatures.title}
-        body={midCta.afterFeatures.body}
-      />
+      <Lean />
       <WorksWith />
-      <Specs />
       <Pricing />
       <Faq />
       <Origin />
-      <EarlyAccess />
+      <BetaList />
     </>
   );
 }

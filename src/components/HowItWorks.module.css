@@ -1,39 +1,41 @@
 .steps {
   list-style: none;
-  margin: rem(32px) 0 0;
+  margin: rem(28px) 0 0;
   padding: 0;
-  display: grid;
-  gap: rem(22px);
   counter-reset: step;
 }
 
+/* The steps are a sequence, so they are numbered; the number sits in the
+   margin in the accent, like a mark in a manual. */
 .step {
   counter-increment: step;
   display: grid;
-  grid-template-columns: rem(32px) minmax(0, 1fr);
-  gap: rem(14px);
+  grid-template-columns: rem(28px) minmax(0, 1fr);
+  column-gap: rem(12px);
+  padding: rem(16px) 0;
   border-top: 1px solid var(--pt-line);
-  padding-top: rem(18px);
 }
 
 .step::before {
   content: counter(step);
+  grid-row: 1 / span 2;
   font-size: rem(15px);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   color: var(--pt-accent);
-  padding-top: rem(2px);
+  padding-top: rem(3px);
 }
 
 .stepTitle {
   font-size: rem(19px);
   font-weight: 600;
+  line-height: 1.3;
   color: var(--mantine-color-white);
-  margin: 0 0 rem(6px);
+  margin: 0;
 }
 
 .stepBody {
-  margin: 0;
+  margin: rem(6px) 0 0;
   color: var(--mantine-color-dark-1);
   line-height: 1.55;
 }

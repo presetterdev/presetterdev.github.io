@@ -1,25 +1,47 @@
 .section {
-  padding-block: rem(64px);
+  padding-block: rem(56px);
   /* Decorative glows may spill sideways; sections clip them, not the page. */
   overflow-x: clip;
 }
 
-.band {
-  background: var(--pt-panel);
+.section + .section {
   border-top: 1px solid var(--pt-line);
-  border-bottom: 1px solid var(--pt-line);
 }
 
 .tight {
-  padding-top: rem(48px);
+  padding-top: rem(40px);
+}
+
+.grid {
+  display: grid;
+  gap: rem(16px);
+}
+
+.title {
+  margin: 0;
+}
+
+.body {
+  min-width: 0;
+  max-width: 64ch;
+}
+
+.wide {
+  max-width: none;
 }
 
 @media (min-width: $mantine-breakpoint-md) {
   .section {
-    padding-block: rem(104px);
+    padding-block: rem(88px);
   }
 
   .tight {
-    padding-top: rem(72px);
+    padding-top: rem(64px);
+  }
+
+  .grid {
+    grid-template-columns: rem(220px) minmax(0, 1fr);
+    column-gap: rem(64px);
+    align-items: start;
   }
 }
