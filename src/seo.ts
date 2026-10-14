@@ -10,7 +10,7 @@ export const site = {
     "Stop opening plugin after plugin to find a sound. Presetter puts every " +
     "preset from every plugin you own inside Ableton Live 12's browser — " +
     "filtered with Live's own tags, previewed without loading anything. " +
-    "macOS. Early access open.",
+    "Mac, Live 12. Closed beta; join the list.",
   image: "og.png",
   logo: "favicon.svg",
 } as const;

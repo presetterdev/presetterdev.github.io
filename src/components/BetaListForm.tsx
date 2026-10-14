@@ -6,7 +6,7 @@ const src =
   "https://tally.so/embed/gD2NoO?alignLeft=1&hideTitle=1" +
   "&transparentBackground=1&dynamicHeight=1";
 
-export function EarlyAccessForm(): ReactElement {
+export function BetaListForm(): ReactElement {
   return (
     // Tally's form needs scripts and its own origin to submit, and a sandbox
     // that allows both is equivalent to none; the frame is a trusted first
@@ -17,7 +17,7 @@ export function EarlyAccessForm(): ReactElement {
       loading="lazy"
       width="100%"
       height={492}
-      title="Presetter early-access form"
+      title="Presetter beta list form"
       style={{ border: 0, display: "block" }}
     />
   );

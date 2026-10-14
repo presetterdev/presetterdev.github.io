@@ -7,8 +7,8 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* A deeper base than Mantine's default so panels and the product mock
-   read as layers rather than the same grey. */
+/* A deeper base than Mantine's default so the synth's panels read as
+   layers rather than the same grey. */
 [data-mantine-color-scheme="dark"] {
   --mantine-color-body: #161617;
   --pt-panel: #1f1f21;
@@ -16,17 +16,13 @@
   --pt-line: rgba(255, 255, 255, 0.09);
   --pt-line-strong: rgba(255, 255, 255, 0.16);
 
-  /* The accent is the brand palette in theme.ts; these are its forms for
-     plain CSS: solid, as text on dark, as a tint, as a border, as a glow. */
+  /* The accent is the brand palette in theme.ts, for plain CSS and for the
+     readout's canvas, which reads it at runtime. */
   --pt-accent: var(--mantine-color-brand-4);
-  --pt-accent-text: var(--mantine-color-brand-1);
-  --pt-accent-soft: rgba(125, 211, 252, 0.14);
-  --pt-accent-line: rgba(125, 211, 252, 0.45);
-  --pt-accent-glow: rgba(125, 211, 252, 0.2);
 
-  /* Sound categories, used only inside product illustrations: each kind of
-     sound keeps one colour across every mock, so the tags read as a system
-     rather than a decoration. */
+  /* Sound categories, used by the pocket synth's preset chips: each kind
+     of sound keeps one colour, so the chips read as a system rather than
+     a decoration. */
   --pt-cat-pad: #34d3b5;
   --pt-cat-keys: #f4b740;
   --pt-cat-bass: #a78bfa;
@@ -58,7 +54,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Product illustrations tag an element with its sound category; the chip
+/* The pocket synth tags an element with its sound category; the chip
    colour follows. Values live with the palette above. */
 [data-category="pad"] {
   --chip: var(--pt-cat-pad);

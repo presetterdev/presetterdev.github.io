@@ -333,8 +333,8 @@ export const pricing: Pricing = {
     "opinion about what this should cost, we want it: say so on the form, " +
     "or email us.",
   beta:
-    "Free while it's a beta. Beta testers get the launch price when it " +
-    "ships.",
+    "Free while it's a beta. When it ships, everyone on the list gets the " +
+    "launch price.",
   opinion:
     "Think that's wrong, either way? Say so on the form or email us. We're " +
     "two people and we read everything.",
@@ -767,7 +767,7 @@ export const privacy: LegalDoc = {
     {
       heading: "What we collect on the website",
       paragraphs: [
-        "The early-access form asks for your email address and which " +
+        "The beta list form asks for your email address and which " +
           "plugins you own, plus anything else you choose to tell us. " +
           "The form is run by Tally, which stores the answers for us. " +
           "We use them to send beta invitations, launch news, and " +
@@ -815,7 +815,7 @@ export const privacy: LegalDoc = {
       heading: "Who handles data for us",
       paragraphs: [],
       bullets: [
-        "Tally — the early-access form.",
+        "Tally — the beta list form.",
         "Keygen — license keys and activation.",
         "Sentry — crash reports from the app.",
         "Google Workspace — email.",

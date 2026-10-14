@@ -28,7 +28,7 @@ const cellHeight = glyphRows + 2;
 // across the display from left to right.
 const dwell = 1700;
 const sweep = 160;
-const sweepPerColumn = 4;
+const sweepPerColumn = 2;
 
 const play = "▶";
 
@@ -48,11 +48,12 @@ const phrases: Readonly<
     [72, 0.28, 0.35],
     [75, 0.42, 0.7],
   ],
+  // The bass patch already sits an octave down.
   bass: [
-    [48, 0, 0.22],
-    [48, 0.25, 0.22],
-    [55, 0.5, 0.2],
-    [51, 0.75, 0.45],
+    [60, 0, 0.22],
+    [60, 0.25, 0.22],
+    [67, 0.5, 0.2],
+    [63, 0.75, 0.45],
   ],
   lead: [
     [67, 0, 0.2],
