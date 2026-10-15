@@ -184,7 +184,7 @@ data "dns_cname_record_set" "www" {
 # under the organization's settings, Pages, "Add a domain", and offers no API
 # to read it back, so the value is copied here by hand.
 locals {
-  pages_challenge = null
+  pages_challenge = "7d9346a961c6b5c4c87da8462d2749"
 }
 
 data "dns_txt_record_set" "pages_challenge" {
