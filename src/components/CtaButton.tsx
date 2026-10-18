@@ -22,6 +22,8 @@ export function CtaButton({
       href={cta.href}
       size={size}
       mt={mt}
+      color="ink"
+      c="brand.4"
       data-tally-open={cta.tallyId}
       data-tally-layout="modal"
       data-tally-width="480"

@@ -316,3 +316,52 @@ export function createClock(
     },
   };
 }
+
+// A short phrase per patch, for hearing it at a glance: note, start offset
+// and length in seconds.
+export const phrases: Readonly<
+  Record<PresetId, readonly (readonly [number, number, number])[]>
+> = {
+  pad: [
+    [60, 0, 1.3],
+    [63, 0, 1.3],
+    [67, 0, 1.3],
+    [70, 0, 1.3],
+  ],
+  keys: [
+    [60, 0, 0.35],
+    [67, 0.14, 0.35],
+    [72, 0.28, 0.35],
+    [75, 0.42, 0.7],
+  ],
+  bass: [
+    [48, 0, 0.22],
+    [48, 0.25, 0.22],
+    [55, 0.5, 0.2],
+    [51, 0.75, 0.45],
+  ],
+  lead: [
+    [67, 0, 0.2],
+    [70, 0.15, 0.2],
+    [72, 0.3, 0.2],
+    [75, 0.45, 0.6],
+  ],
+};
+
+// Seconds from the first note to the end of the last one's tail.
+export function phraseLength(patch: PresetId): number {
+  let end = 0;
+  for (const [, at, hold] of phrases[patch]) end = Math.max(end, at + hold);
+  return end + 0.4;
+}
+
+// Plays a patch's phrase now, scaled down so chords don't clip.
+export function playPhrase(synth: Synth, patch: PresetId): void {
+  synth.wake();
+  const now = synth.now();
+  const voices = phrases[patch].length;
+  const scale = voices > 1 ? 1.4 / Math.sqrt(voices) : 1;
+  for (const [midi, at, hold] of phrases[patch]) {
+    synth.play(patch, midi, now + at, hold, scale);
+  }
+}

@@ -41,7 +41,13 @@ export function NotFound(): ReactElement {
             {notFound.hintAction}
           </Anchor>
         </Text>
-        <Button component="a" href={notFound.href} mt="sm">
+        <Button
+          component="a"
+          href={notFound.href}
+          mt="sm"
+          color="ink"
+          c="brand.4"
+        >
           {notFound.cta}
         </Button>
       </Stack>

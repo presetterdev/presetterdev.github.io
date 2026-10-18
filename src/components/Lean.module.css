@@ -1,25 +1,46 @@
 .list {
   list-style: none;
-  margin: rem(24px) 0 0;
+  margin: 0;
   padding: 0;
+  display: grid;
+  gap: rem(16px) rem(32px);
 }
 
 .item {
   position: relative;
-  padding: rem(12px) 0 rem(12px) rem(26px);
-  border-top: 1px solid var(--pt-line);
-  color: var(--mantine-color-dark-0);
-  line-height: 1.5;
+  padding-left: rem(24px);
+  font-size: rem(19px);
+  font-weight: 600;
+  color: var(--pt-ink);
 }
 
 /* One lit dot from the mark's grid, as the bullet. */
 .item::before {
   content: "";
   position: absolute;
-  left: rem(4px);
-  top: rem(21px);
-  width: rem(8px);
-  height: rem(8px);
+  left: 0;
+  top: rem(8px);
+  width: rem(11px);
+  height: rem(11px);
   border-radius: 50%;
-  background: var(--pt-accent);
+  background: var(--chip);
+}
+
+.specs {
+  margin: rem(24px) 0 0;
+  font-size: rem(14px);
+  color: var(--pt-ink-dim);
+  max-width: 64ch;
+}
+
+@media (min-width: $mantine-breakpoint-sm) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: $mantine-breakpoint-md) {
+  .list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

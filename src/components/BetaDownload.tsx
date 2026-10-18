@@ -175,7 +175,13 @@ export function BetaDownload(): ReactElement {
             <Title order={3}>{beta.ready.title}</Title>
             <Text c="dimmed">{beta.ready.body}</Text>
             <Group gap="md" align="center">
-              <Button component="a" href={url} download={download.name}>
+              <Button
+                component="a"
+                href={url}
+                download={download.name}
+                color="ink"
+                c="brand.4"
+              >
                 {beta.ready.button}
               </Button>
               <Text size="sm" c="dimmed">
@@ -199,7 +205,13 @@ export function BetaDownload(): ReactElement {
                 maw={360}
               />
               <Group gap="md" align="center">
-                <Button type="submit" loading={busy} disabled={password === ""}>
+                <Button
+                  type="submit"
+                  loading={busy}
+                  disabled={password === ""}
+                  color="ink"
+                  c="brand.4"
+                >
                   {beta.unlock}
                 </Button>
                 {busy ? (

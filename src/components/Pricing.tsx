@@ -24,7 +24,7 @@ export function Pricing(): ReactElement {
           <Line line={pricing.regular} />
         </div>
       ) : undefined}
-      <Text size="lg" lh={1.55} c="white" mt={pricing.showPrice ? "lg" : 0}>
+      <Text size="lg" lh={1.55} fw={600} mt={pricing.showPrice ? "lg" : 0}>
         {pricing.model}
       </Text>
       {pricing.showPrice ? undefined : (

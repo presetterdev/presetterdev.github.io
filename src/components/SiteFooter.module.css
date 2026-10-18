@@ -18,13 +18,13 @@
 }
 
 .link {
-  color: var(--mantine-color-dark-1);
+  color: var(--pt-ink-dim);
   text-decoration: none;
   font-size: rem(14px);
 }
 
 .link:hover {
-  color: var(--mantine-color-white);
+  color: var(--pt-ink);
 }
 
 .bottom {
@@ -44,16 +44,16 @@
   margin-top: rem(16px);
   font: inherit;
   font-size: rem(12px);
-  color: var(--mantine-color-dark-3);
+  color: var(--pt-ink-faint);
   cursor: pointer;
 }
 
 .hint:hover {
-  color: var(--mantine-color-dark-0);
+  color: var(--pt-ink);
 }
 
 .hint:focus-visible {
-  color: var(--mantine-color-dark-0);
+  color: var(--pt-ink);
   outline: 2px solid var(--pt-accent);
   outline-offset: 3px;
 }

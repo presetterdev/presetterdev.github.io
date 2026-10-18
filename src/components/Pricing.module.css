@@ -11,31 +11,32 @@
 }
 
 .price {
-  font-size: rem(48px);
+  font-size: rem(64px);
   font-weight: 600;
   letter-spacing: -0.03em;
   line-height: 1.05;
-  color: var(--mantine-color-white);
+  color: var(--pt-ink);
   font-variant-numeric: tabular-nums;
-  min-width: rem(120px);
+  min-width: rem(124px);
 }
 
 .line:last-child .price {
   font-size: rem(30px);
-  color: var(--mantine-color-dark-2);
+  color: var(--pt-ink-faint);
   text-decoration: line-through;
   text-decoration-thickness: 2px;
-  text-decoration-color: var(--mantine-color-dark-3);
+  text-decoration-color: var(--pt-ink-faint);
 }
 
 .note {
   font-size: rem(18px);
-  color: var(--mantine-color-dark-0);
+  color: var(--pt-ink);
 }
 
 @media (min-width: $mantine-breakpoint-sm) {
   .price {
-    font-size: rem(56px);
+    font-size: rem(88px);
+    min-width: rem(168px);
   }
 
   .line:last-child .price {

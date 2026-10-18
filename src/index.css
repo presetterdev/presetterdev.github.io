@@ -1,5 +1,6 @@
 /* Matches MantineProvider's defaultColorScheme so the first paint is not a
-   flash of white. */
+   flash of white. The scheme stays dark for Mantine's own components: the
+   hidden synth's panel is a dark device sitting on the blue page. */
 :root {
   color-scheme: dark;
   /* Keeps content clear of phone system bars on notched screens. */
@@ -7,8 +8,8 @@
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* A deeper base than Mantine's default so panels and the product mock
-   read as layers rather than the same grey. */
+/* The dark palette, for anything rendered outside the page itself: the
+   hidden synth's panel is portaled to <body>, outside #root. */
 [data-mantine-color-scheme="dark"] {
   --mantine-color-body: #161617;
   --pt-panel: #1f1f21;
@@ -24,15 +25,36 @@
   --pt-accent-line: rgba(125, 211, 252, 0.45);
   --pt-accent-glow: rgba(125, 211, 252, 0.2);
 
-  /* Sound categories, used only inside product illustrations: each kind of
-     sound keeps one colour across every mock, so the tags read as a system
-     rather than a decoration. */
+  /* Sound categories: each kind of sound keeps one colour everywhere it
+     appears, on the page and in the synth, so they read as a system rather
+     than a decoration. */
   --pt-cat-pad: #34d3b5;
   --pt-cat-keys: #f4b740;
   --pt-cat-bass: #a78bfa;
   --pt-cat-lead: #ff7aa8;
   --pt-cat-strings: #5bc0ff;
   --pt-cat-fx: #ff8a5b;
+}
+
+/* The page: navy ink on the logo blue. Mantine's text and dimmed colours
+   follow, so components read correctly without per-call colours. */
+#root {
+  --pt-page: var(--mantine-color-brand-4);
+  --pt-ink: var(--mantine-color-ink-4);
+  --pt-ink-dim: #0f4d68;
+  --pt-ink-faint: #2f7493;
+  --pt-heading: var(--pt-ink);
+  --pt-field: var(--mantine-color-brand-1);
+  --pt-raised: #93dbfc;
+  --pt-line: rgba(4, 33, 46, 0.16);
+  --pt-line-strong: rgba(4, 33, 46, 0.28);
+  --pt-accent: var(--pt-ink);
+  /* The unlit dots of the dot face, a shade under the page. */
+  --pt-unlit: #6cc7f2;
+  --mantine-color-text: var(--pt-ink);
+  --mantine-color-dimmed: var(--pt-ink-dim);
+  --mantine-color-anchor: var(--pt-ink);
+  color: var(--pt-ink);
 }
 
 html {
@@ -48,18 +70,31 @@ html {
 
 html,
 body {
-  /* The hero glow extends past its column; never let it add sideways scroll. */
+  /* Wide rows clip at the edge; never let them add sideways scroll. */
   overflow-x: clip;
 }
 
+/* The page blue carries a dot grid a shade off it, barely there, with a
+   sparser grid of slightly darker dots over it. It's the mark's grid at the
+   size of the page. */
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  background-color: var(--mantine-color-brand-4);
+  background-image:
+    radial-gradient(circle, #66c3f0 2.2px, transparent 2.6px),
+    radial-gradient(circle, #74cefa 2.2px, transparent 2.6px);
+  background-size:
+    182px 234px,
+    26px 26px;
+  background-position:
+    65px 91px,
+    0 0;
 }
 
-/* Product illustrations tag an element with its sound category; the chip
-   colour follows. Values live with the palette above. */
+/* Anything tagged with a sound category takes its colour as --chip. Values
+   live with the palette above. */
 [data-category="pad"] {
   --chip: var(--pt-cat-pad);
 }

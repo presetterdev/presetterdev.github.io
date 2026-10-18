@@ -9,7 +9,7 @@ import { Section } from "./Section";
 // rather just write.
 export function BetaList(): ReactElement {
   return (
-    <Section id="beta-list" title={betaList.title}>
+    <Section id="waitlist" title={betaList.title}>
       <Text size="lg" lh={1.55}>
         {betaList.body}
       </Text>
@@ -18,7 +18,7 @@ export function BetaList(): ReactElement {
       </Box>
       <Text c="dimmed" mt="lg">
         {betaList.orEmail}{" "}
-        <Anchor href={contact.href} c="white" underline="always">
+        <Anchor href={contact.href} fw={600} underline="always">
           {contact.email}
         </Anchor>
       </Text>

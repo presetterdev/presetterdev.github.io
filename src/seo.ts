@@ -41,7 +41,7 @@ export function structuredData(): readonly Record<string, unknown>[] {
       applicationCategory: "MultimediaApplication",
       operatingSystem: "macOS",
       softwareRequirements: lean.specs,
-      featureList: lean.items,
+      featureList: lean.points,
       keywords: [
         "Ableton Live 12",
         "preset browser",

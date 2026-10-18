@@ -17,10 +17,10 @@ export function Prose({ paragraphs, lede = false }: ProseProps): ReactElement {
         return (
           <Text
             key={paragraph}
-            size={first ? "xl" : "lg"}
+            fz={first ? { base: 22, md: 26 } : "lg"}
             lh={1.55}
             mt={index === 0 ? 0 : "md"}
-            c={first ? "white" : "var(--mantine-color-text)"}
+            c="var(--mantine-color-text)"
           >
             {paragraph}
           </Text>

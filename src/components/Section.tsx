@@ -1,13 +1,13 @@
-import { Box, Container, Title } from "@mantine/core";
+import { Box, Container, VisuallyHidden } from "@mantine/core";
 import type { ReactElement, ReactNode } from "react";
 
+import { DotText } from "./DotText";
 import classes from "./Section.module.css";
 
 interface SectionProps {
   id: string;
-  // With a title, the section lays out like a page of a manual: the title
-  // in a narrow column on the left, the content beside it. Without one,
-  // the children take the full measure.
+  // Set above the content in the mark's dot face, as a label rather than a
+  // headline. Write it in capitals: the face has no lower case.
   title?: string;
   // The hero sits directly under the header and wants less air above it.
   tight?: boolean;
@@ -32,17 +32,14 @@ export function Section({
   if (wide === true) body.push(classes["wide"]);
   return (
     <Box component="section" id={id} className={names.join(" ")}>
-      <Container size={1080}>
-        {title === undefined ? (
-          children
-        ) : (
-          <div className={classes["grid"]}>
-            <Title order={2} className={classes["title"]}>
-              {title}
-            </Title>
-            <div className={body.join(" ")}>{children}</div>
-          </div>
+      <Container size={1200}>
+        {title === undefined ? undefined : (
+          <h2 className={classes["title"]}>
+            <VisuallyHidden>{title}</VisuallyHidden>
+            <DotText lines={[title]} pitch={3.2} />
+          </h2>
         )}
+        <div className={body.join(" ")}>{children}</div>
       </Container>
     </Box>
   );

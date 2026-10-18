@@ -1,29 +1,56 @@
-import { Text } from "@mantine/core";
+import { VisuallyHidden } from "@mantine/core";
 import type { ReactElement } from "react";
 
 import { howItWorks } from "../content";
+import { DotText } from "./DotText";
 import classes from "./HowItWorks.module.css";
 import { Screenshot } from "./Screenshot";
 import { Section } from "./Section";
 
+// The setup steps light up a dot each, in the colours of the first three
+// sounds, so the third step shows all three lit.
+const meter = ["bass", "keys", "pad"] as const;
+
 export function HowItWorks(): ReactElement {
   return (
-    <Section id="how-it-works" title={howItWorks.title}>
-      <Text size="lg" lh={1.55}>
-        {howItWorks.lede}
-      </Text>
+    <Section id="how-it-works" title={howItWorks.title} wide>
+      <div className={classes["grid"]}>
+        <Screenshot />
+        <ul className={classes["features"]}>
+          {howItWorks.features.map((feature) => (
+            <li
+              key={feature.title}
+              className={classes["feature"]}
+              data-category={feature.category}
+            >
+              <h3 className={classes["featureTitle"]}>{feature.title}</h3>
+              <p className={classes["featureBody"]}>{feature.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <h3 className={classes["stepsTitle"]}>
+        <VisuallyHidden>{howItWorks.stepsTitle}</VisuallyHidden>
+        <DotText lines={[howItWorks.stepsTitle]} pitch={3.2} />
+      </h3>
       <ol className={classes["steps"]}>
-        {howItWorks.steps.map((step) => (
-          <li key={step.title} className={classes["step"]}>
-            <h3 className={classes["stepTitle"]}>{step.title}</h3>
-            <p className={classes["stepBody"]}>{step.body}</p>
+        {howItWorks.steps.map((step, index) => (
+          <li key={step} className={classes["step"]}>
+            <span className={classes["meter"]} aria-hidden="true">
+              {meter.map((category, dot) => (
+                <span
+                  key={category}
+                  className={classes["meterDot"]}
+                  data-category={category}
+                  data-lit={dot <= index || undefined}
+                />
+              ))}
+            </span>
+            {step}
           </li>
         ))}
       </ol>
-      <Text size="sm" c="dimmed" mt="lg">
-        {howItWorks.note}
-      </Text>
-      <Screenshot />
+      <p className={classes["note"]}>{howItWorks.note}</p>
     </Section>
   );
 }

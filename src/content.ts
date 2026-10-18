@@ -18,215 +18,118 @@ export const contact = {
 } as const;
 
 export const cta = {
-  label: "Join the beta list",
-  href: "/#beta-list",
+  label: "Join the waitlist",
+  href: "/#waitlist",
   // Tally form id; every CTA opens it as a modal, with the anchor as fallback.
   tallyId: "gD2NoO",
-  micro: "Closed beta. Mac, Live 12. Free while it's a beta.",
+  micro: "Free beta · Mac · Ableton Live 12",
 } as const;
 
 export const hero = {
-  // Rendered as three lines on wide screens, so the headline can be the
-  // largest type on the page without an orphaned word.
-  titleLines: ["Stop opening", "plugin after plugin", "to find a sound."],
+  // Set in the mark's dot face, one entry per line. Only the face's
+  // characters render; anything else comes out blank.
+  titleLines: ["EVERY PRESET,", "SORTED BY SOUND."],
   lede:
-    "Presetter puts every preset from every plugin you own into Ableton " +
-    "Live's browser. Filter by the kind of sound you're after, hit play to " +
-    "hear it, drag it in. No plugin windows.",
+    "From every plugin you own, in Live's browser. Click one and the " +
+    "plugin opens on it.",
   questions: "Questions:",
 } as const;
 
-export interface ReadoutFrame {
-  // What Live's filters are set to, and one preset they turn up.
-  tags: readonly string[];
-  preset: string;
-  plugin: string;
-  // The pocket synth's patch that plays when the display is tapped.
+export interface SoundRow {
   patch: PresetId;
+  name: string;
+  kind: string;
 }
 
-// The hero graphic: the mark's dot grid grown into a hardware-style
-// readout. It cycles through presets the same filter turns up in different
-// plugins, which is the whole idea, and it never pretends to be a
-// screenshot. Preset names are invented; plugins are real.
-export const readout: {
-  frames: readonly ReadoutFrame[];
-  caption: string;
+// The playable rows under the hero. They play the hidden synth's own
+// patches, so the page shows no one else's preset names.
+export const sounds: {
+  title: string;
   label: string;
+  rows: readonly SoundRow[];
+  note: string;
+  noteAction: string;
 } = {
-  frames: [
-    {
-      tags: ["PAD", "WARM"],
-      preset: "ANALOG HALO",
-      plugin: "PIGMENTS",
-      patch: "pad",
-    },
-    {
-      tags: ["PAD", "WARM"],
-      preset: "DUST CHOIR",
-      plugin: "OMNISPHERE",
-      patch: "pad",
-    },
-    {
-      tags: ["PAD", "WARM"],
-      preset: "GLASS PAD",
-      plugin: "SERUM 2",
-      patch: "pad",
-    },
-    {
-      tags: ["PAD", "WARM"],
-      preset: "SLOW BLOOM",
-      plugin: "DIVA",
-      patch: "pad",
-    },
-    {
-      tags: ["BASS", "DEEP"],
-      preset: "SUB PRESSURE",
-      plugin: "SERUM 2",
-      patch: "bass",
-    },
-    {
-      tags: ["BASS", "DEEP"],
-      preset: "RUBBER REESE",
-      plugin: "MASSIVE X",
-      patch: "bass",
-    },
-    {
-      tags: ["BASS", "DEEP"],
-      preset: "TAPE SUB",
-      plugin: "FM8",
-      patch: "bass",
-    },
-    {
-      tags: ["KEYS", "BRIGHT"],
-      preset: "FELT PIANO",
-      plugin: "KEYSCAPE",
-      patch: "keys",
-    },
-    {
-      tags: ["KEYS", "BRIGHT"],
-      preset: "GLASS KEYS",
-      plugin: "PIGMENTS",
-      patch: "keys",
-    },
-    {
-      tags: ["KEYS", "BRIGHT"],
-      preset: "WURLI AIR",
-      plugin: "KONTAKT",
-      patch: "keys",
-    },
-    {
-      tags: ["LEAD", "PLUCKED"],
-      preset: "SAW PLUCK",
-      plugin: "SERUM",
-      patch: "lead",
-    },
-    {
-      tags: ["LEAD", "PLUCKED"],
-      preset: "NYLON LEAD",
-      plugin: "HIVE",
-      patch: "lead",
-    },
+  title: "TAP ONE TO HEAR IT",
+  label: "Play",
+  rows: [
+    { patch: "bass", name: "Sub Bass", kind: "Bass" },
+    { patch: "keys", name: "Glass Keys", kind: "Keys" },
+    { patch: "pad", name: "Warm Pad", kind: "Pad" },
+    { patch: "lead", name: "Saw Lead", kind: "Lead" },
   ],
-  caption: "One filter, every plugin. Tap the display to hear a sound.",
-  label: "Play the sound on the display",
+  note: "These four come from the little synth hidden on this site.",
+  noteAction: "Press P to play it.",
 };
 
-export const whatItIs = {
-  title: "What it is",
-  body: [
-    "You own thousands of presets and use the same forty. Finding the " +
-      "rest means opening Serum, scrolling, closing it, opening Omnisphere, " +
-      "scrolling, closing it, opening Kontakt and waiting.",
-    "Presetter reads every preset on your Mac once and writes them into a " +
-      "folder Live's browser understands. From then on you look for sounds " +
-      "in Live, not in plugin windows: filter by Pad, Bass, Keys. Hit a " +
-      "preset to hear it. Drag it in and the plugin opens on that sound, " +
-      "ready to tweak.",
-    "Nothing new to learn and nothing new to buy. It's the sounds you " +
-      "already paid for, in one list.",
-  ],
-} as const;
-
-export interface Step {
+export interface Feature {
   title: string;
   body: string;
+  // Which sound category's colour the bullet takes.
+  category: PresetId;
 }
 
-// The literal sequence a new user follows, in order. Steps are the product's
-// actual flow, not a summary of it; change them only when the app changes.
 export const howItWorks: {
   title: string;
-  lede: string;
-  steps: readonly Step[];
+  features: readonly Feature[];
+  stepsTitle: string;
+  steps: readonly string[];
   note: string;
 } = {
-  title: "How it works",
-  lede:
-    "You run it once. It takes a while. After that you don't open it again " +
-    "until you buy a new plugin.",
-  steps: [
+  title: "HOW IT WORKS",
+  features: [
     {
-      title: "Install Presetter.",
-      body: "Mac, with Ableton Live 12 or newer.",
+      title: "Sorted by sound.",
+      body: "Bass, keys, pads, from every plugin at once.",
+      category: "bass",
     },
     {
-      title: "It finds your plugins.",
-      body:
-        "Presetter scans your Mac for instruments and effects. If macOS asks " +
-        "for access to your Documents folder, say yes: some plugins keep " +
-        "their presets there.",
+      title: "Hear it first.",
+      body: "Every preset has a short preview.",
+      category: "keys",
     },
     {
-      title: "Pick the ones you want and name the pack.",
-      body: "The name is what you'll see in Live's browser.",
+      title: "No plugin window.",
+      body: "Click a sound and the plugin opens on it.",
+      category: "pad",
     },
     {
-      title: "Hit generate and go make a coffee.",
-      body:
-        "Presetter writes every preset from those plugins into the pack " +
-        "folder, with each maker's own categories carried over as Live tags " +
-        "and a short preview rendered for every sound. A big collection " +
-        "takes half an hour or more. Let it run.",
-    },
-    {
-      title: "Drag the folder into Places in Live's browser.",
-      body:
-        "That's it. Filter, listen, drag in. When you add a plugin later, " +
-        "regenerate the pack and Live picks up the changes on its own.",
+      title: "One click per maker.",
+      body: "Save a filter for Arturia, NI, anyone.",
+      category: "lead",
     },
   ],
+  stepsTitle: "SET UP ONCE",
+  // The literal sequence a new user follows, in order. Change them only
+  // when the app changes.
+  steps: [
+    "Pick your plugins.",
+    "Presetter builds the pack.",
+    "Drag it into Live's Places.",
+  ],
   note:
-    "Presetter writes a new folder. Your plugins and their original presets " +
-    "aren't touched.",
+    "The first build takes a while. Your plugins and their original " +
+    "presets aren't touched.",
 };
 
 // The one honest image on the page: Live 12's browser with a pack open.
 // It renders only once src/media/images/live-browser.png exists.
 export const screenshot = {
   alt:
-    "Ableton Live 12's browser with a Presetter pack open: tag filters on, " +
-    "a preset selected, its preview playing.",
-  caption: "Live 12's browser with a Presetter pack open.",
+    "Ableton Live 12's browser with a Presetter pack open: a saved filter " +
+    "for Arturia selected, Organ chosen under Sounds, B-3 V2 presets listed.",
+  caption: "Live 12's browser with a pack open.",
   placeholder:
     "Screenshot goes here. Save Live's browser with a pack open as " +
     "src/media/images/live-browser.png and it appears.",
 } as const;
 
 export const lean = {
-  title: "Small on purpose.",
-  lede:
-    "A lot of music software installs a pile of stuff you didn't ask for. " +
-    "Presetter is one app that writes one folder.",
-  items: [
-    "Not a plugin. Nothing runs inside Live and nothing runs in the " +
-      "background.",
-    "No account. No subscription. A license key, and that's it.",
-    "Your presets stay on your Mac. Nothing is uploaded, nothing is shared.",
-    "The output is one folder. Delete it and it's like Presetter was never " +
-      "here.",
-    "Your plugins and their original presets aren't touched.",
-    "Direct download, signed and notarized for macOS.",
+  points: [
+    "Not a plugin",
+    "No account",
+    "Nothing in the background",
+    "One folder, delete it any time",
   ],
   specs:
     "macOS 11 or newer, Intel or Apple silicon. Ableton Live 12 or newer. " +
@@ -242,6 +145,8 @@ export interface Vendor {
 
 export const worksWith: {
   title: string;
+  // Read with a cycling plugin name after it: "Every preset from SERUM".
+  lead: string;
   intro: string;
   vendors: readonly Vendor[];
   effectsLabel: string;
@@ -250,7 +155,8 @@ export const worksWith: {
   nksChips: readonly string[];
   request: string;
 } = {
-  title: "Plugins",
+  title: "WORKS WITH",
+  lead: "Every preset from",
   intro: "Each of these has been run through Presetter and checked in Live.",
   vendors: [
     { name: "Xfer Records", plugins: ["Serum", "Serum 2"] },
@@ -298,9 +204,7 @@ export const worksWith: {
     "Heavyocity",
     "Output",
   ],
-  request:
-    "Missing one? Say so on the beta form. Requests decide what gets built " +
-    "next.",
+  request: "Missing one? Email us. Requests decide what gets built next.",
 };
 
 export interface PriceLine {
@@ -323,21 +227,20 @@ export interface Pricing {
 }
 
 export const pricing: Pricing = {
-  title: "Price",
+  title: "PRICE",
   showPrice: true,
   launch: { price: "$79", note: "if you're on the beta list." },
   regular: { price: "$149", note: "after launch." },
   model: "One-time purchase. No subscription.",
   unpriced:
     "We haven't locked the number. The beta decides it, so if you have an " +
-    "opinion about what this should cost, we want it: say so on the form, " +
-    "or email us.",
+    "opinion about what this should cost, we want it: email us.",
   beta:
     "Free while it's a beta. Beta testers get the launch price when it " +
     "ships.",
   opinion:
-    "Think that's wrong, either way? Say so on the form or email us. We're " +
-    "two people and we read everything.",
+    "Think that's wrong, either way? Email us. We're two people and we " +
+    "read everything.",
 };
 
 export interface FaqItem {
@@ -346,7 +249,7 @@ export interface FaqItem {
 }
 
 export const faq: { title: string; items: readonly FaqItem[] } = {
-  title: "FAQ",
+  title: "QUESTIONS",
   items: [
     {
       question: "Does it copy or share presets?",
@@ -401,8 +304,8 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
     {
       question: "My plugin isn't on the list.",
       answer:
-        "If it's NKS-ready, it works. If it isn't, tell us on the form. " +
-        "Requests set the order we build in.",
+        "If it's NKS-ready, it works. If it isn't, email us. Requests set " +
+        "the order we build in.",
     },
     {
       question: "What if a plugin changes its preset format?",
@@ -418,7 +321,8 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
       question: "How does the beta work?",
       answer:
         "It's running now, Mac only, closed. We pick testers from the list " +
-        "to cover different plugin collections, so say what you own. Beta " +
+        "to cover different plugin collections, so email us what you own. " +
+        "Beta " +
         "builds come with a free license key that expires when the beta " +
         "ends.",
     },
@@ -432,31 +336,23 @@ export const faq: { title: string; items: readonly FaqItem[] } = {
   ],
 };
 
+// Told as the need it answered, in prose, not as a quote.
 export const origin = {
-  title: "Why this exists",
+  title: "WHY IT EXISTS",
   body: [
-    "Because one of us got sick of it.",
-    "Late nights, same routine. Open a plugin, scroll through its presets, " +
-      "close it, open the next one, forget what the good one was called. " +
-      "Thousands of sounds, all paid for, and the only way to hear any of " +
-      "them was one window at a time. Live's browser had tags and previews " +
-      "for Ableton's own sounds and nothing for anyone else's.",
-    "So he went looking for something that fixed it. Nothing did. He " +
-      "started hacking on it, got carried away, and at some point it " +
-      "stopped being a hack and became the way he finds sounds. That's " +
-      "Presetter.",
-    "It's in closed beta now with producers in the US and Germany. If " +
-      "something's broken, or there's a plugin that belongs on the list, " +
-      "email us.",
+    "Presetter started as one producer's way into their own library. Years " +
+      "of plugins meant thousands of presets, and the only way to hear them " +
+      "was to open each plugin in turn. Live's browser could already sort " +
+      "and preview sounds; it just didn't know about these. Presetter " +
+      "taught it, and became the way its maker finds sounds.",
   ],
 } as const;
 
 export const betaList = {
-  title: "Join the beta list",
+  title: "JOIN THE WAITLIST",
   body:
-    "Leave an email and the plugins you own. We pick testers by plugin " +
-    "collection, so be specific. Mac and Live 12 only for now, and free " +
-    "while it's a beta.",
+    "Free while it's a beta. Mac and Live 12. We'll email you when there's " +
+    "a build for you.",
   orEmail: "Or just email us:",
 } as const;
 
@@ -466,7 +362,7 @@ export const footer = {
     { label: "Plugins", href: "/#plugins" },
     { label: "Price", href: "/#price" },
     { label: "FAQ", href: "/#faq" },
-    { label: "Beta list", href: "/#beta-list" },
+    { label: "Waitlist", href: "/#waitlist" },
     { label: "License", href: "/license" },
     { label: "Privacy", href: "/privacy" },
   ],
@@ -476,7 +372,8 @@ export const footer = {
     "mentioned on this site are trademarks of their respective owners, which " +
     "are in no way associated or affiliated with Presetter. They are used " +
     "solely to identify the products Presetter works with and do not suggest " +
-    "affiliation, sponsorship, or endorsement.",
+    "affiliation, sponsorship, or endorsement. Ableton and Live are " +
+    "trademarks of Ableton AG.",
   // The second hint to the hidden synth, after the not-found page.
   hint: "Press P.",
 } as const;
