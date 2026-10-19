@@ -15,7 +15,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run lint:md && npm run format:check",
-    "preview-password": "node scripts/preview-password.ts"
+    "preview-password": "node scripts/preview-password.ts",
+    "renovate:apply": "npx --yes renovate@44.155.8 presetterdev/presetterdev.github.io"
   },
   "dependencies": {
     "@mantine/core": "^9.5.1",

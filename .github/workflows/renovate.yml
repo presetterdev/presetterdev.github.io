@@ -1,0 +1,51 @@
+# Dependency updates. The configuration is renovate.json5 at the repository
+# root; this only decides when it runs and as whom.
+name: Renovate
+
+on:
+  schedule:
+    # The first of the month, off the hour every other scheduled job on the
+    # platform is on. Monthly because minimumReleaseAge already holds each
+    # release for five days, and a site this size has little to gain from
+    # hearing sooner.
+    - cron: "17 13 1 * *"
+  workflow_dispatch:
+
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-24.04
+
+    # Renovate authenticates as this job's own GITHUB_TOKEN, so there is no
+    # secret to provision or rotate. Two costs come with it. Workflow runs on
+    # the pull requests it opens wait until someone with write access approves
+    # them, so nothing merges unattended. And the token cannot write under
+    # .github/workflows -- there is no permission to ask for that would let it
+    # -- so updates there are listed on the Dependency Dashboard rather than
+    # opened; the dashboard says how to apply them.
+    #
+    # Opening a pull request at all needs the repository's "Allow GitHub
+    # Actions to create and approve pull requests" switch, which
+    # terraform/main.tf turns on.
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+
+      - name: Run Renovate
+        env:
+          RENOVATE_PLATFORM: github
+          RENOVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RENOVATE_REPOSITORIES: ${{ github.repository }}
+        # The version is the one `npm run renovate:apply` runs, and
+        # renovate.json5 moves the two together.
+        run: npx --yes renovate@44.155.8
