@@ -10,8 +10,8 @@
 // Typed by hand rather than with @cloudflare/workers-types: this is the only
 // file that runs on Workers, and it needs nothing beyond the web platform.
 
-const passwordSha256 = "";
-const sessionSha256 = "";
+const passwordSha256 = "969f90264fc1d91ee4e8fb22b7140dc8b9fd7814879b4004aba279e2162d1874";
+const sessionSha256 = "96d1b2e10e94ae39317dbe28f36599f844f256183fe5a7e863f546d5c3210507";
 
 const loginPath = "/__login";
 const cookieName = "preview";
