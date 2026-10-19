@@ -1,43 +1,30 @@
-// Runs in front of every request to a pull request preview on Cloudflare
-// Pages; production is on GitHub Pages and never sees this file. Previews are
-// public URLs behind one login the team shares.
+// Puts pull request previews behind one login the team shares.
+//
+// This is a Cloudflare Pages Function, found by convention rather than by
+// configuration: `wrangler pages deploy`, run from the repository root by the
+// preview job in .github/workflows/ci.yml, uploads a `functions` directory it
+// finds there alongside the built site, and a `_middleware.ts` at the top of
+// that directory runs in front of every request, static files included. Only
+// the previews go through Cloudflare; production is on GitHub Pages and never
+// runs this. Its types are the Workers runtime's, from functions/tsconfig.json.
 //
 // The login is a plain HTML form rather than HTTP basic auth, so password
 // managers recognise and fill it. Only hashes of the password are kept here,
 // so nothing secret lives in the repository or in Cloudflare. They come from
 // `npm run preview-password`; until they are set, every request is refused.
-//
-// Typed by hand rather than with @cloudflare/workers-types: this is the only
-// file that runs on Workers, and it needs nothing beyond the web platform.
 
-const passwordSha256 = "969f90264fc1d91ee4e8fb22b7140dc8b9fd7814879b4004aba279e2162d1874";
-const sessionSha256 = "96d1b2e10e94ae39317dbe28f36599f844f256183fe5a7e863f546d5c3210507";
+import { sessionFor, sha256 } from "./_session.ts";
+
+// Written by `npm run preview-password`.
+const passwordSha256 =
+  "969f90264fc1d91ee4e8fb22b7140dc8b9fd7814879b4004aba279e2162d1874";
+const sessionSha256 =
+  "96d1b2e10e94ae39317dbe28f36599f844f256183fe5a7e863f546d5c3210507";
 
 const loginPath = "/__login";
 const cookieName = "preview";
 // Thirty days.
 const cookieMaxAge = 60 * 60 * 24 * 30;
-
-interface Context {
-  request: Request;
-  next: () => Promise<Response>;
-}
-
-async function sha256(text: string): Promise<string> {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(text),
-  );
-  return [...new Uint8Array(digest)]
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
-}
-
-// The session cookie holds a value derived from the password, never the
-// password itself; only its hash is kept above.
-export async function sessionFor(password: string): Promise<string> {
-  return sha256(`presetter-preview-session\n${password}`);
-}
 
 // Compares two hex digests without stopping at the first difference.
 function same(left: string, right: string): boolean {
@@ -67,7 +54,7 @@ function cookieDomain(host: string): string | undefined {
 }
 
 // Only a path on this site, so the login can't be used to redirect elsewhere.
-function safeNext(value: FormDataEntryValue | null): string {
+function safeNext(value: unknown): string {
   if (typeof value !== "string") return "/";
   return value.startsWith("/") && !value.startsWith("//") ? value : "/";
 }
@@ -159,10 +146,10 @@ async function logIn(request: Request): Promise<Response> {
   });
 }
 
-export async function onRequest(context: Context): Promise<Response> {
+export const onRequest: PagesFunction = async (context) => {
   const { request } = context;
   // A missing hash must not turn into an open preview.
-  if (passwordSha256 === "" || sessionSha256 === "") {
+  if (passwordSha256.length === 0 || sessionSha256.length === 0) {
     return new Response("Preview login is not configured.", { status: 503 });
   }
   const url = new URL(request.url);
@@ -178,4 +165,4 @@ export async function onRequest(context: Context): Promise<Response> {
   // Previews are throwaway copies of the site; keep them out of search.
   marked.headers.set("X-Robots-Tag", "noindex");
   return marked;
-}
+};

@@ -8,18 +8,11 @@ import { readFile, writeFile } from "node:fs/promises";
 import { createInterface } from "node:readline/promises";
 import { Writable } from "node:stream";
 
-import { sessionFor } from "../functions/_middleware.ts";
+import { sessionFor, sha256 } from "../functions/_session.ts";
 
 const file = new URL("../functions/_middleware.ts", import.meta.url);
-const lines = /const passwordSha256 = ".*";\nconst sessionSha256 = ".*";\n/;
-
-async function sha256(value: string): Promise<string> {
-  const digest = await crypto.subtle.digest(
-    "SHA-256",
-    new TextEncoder().encode(value),
-  );
-  return Buffer.from(digest).toString("hex");
-}
+const lines =
+  /const passwordSha256 =\s*"[0-9a-f]*";\nconst sessionSha256 =\s*"[0-9a-f]*";\n/;
 
 // Readline echoes what is typed to its output; this one shows the prompt
 // and swallows the rest.
@@ -67,8 +60,9 @@ await writeFile(
   file,
   source.replace(
     lines,
-    `const passwordSha256 = "${passwordHash}";\n` +
-      `const sessionSha256 = "${sessionHash}";\n`,
+    // Laid out the way Prettier formats them.
+    `const passwordSha256 =\n  "${passwordHash}";\n` +
+      `const sessionSha256 =\n  "${sessionHash}";\n`,
   ),
 );
 process.stdout.write("Updated functions/_middleware.ts. Commit it.\n");
