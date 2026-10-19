@@ -44,9 +44,21 @@ const notes = Array.from({ length: rows }, (_, row) => row);
 // context, which only a gesture may start.
 let shared: Synth | undefined;
 
-function engine(): Synth {
+function pageSynth(): Synth {
   shared ??= createSynth();
   return shared;
+}
+
+// Where the library's sound comes from. Tests pass fakes.
+export interface AudioEngine {
+  synth: () => Synth;
+  clock: typeof createClock;
+}
+
+const pageAudio: AudioEngine = { synth: pageSynth, clock: createClock };
+
+interface LibraryProps {
+  audio?: AudioEngine;
 }
 
 function optionId(id: SoundId): string {
@@ -144,7 +156,7 @@ function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
 // clip, which folds out of the strip for editing. Silent until asked: the
 // clock starts and sound comes on from a row, the play button or the sound
 // toggle, all of which count as the gesture browsers require.
-export function Library(): ReactElement {
+export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   const [category, setCategory] = useState<Category | undefined>(undefined);
   const [character, setCharacter] = useState<Character | undefined>(undefined);
   const [selected, setSelected] = useState<SoundId>(first?.id ?? "diva-lead");
@@ -174,10 +186,10 @@ export function Library(): ReactElement {
   const sound = librarySounds.find((item) => item.id === selected) ?? first;
 
   function hear(): void {
-    const s = engine();
+    const s = audio.synth();
     s.mute(false);
     setMuted(false);
-    clock.current ??= createClock(
+    clock.current ??= audio.clock(
       s,
       () => live.current,
       (step, at) => {
@@ -200,7 +212,7 @@ export function Library(): ReactElement {
       hear();
       return;
     }
-    engine().mute(true);
+    audio.synth().mute(true);
     setMuted(true);
   }
 
@@ -262,7 +274,7 @@ export function Library(): ReactElement {
   // Lights the column the audio has actually reached.
   useEffect(() => {
     if (!running) return undefined;
-    const s = engine();
+    const s = audio.synth();
     let frame = 0;
     const paint = (): void => {
       const now = s.now();
@@ -280,13 +292,15 @@ export function Library(): ReactElement {
     return (): void => {
       window.cancelAnimationFrame(frame);
     };
-  }, [running]);
+  }, [running, audio]);
 
   // Playing on out of sight is a nuisance: after a while off screen, the
   // clip fades out and stops. Scrolling back does not restart it.
   useEffect(() => {
     const node = root.current;
     if (!running || node === null) return undefined;
+    // Running means the synth already exists.
+    const synth = audio.synth();
     let wait: number | undefined;
     let fade: number | undefined;
     const observer = new IntersectionObserver(([entry]) => {
@@ -296,7 +310,7 @@ export function Library(): ReactElement {
         return;
       }
       wait ??= window.setTimeout(() => {
-        engine().mute(true, fadeLength / 1000);
+        synth.mute(true, fadeLength / 1000);
         setMuted(true);
         fade = window.setTimeout(() => {
           clock.current?.stop();
@@ -312,7 +326,7 @@ export function Library(): ReactElement {
       window.clearTimeout(wait);
       window.clearTimeout(fade);
     };
-  }, [running]);
+  }, [running, audio]);
 
   // Nothing keeps sounding once the page goes away.
   useEffect(

@@ -27,3 +27,6 @@ npm-debug.log*
 # Compiled from messages/en.yaml by `npm run messages`.
 /project.inlang/messages/
 /src/paraglide/
+
+# Vitest reports and artifacts.
+/.vitest/

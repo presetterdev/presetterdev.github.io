@@ -37,6 +37,14 @@ Edit `messages/en.yaml`. Components never contain text of their own; lint
 rejects words written into markup. The legal pages are the exception: each is
 one dated document in `src/legal.ts`.
 
+## Tests
+
+Behaviour that a click or a key press drives gets a test beside its component,
+as `Name.test.tsx`, run by `npm test` (Vitest, Testing Library, jsdom) and by
+`npm run check`. Test what a visitor does and sees, not the component's
+internals; pass fakes in for anything the browser does that jsdom cannot, like
+audio.
+
 ## Adding a page
 
 Add a file to `src/routes/`; its name is the URL. `src/routeTree.gen.ts`
