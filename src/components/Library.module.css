@@ -13,6 +13,7 @@
   background: var(--pt-surface);
   overflow: hidden;
   font-size: rem(13px);
+  --row: rem(27px);
   box-shadow: 0 rem(10px) rem(30px) var(--pt-shadow-soft);
 }
 
@@ -25,9 +26,9 @@
 
 .filters {
   display: grid;
-  grid-template-columns: rem(62px) minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
   align-items: center;
-  row-gap: rem(6px);
+  gap: rem(6px) rem(10px);
   padding: rem(9px) rem(12px);
   border-bottom: 1px solid var(--pt-line);
 }
@@ -110,10 +111,13 @@
   color: var(--pt-page);
 }
 
-/* Always eight rows tall, so filtering never moves what is below. */
-.list,
-.empty {
-  min-height: calc(8 * rem(27px));
+/* Exactly as tall as its rows (the component sets the height from the
+   count), so a filter change slides the panel's bottom edge rather than
+   jumping it. The panel is anchored at the top, so only what is below
+   moves. */
+.rows {
+  overflow: hidden;
+  transition: height 220ms ease;
 }
 
 .list {
@@ -132,7 +136,7 @@
   grid-template-columns: rem(12px) minmax(0, 1fr) auto;
   align-items: center;
   gap: rem(9px);
-  height: rem(27px);
+  height: var(--row);
   padding: 0 rem(12px);
   cursor: pointer;
 }
@@ -183,7 +187,8 @@
 
 .empty {
   margin: 0;
-  padding: rem(14px) rem(12px);
+  padding: 0 rem(12px);
+  line-height: var(--row);
   color: var(--pt-ink-dim);
 }
 
@@ -258,6 +263,23 @@
   fill: var(--chip);
 }
 
+/* The clip editor folds open: a grid row going from nothing to its
+   content's height animates where a height transition could not. */
+.fold {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms ease;
+}
+
+.fold[data-open] {
+  grid-template-rows: 1fr;
+}
+
+.foldInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .editor {
   display: flex;
   flex-direction: column;
@@ -269,6 +291,8 @@
 
 .grid {
   display: grid;
+  /* A drag across the dots paints them instead of scrolling the page. */
+  touch-action: none;
   gap: rem(4px);
 }
 
@@ -344,5 +368,12 @@
 
   .grid {
     gap: rem(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rows,
+  .fold {
+    transition: none;
   }
 }

@@ -1,6 +1,7 @@
 import { Slider } from "@mantine/core";
 import {
   type KeyboardEvent,
+  type PointerEvent,
   type ReactElement,
   useEffect,
   useRef,
@@ -32,10 +33,15 @@ import {
 } from "../synth";
 import classes from "./Library.module.css";
 
-const first: LibrarySound | undefined = librarySounds[0];
+// It opens on one kind of sound, so it starts small and grows as a visitor
+// widens the filter.
+const startCategory: Category = "keys";
+const first: LibrarySound | undefined =
+  librarySounds.find((sound) => sound.category === startCategory) ??
+  librarySounds[0];
 // How long the library may sit out of view before it fades out, and how
 // long the fade takes, in milliseconds.
-const offscreenWait = 3000;
+const offscreenWait = 1500;
 const fadeLength = 1500;
 const steps = Array.from({ length: columns }, (_, column) => column);
 const notes = Array.from({ length: rows }, (_, row) => row);
@@ -157,7 +163,7 @@ function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
 // clock starts and sound comes on from a row, the play button or the sound
 // toggle, all of which count as the gesture browsers require.
 export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
-  const [category, setCategory] = useState<Category | undefined>(undefined);
+  const [category, setCategory] = useState<Category | undefined>(startCategory);
   const [character, setCharacter] = useState<Character | undefined>(undefined);
   const [selected, setSelected] = useState<SoundId>(first?.id ?? "diva-lead");
   const [muted, setMuted] = useState(true);
@@ -177,6 +183,8 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   }, [pattern, selected, bpm]);
   const flashes = useRef<{ step: number; at: number }[]>([]);
   const root = useRef<HTMLElement>(null);
+  // The dots flipped so far in the current drag, while one is under way.
+  const painted = useRef<Set<string> | undefined>(undefined);
 
   const visible = librarySounds.filter(
     (sound) =>
@@ -260,10 +268,52 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
     choose(target.id);
   }
 
+  // Reads the pattern from the ref, which updates at once, so a fast drag
+  // never toggles against a stale render.
   function toggleCell(column: number, row: number): void {
-    const next = toggled(pattern, column, row);
+    const next = toggled(live.current.pattern, column, row);
     setPattern(next);
     live.current = { ...live.current, pattern: next };
+  }
+
+  // Press and drag: every dot the pointer passes over flips once.
+  function startPaint(
+    event: PointerEvent<HTMLButtonElement>,
+    column: number,
+    row: number,
+  ): void {
+    event.preventDefault();
+    const cell = event.currentTarget;
+    // Touch captures the pointer to the first dot; release it so moves
+    // land on whatever dot is under the finger.
+    if (
+      "hasPointerCapture" in cell &&
+      cell.hasPointerCapture(event.pointerId)
+    ) {
+      cell.releasePointerCapture(event.pointerId);
+    }
+    painted.current = new Set([`${String(column)}:${String(row)}`]);
+    toggleCell(column, row);
+    const end = (): void => {
+      painted.current = undefined;
+      window.removeEventListener("pointerup", end);
+      window.removeEventListener("pointercancel", end);
+    };
+    window.addEventListener("pointerup", end);
+    window.addEventListener("pointercancel", end);
+  }
+
+  function paintOver(event: PointerEvent<HTMLDivElement>): void {
+    const seen = painted.current;
+    const target = event.target;
+    if (seen === undefined || !(target instanceof HTMLElement)) return;
+    const column = Number(target.dataset["column"]);
+    const row = Number(target.dataset["row"]);
+    if (Number.isNaN(column) || Number.isNaN(row)) return;
+    const key = `${String(column)}:${String(row)}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    toggleCell(column, row);
   }
 
   function replace(next: Pattern): void {
@@ -406,47 +456,54 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
           </button>
         </div>
 
-        {visible.length === 0 ? (
-          <p className={classes["empty"]}>{m.library_empty()}</p>
-        ) : (
-          <ul
-            className={classes["list"]}
-            role="listbox"
-            tabIndex={0}
-            aria-label={m.library_label()}
-            aria-activedescendant={optionId(selected)}
-            onKeyDown={onListKey}
-          >
-            {visible.map((item) => (
-              <li
-                key={item.id}
-                id={optionId(item.id)}
-                role="option"
-                aria-selected={item.id === selected}
-                className={classes["row"]}
-                data-category={item.category}
-                onClick={() => {
-                  choose(item.id);
-                  if (!running || muted) hear();
-                }}
-              >
-                <span className={classes["dot"]} aria-hidden="true" />
-                <span className={classes["name"]}>
-                  {rowName(item)}
-                  {item.id === selected ? (
-                    <span className={classes["mark"]} aria-hidden="true">
-                      *
-                    </span>
-                  ) : undefined}
-                </span>
-                <span className={classes["tags"]}>
-                  {categoryLabel(item.category)} ·{" "}
-                  {characterLabel(item.character)} · {item.tags()}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div
+          className={classes["rows"]}
+          style={{
+            height: `calc(${String(Math.max(1, visible.length))} * var(--row))`,
+          }}
+        >
+          {visible.length === 0 ? (
+            <p className={classes["empty"]}>{m.library_empty()}</p>
+          ) : (
+            <ul
+              className={classes["list"]}
+              role="listbox"
+              tabIndex={0}
+              aria-label={m.library_label()}
+              aria-activedescendant={optionId(selected)}
+              onKeyDown={onListKey}
+            >
+              {visible.map((item) => (
+                <li
+                  key={item.id}
+                  id={optionId(item.id)}
+                  role="option"
+                  aria-selected={item.id === selected}
+                  className={classes["row"]}
+                  data-category={item.category}
+                  onClick={() => {
+                    choose(item.id);
+                    if (!running || muted) hear();
+                  }}
+                >
+                  <span className={classes["dot"]} aria-hidden="true" />
+                  <span className={classes["name"]}>
+                    {rowName(item)}
+                    {item.id === selected ? (
+                      <span className={classes["mark"]} aria-hidden="true">
+                        *
+                      </span>
+                    ) : undefined}
+                  </span>
+                  <span className={classes["tags"]}>
+                    {categoryLabel(item.category)} ·{" "}
+                    {characterLabel(item.character)}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
 
         <div className={classes["strip"]}>
           <button
@@ -483,69 +540,87 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
           </button>
         </div>
 
-        {editing ? (
-          <div id="library-clip" className={classes["editor"]}>
-            <div className={classes["grid"]} role="grid">
-              {notes.map((row) => (
-                <div key={row} role="row" className={classes["gridRow"]}>
-                  {steps.map((column) => (
-                    <button
-                      key={column}
-                      type="button"
-                      role="gridcell"
-                      className={classes["cell"]}
-                      data-now={column === current || undefined}
-                      aria-pressed={pattern[column]?.[row] === true}
-                      aria-label={m.library_clip_step({
-                        step: column + 1,
-                        note: midiName(rowMidi[row] ?? 60),
-                      })}
-                      onClick={() => {
-                        toggleCell(column, row);
-                      }}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div className={classes["controls"]}>
-              <Slider
-                min={80}
-                max={160}
-                step={1}
-                value={bpm}
-                onChange={setBpm}
-                label={(value) => m.library_clip_bpm({ bpm: value })}
-                aria-label={m.library_clip_tempo()}
-                size="xs"
-                color="ink"
-                w={110}
-              />
-              <span className={classes["bpm"]}>
-                {m.library_clip_bpm({ bpm })}
-              </span>
-              <button
-                type="button"
-                className={classes["chip"]}
-                onClick={() => {
-                  replace(patternFrom(markPattern));
-                }}
+        <div
+          id="library-clip"
+          className={classes["fold"]}
+          data-open={editing || undefined}
+          aria-hidden={!editing}
+          inert={!editing}
+        >
+          <div className={classes["foldInner"]}>
+            <div className={classes["editor"]}>
+              <div
+                className={classes["grid"]}
+                role="grid"
+                onPointerMove={paintOver}
               >
-                {m.library_clip_reset()}
-              </button>
-              <button
-                type="button"
-                className={classes["chip"]}
-                onClick={() => {
-                  replace(patternFrom([]));
-                }}
-              >
-                {m.library_clip_clear()}
-              </button>
-              <span className={classes["hint"]}>{m.library_clip_hint()}</span>
+                {notes.map((row) => (
+                  <div key={row} role="row" className={classes["gridRow"]}>
+                    {steps.map((column) => (
+                      <button
+                        key={column}
+                        type="button"
+                        role="gridcell"
+                        className={classes["cell"]}
+                        data-column={column}
+                        data-row={row}
+                        data-now={column === current || undefined}
+                        aria-pressed={pattern[column]?.[row] === true}
+                        aria-label={m.library_clip_step({
+                          step: column + 1,
+                          note: midiName(rowMidi[row] ?? 60),
+                        })}
+                        onPointerDown={(event) => {
+                          startPaint(event, column, row);
+                        }}
+                        onClick={(event) => {
+                          // Pointers toggle on press; this is the keyboard.
+                          if (event.detail === 0) toggleCell(column, row);
+                        }}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <div className={classes["controls"]}>
+                <Slider
+                  min={80}
+                  max={160}
+                  step={1}
+                  value={bpm}
+                  onChange={setBpm}
+                  label={(value) => m.library_clip_bpm({ bpm: value })}
+                  aria-label={m.library_clip_tempo()}
+                  size="xs"
+                  color="ink"
+                  w={110}
+                />
+                <span className={classes["bpm"]}>
+                  {m.library_clip_bpm({ bpm })}
+                </span>
+                <button
+                  type="button"
+                  className={classes["chip"]}
+                  onClick={() => {
+                    replace(patternFrom(markPattern));
+                  }}
+                >
+                  {m.library_clip_reset()}
+                </button>
+                <button
+                  type="button"
+                  className={classes["chip"]}
+                  onClick={() => {
+                    replace(patternFrom([]));
+                  }}
+                >
+                  {m.library_clip_clear()}
+                </button>
+                <span className={classes["hint"]}>{m.library_clip_hint()}</span>
+              </div>
             </div>
           </div>
-        ) : undefined}
+        </div>
       </div>
       <p className={classes["caption"]}>
         {m.library_caption({ plugin: sound?.plugin ?? "" })}

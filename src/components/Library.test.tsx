@@ -134,6 +134,11 @@ function rowName(row: HTMLElement): string {
   return row.children[1]?.textContent.replace("*", "") ?? "";
 }
 
+// Lifts the Keys filter the library opens with.
+async function showAll(): Promise<void> {
+  await userEvent.click(screen.getByRole("button", { name: "Keys" }));
+}
+
 function selectedName(): string {
   return rowName(screen.getByRole("option", { selected: true }));
 }
@@ -148,19 +153,24 @@ afterEach(() => {
 });
 
 describe("Library", () => {
-  it("starts silent, with the first sound selected", () => {
+  it("starts silent and small, filtered to keys", () => {
     const fake = setup();
     expect(fake.running()).toBe(false);
     expect(
       screen.getByRole("button", { name: m.library_sound_off() }),
     ).toBeInTheDocument();
-    expect(rows()).toHaveLength(8);
-    expect(selectedName()).toBe("Diva Lead");
-    expect(screen.getByText(/Not a real Diva patch/u)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Keys" })).toHaveAttribute(
+      "aria-pressed",
+      "true",
+    );
+    expect(rows().map(rowName)).toEqual(["Keyscape Keys", "Kontakt Keys"]);
+    expect(selectedName()).toBe("Keyscape Keys");
+    expect(screen.getByText(/Not a real Keyscape patch/u)).toBeInTheDocument();
   });
 
   it("plays a row when it is clicked", async () => {
     const fake = setup();
+    await showAll();
     await userEvent.click(screen.getByText("Omnisphere Pad"));
     expect(fake.running()).toBe(true);
     expect(fake.mutes.at(-1)?.[0]).toBe(false);
@@ -175,9 +185,11 @@ describe("Library", () => {
 
   it("moves through the list with the arrow keys", async () => {
     const fake = setup();
+    await showAll();
     await userEvent.click(screen.getByRole("listbox"));
     await userEvent.keyboard("{ArrowDown}{ArrowDown}");
-    expect(selectedName()).toBe("Serum 2 Bass");
+    // Lifting the filter kept Keyscape Keys, the fourth row, selected.
+    expect(selectedName()).toBe("Massive X Bass");
     await userEvent.keyboard("{End}");
     expect(selectedName()).toBe("Kontakt Keys");
     await userEvent.keyboard("{ArrowDown}");
@@ -206,6 +218,7 @@ describe("Library", () => {
 
   it("mutes without stopping the clip", async () => {
     const fake = setup();
+    await showAll();
     await userEvent.click(screen.getByText("Serum Lead"));
     await userEvent.click(
       screen.getByRole("button", { name: m.library_sound_on() }),
@@ -226,7 +239,7 @@ describe("Library", () => {
       (cell) => cell.getAttribute("aria-pressed") === "true",
     );
     expect(lit).toHaveLength(15);
-    await userEvent.click(screen.getByText("Diva Lead"));
+    await userEvent.click(screen.getByText("Kontakt Keys"));
     const [corner] = cells;
     if (corner === undefined) throw new Error("no cells");
     await userEvent.click(corner);
@@ -244,7 +257,7 @@ describe("Library", () => {
     fireEvent.click(
       screen.getByRole("button", { name: m.library_clip_edit() }),
     );
-    fireEvent.click(screen.getByText("Diva Lead"));
+    fireEvent.click(screen.getByText("Kontakt Keys"));
     fake.step(5, 1);
     act(() => {
       vi.advanceTimersByTime(50);
@@ -263,13 +276,13 @@ describe("Library", () => {
     // Synchronous clicks: user-event's own waiting stalls on fake timers.
     vi.useFakeTimers();
     const fake = setup();
-    fireEvent.click(screen.getByText("Pigments Pad"));
+    fireEvent.click(screen.getByText("Kontakt Keys"));
     const observer = FakeObserver.latest;
     if (observer === undefined) throw new Error("not observed");
 
     act(() => {
       observer.show(false);
-      vi.advanceTimersByTime(2000);
+      vi.advanceTimersByTime(1000);
       observer.show(true);
       vi.advanceTimersByTime(5000);
     });
@@ -277,7 +290,7 @@ describe("Library", () => {
 
     act(() => {
       observer.show(false);
-      vi.advanceTimersByTime(3000);
+      vi.advanceTimersByTime(1500);
     });
     expect(fake.mutes.at(-1)).toEqual([true, 1.5]);
     expect(fake.running()).toBe(true);
@@ -288,5 +301,31 @@ describe("Library", () => {
     expect(
       screen.getByRole("button", { name: m.library_sound_off() }),
     ).toBeInTheDocument();
+  });
+
+  it("paints dots by dragging across them", async () => {
+    const fake = setup();
+    await userEvent.click(
+      screen.getByRole("button", { name: m.library_clip_edit() }),
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: m.library_clip_clear() }),
+    );
+    await userEvent.click(screen.getByText("Kontakt Keys"));
+    const top = within(screen.getByRole("grid")).getAllByRole("row")[0];
+    const cell = (column: number): Element => {
+      const found = top?.children[column];
+      if (found === undefined) throw new Error("no cell");
+      return found;
+    };
+    fireEvent.pointerDown(cell(0));
+    fireEvent.pointerMove(cell(1));
+    fireEvent.pointerMove(cell(2));
+    // Passing back over a dot in the same drag leaves it as it is.
+    fireEvent.pointerMove(cell(1));
+    fireEvent.pointerUp(window);
+    fireEvent.pointerMove(cell(3));
+    const lit = fake.heard()?.pattern.map((column) => column[0] === true);
+    expect(lit?.slice(0, 5)).toEqual([true, true, true, false, false]);
   });
 });

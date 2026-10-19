@@ -73,7 +73,6 @@ export interface LibrarySound {
   plugin: string;
   character: Character;
   category: Category;
-  tags: Words;
 }
 
 // The library beside the headline, in list order. The sounds are the site's
@@ -85,56 +84,48 @@ export const librarySounds: readonly LibrarySound[] = [
     plugin: "Diva",
     character: "warm",
     category: "lead",
-    tags: m.library_tags_diva_lead,
   },
   {
     id: "omnisphere-pad",
     plugin: "Omnisphere",
     character: "soft",
     category: "pad",
-    tags: m.library_tags_omnisphere_pad,
   },
   {
     id: "serum2-bass",
     plugin: "Serum 2",
     character: "dark",
     category: "bass",
-    tags: m.library_tags_serum2_bass,
   },
   {
     id: "keyscape-keys",
     plugin: "Keyscape",
     character: "warm",
     category: "keys",
-    tags: m.library_tags_keyscape_keys,
   },
   {
     id: "pigments-pad",
     plugin: "Pigments",
     character: "bright",
     category: "pad",
-    tags: m.library_tags_pigments_pad,
   },
   {
     id: "massivex-bass",
     plugin: "Massive X",
     character: "dark",
     category: "bass",
-    tags: m.library_tags_massivex_bass,
   },
   {
     id: "serum-lead",
     plugin: "Serum",
     character: "bright",
     category: "lead",
-    tags: m.library_tags_serum_lead,
   },
   {
     id: "kontakt-keys",
     plugin: "Kontakt",
     character: "soft",
     category: "keys",
-    tags: m.library_tags_kontakt_keys,
   },
 ];
 

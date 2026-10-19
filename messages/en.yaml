@@ -48,15 +48,6 @@ library:
   caption: >-
     *Not a real {plugin} patch, just a website doing its best impression. In
     Live, yours play from your own plugins.
-  tags:
-    diva_lead: Mono
-    omnisphere_pad: Evolving
-    serum2_bass: Wobble
-    keyscape_keys: Electric Piano
-    pigments_pad: Wide
-    massivex_bass: Sub
-    serum_lead: Pluck
-    kontakt_keys: Piano
   clip:
     edit: Edit the clip
     step: "Step {step}, {note}"
@@ -64,7 +55,7 @@ library:
     bpm: "{bpm} BPM"
     reset: Reset
     clear: Clear
-    hint: Tap a dot to change the riff.
+    hint: Tap or drag across the dots to change the riff.
 
 # Live's Character tags, as the library's second filter.
 characters:
