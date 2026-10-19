@@ -18,15 +18,16 @@ npm-debug.log*
 # TypeScript incremental build state.
 *.tsbuildinfo
 
-# OpenTofu artifacts. State is per-user and adopted by import, never shared.
-/terraform/.terraform/
-/terraform/terraform.tfstate
-/terraform/terraform.tfstate.backup
-/terraform/terraform.tfvars
 
 # Compiled from messages/en.yaml by `npm run messages`.
 /project.inlang/messages/
 /src/paraglide/
+
+# OpenTofu artifacts. State is per-user and adopted by import, never shared.
+/terraform/*/.terraform/
+/terraform/*/terraform.tfstate
+/terraform/*/terraform.tfstate.backup
+/terraform/*/terraform.tfvars
 
 # Vitest reports and artifacts.
 /.vitest/

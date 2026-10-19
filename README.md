@@ -29,5 +29,6 @@ deployed as a preview behind the team's shared login.
 
 ## Repository settings
 
-GitHub settings are managed with OpenTofu in `terraform/`, not the web UI. Its
-README covers credentials and running it.
+GitHub settings are managed with OpenTofu in `terraform/repository/`, not the
+web UI, and the previews' Cloudflare setup in `terraform/preview/`. Their
+READMEs cover credentials and running them.

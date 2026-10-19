@@ -28,7 +28,7 @@ src/media/         images/ and video/
 src/theme.ts       Mantine: the two base colours, fonts, radii
 src/tokens.css     every other colour
 src/index.css      global styles
-terraform/         the GitHub repository's settings
+terraform/         GitHub settings and the previews' Cloudflare setup
 ```
 
 ## Changing words

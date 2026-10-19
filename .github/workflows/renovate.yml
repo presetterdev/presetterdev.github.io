@@ -29,7 +29,7 @@ jobs:
     #
     # Opening a pull request at all needs the repository's "Allow GitHub
     # Actions to create and approve pull requests" switch, which
-    # terraform/main.tf turns on.
+    # terraform/repository/ turns on.
     permissions:
       contents: write
       issues: write

@@ -64,12 +64,12 @@ Pages answers any other address with the prerendered `404.html`.
 
 ## The repository configures itself
 
-`terraform/` describes Pages, branch protection and vulnerability alerts, so
-those settings are reviewable and reproducible rather than remembered. The
-domain's DNS is kept at Porkbun by hand; the plan reads it and fails when it is
-not what Pages requires.
+`terraform/repository/` describes Pages, branch protection and vulnerability
+alerts, so those settings are reviewable and reproducible rather than
+remembered. The domain's DNS is kept at Porkbun by hand; the plan reads it and
+fails when it is not what Pages requires.
 
-State is per-user and never committed, and there is no remote backend.
-`terraform/imports.tf` adopts the existing objects instead, so a fresh clone
-converges on the real configuration rather than trying to recreate it. Nothing
-has to be shared, kept in sync, or scrubbed before it reaches the repository.
+State is per-user and never committed, and there is no remote backend. Import
+blocks adopt the existing objects instead, so a fresh clone converges on the
+real configuration rather than trying to recreate it. Nothing has to be shared,
+kept in sync, or scrubbed before it reaches the repository.
