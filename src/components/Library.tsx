@@ -33,12 +33,7 @@ import {
 } from "../synth";
 import classes from "./Library.module.css";
 
-// It opens on one kind of sound, so it starts small and grows as a visitor
-// widens the filter.
-const startCategory: Category = "keys";
-const first: LibrarySound | undefined =
-  librarySounds.find((sound) => sound.category === startCategory) ??
-  librarySounds[0];
+const first: LibrarySound | undefined = librarySounds[0];
 // How long the library may sit out of view before it fades out, and how
 // long the fade takes, in milliseconds.
 const offscreenWait = 1500;
@@ -127,6 +122,73 @@ function Wave({ seed }: { seed: number }): ReactElement {
   );
 }
 
+// The mix as it plays, drawn in the same dots as the preview. Each frame
+// copies the analyser's latest samples into one reused buffer, starts at a
+// rising zero crossing so the shape holds still, and scales to a slowly
+// falling peak so quiet sounds still read. Muted, it still moves: the
+// analyser sits before the mute.
+function Scope({ synth }: { synth: Synth }): ReactElement {
+  const canvas = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    const samples = new Float32Array(1024);
+    synth.scope(samples);
+    const node = canvas.current;
+    const pen = node?.getContext("2d");
+    if (node === null || pen === null || pen === undefined) return undefined;
+    const span = samples.length / 2;
+    let peak = 0.05;
+    let frame = 0;
+    const draw = (): void => {
+      const ratio = window.devicePixelRatio;
+      const width = node.clientWidth;
+      const height = node.clientHeight;
+      if (node.width !== Math.round(width * ratio)) {
+        node.width = Math.round(width * ratio);
+        node.height = Math.round(height * ratio);
+      }
+      synth.scope(samples);
+      let start = 0;
+      for (let index = 1; index < span; index += 1) {
+        if ((samples[index - 1] ?? 0) < 0 && (samples[index] ?? 0) >= 0) {
+          start = index;
+          break;
+        }
+      }
+      let loudest = 0;
+      for (let index = start; index < start + span; index += 1) {
+        loudest = Math.max(loudest, Math.abs(samples[index] ?? 0));
+      }
+      peak = Math.max(loudest, peak * 0.97, 0.02);
+      pen.setTransform(ratio, 0, 0, ratio, 0, 0);
+      pen.clearRect(0, 0, width, height);
+      pen.fillStyle = getComputedStyle(node).color;
+      const middle = height / 2;
+      const dots = Math.floor(width / 6);
+      for (let dot = 0; dot < dots; dot += 1) {
+        const value =
+          (samples[start + Math.floor((dot * span) / dots)] ?? 0) / peak;
+        pen.beginPath();
+        pen.arc(
+          dot * 6 + 1.5,
+          middle - value * (middle - 2),
+          1.3,
+          0,
+          2 * Math.PI,
+        );
+        pen.fill();
+      }
+      frame = window.requestAnimationFrame(draw);
+    };
+    frame = window.requestAnimationFrame(draw);
+    return (): void => {
+      window.cancelAnimationFrame(frame);
+    };
+  }, [synth]);
+  return (
+    <canvas ref={canvas} className={classes["scope"]} aria-hidden="true" />
+  );
+}
+
 // The clip in miniature: the button that opens the editor.
 function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
   const dots: ReactElement[] = [];
@@ -163,7 +225,7 @@ function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
 // clock starts and sound comes on from a row, the play button or the sound
 // toggle, all of which count as the gesture browsers require.
 export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
-  const [category, setCategory] = useState<Category | undefined>(startCategory);
+  const [category, setCategory] = useState<Category | undefined>(undefined);
   const [character, setCharacter] = useState<Character | undefined>(undefined);
   const [selected, setSelected] = useState<SoundId>(first?.id ?? "diva-lead");
   const [muted, setMuted] = useState(true);
@@ -183,6 +245,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   }, [pattern, selected, bpm]);
   const flashes = useRef<{ step: number; at: number }[]>([]);
   const root = useRef<HTMLElement>(null);
+  const scroller = useRef<HTMLDivElement>(null);
   // The dots flipped so far in the current drag, while one is under way.
   const painted = useRef<Set<string> | undefined>(undefined);
 
@@ -193,10 +256,10 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   );
   const sound = librarySounds.find((item) => item.id === selected) ?? first;
 
-  function hear(): void {
+  // Starts the clip. Sound stays as the visitor set it: only the sound
+  // toggle turns it on.
+  function play(): void {
     const s = audio.synth();
-    s.mute(false);
-    setMuted(false);
     clock.current ??= audio.clock(
       s,
       () => live.current,
@@ -216,12 +279,9 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   }
 
   function toggleSound(): void {
-    if (muted) {
-      hear();
-      return;
-    }
-    audio.synth().mute(true);
-    setMuted(true);
+    audio.synth().mute(!muted);
+    setMuted(!muted);
+    if (muted && !running) play();
   }
 
   function choose(id: SoundId): void {
@@ -259,7 +319,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
       if (running) stop();
-      else hear();
+      else play();
       return;
     }
     const target = next === undefined ? undefined : visible[next];
@@ -378,6 +438,18 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
     };
   }, [running, audio]);
 
+  // Keeps the selected row in view inside the scrolling list, without
+  // scrolling the page the way scrollIntoView can.
+  useEffect(() => {
+    const box = scroller.current;
+    const row = document.getElementById(optionId(selected));
+    if (box === null || row === null) return;
+    const top = row.offsetTop - box.offsetTop;
+    if (top < box.scrollTop) box.scrollTop = top;
+    const bottom = top + row.offsetHeight - box.clientHeight;
+    if (bottom > box.scrollTop) box.scrollTop = bottom;
+  }, [selected]);
+
   // Nothing keeps sounding once the page goes away.
   useEffect(
     () => (): void => {
@@ -456,12 +528,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
           </button>
         </div>
 
-        <div
-          className={classes["rows"]}
-          style={{
-            height: `calc(${String(Math.max(1, visible.length))} * var(--row))`,
-          }}
-        >
+        <div ref={scroller} className={classes["rows"]}>
           {visible.length === 0 ? (
             <p className={classes["empty"]}>{m.library_empty()}</p>
           ) : (
@@ -483,7 +550,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
                   data-category={item.category}
                   onClick={() => {
                     choose(item.id);
-                    if (!running || muted) hear();
+                    if (!running) play();
                   }}
                 >
                   <span className={classes["dot"]} aria-hidden="true" />
@@ -512,7 +579,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
             aria-label={running ? m.library_stop() : m.library_play()}
             onClick={() => {
               if (running) stop();
-              else hear();
+              else play();
             }}
           >
             <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
@@ -523,9 +590,13 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
               )}
             </svg>
           </button>
-          <Wave
-            seed={librarySounds.findIndex((item) => item.id === selected) + 1}
-          />
+          {running ? (
+            <Scope synth={audio.synth()} />
+          ) : (
+            <Wave
+              seed={librarySounds.findIndex((item) => item.id === selected) + 1}
+            />
+          )}
           <button
             type="button"
             className={classes["clip"]}
@@ -616,7 +687,6 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
                 >
                   {m.library_clip_clear()}
                 </button>
-                <span className={classes["hint"]}>{m.library_clip_hint()}</span>
               </div>
             </div>
           </div>

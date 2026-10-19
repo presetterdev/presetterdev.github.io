@@ -35,6 +35,9 @@ function fakeAudio(): {
       mutes.push([muted, fade]);
     },
     play: () => undefined,
+    scope: (into) => {
+      into.fill(0);
+    },
   };
   return {
     audio: {
@@ -134,11 +137,6 @@ function rowName(row: HTMLElement): string {
   return row.children[1]?.textContent.replace("*", "") ?? "";
 }
 
-// Lifts the Keys filter the library opens with.
-async function showAll(): Promise<void> {
-  await userEvent.click(screen.getByRole("button", { name: "Keys" }));
-}
-
 function selectedName(): string {
   return rowName(screen.getByRole("option", { selected: true }));
 }
@@ -153,31 +151,28 @@ afterEach(() => {
 });
 
 describe("Library", () => {
-  it("starts silent and small, filtered to keys", () => {
+  it("starts silent and stopped, with every sound listed", () => {
     const fake = setup();
     expect(fake.running()).toBe(false);
     expect(
       screen.getByRole("button", { name: m.library_sound_off() }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "Keys" })).toHaveAttribute(
-      "aria-pressed",
-      "true",
-    );
-    expect(rows().map(rowName)).toEqual(["Keyscape Keys", "Kontakt Keys"]);
-    expect(selectedName()).toBe("Keyscape Keys");
-    expect(screen.getByText(/Not a real Keyscape patch/u)).toBeInTheDocument();
+    expect(rows()).toHaveLength(8);
+    expect(selectedName()).toBe("Diva Lead");
+    expect(screen.getByText(/Not a real Diva patch/u)).toBeInTheDocument();
+    expect(document.querySelector("canvas")).toBeNull();
   });
 
-  it("plays a row when it is clicked", async () => {
+  it("plays a clicked row silently, with a scope showing it", async () => {
     const fake = setup();
-    await showAll();
     await userEvent.click(screen.getByText("Omnisphere Pad"));
     expect(fake.running()).toBe(true);
-    expect(fake.mutes.at(-1)?.[0]).toBe(false);
+    expect(fake.mutes).toEqual([]);
     expect(fake.heard()?.sound).toBe("omnisphere-pad");
     expect(
-      screen.getByRole("button", { name: m.library_sound_on() }),
+      screen.getByRole("button", { name: m.library_sound_off() }),
     ).toBeInTheDocument();
+    expect(document.querySelector("canvas")).not.toBeNull();
     expect(
       screen.getByText(/Not a real Omnisphere patch/u),
     ).toBeInTheDocument();
@@ -185,11 +180,9 @@ describe("Library", () => {
 
   it("moves through the list with the arrow keys", async () => {
     const fake = setup();
-    await showAll();
     await userEvent.click(screen.getByRole("listbox"));
     await userEvent.keyboard("{ArrowDown}{ArrowDown}");
-    // Lifting the filter kept Keyscape Keys, the fourth row, selected.
-    expect(selectedName()).toBe("Massive X Bass");
+    expect(selectedName()).toBe("Serum 2 Bass");
     await userEvent.keyboard("{End}");
     expect(selectedName()).toBe("Kontakt Keys");
     await userEvent.keyboard("{ArrowDown}");
@@ -216,10 +209,13 @@ describe("Library", () => {
     expect(rows()).toHaveLength(8);
   });
 
-  it("mutes without stopping the clip", async () => {
+  it("makes sound only when the visitor turns it on", async () => {
     const fake = setup();
-    await showAll();
-    await userEvent.click(screen.getByText("Serum Lead"));
+    await userEvent.click(
+      screen.getByRole("button", { name: m.library_sound_off() }),
+    );
+    expect(fake.mutes.at(-1)?.[0]).toBe(false);
+    expect(fake.running()).toBe(true);
     await userEvent.click(
       screen.getByRole("button", { name: m.library_sound_on() }),
     );

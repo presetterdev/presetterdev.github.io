@@ -55,7 +55,6 @@ library:
     bpm: "{bpm} BPM"
     reset: Reset
     clear: Clear
-    hint: Tap or drag across the dots to change the riff.
 
 # Live's Character tags, as the library's second filter.
 characters:

@@ -111,13 +111,13 @@
   color: var(--pt-page);
 }
 
-/* Exactly as tall as its rows (the component sets the height from the
-   count), so a filter change slides the panel's bottom edge rather than
-   jumping it. The panel is anchored at the top, so only what is below
-   moves. */
+/* A fixed window onto the list, a half row short of a whole one so the
+   cut-off row says there is more. Selection keeps itself in view. */
 .rows {
-  overflow: hidden;
-  transition: height 220ms ease;
+  height: calc(5.5 * var(--row));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
 
 .list {
@@ -221,6 +221,14 @@
 }
 
 .wave {
+  flex: 1;
+  min-width: 0;
+  height: rem(18px);
+  color: var(--chip);
+}
+
+.scope {
+  display: block;
   flex: 1;
   min-width: 0;
   height: rem(18px);
@@ -339,12 +347,6 @@
   min-width: 4.5em;
 }
 
-.hint {
-  margin-left: auto;
-  font-size: rem(12px);
-  color: var(--pt-ink-dim);
-}
-
 /* Two lines tall whatever the plugin's name, so changing the selection
    never moves what is below. */
 .caption {
@@ -356,8 +358,7 @@
 }
 
 @media (max-width: $mantine-breakpoint-xs) {
-  .tags,
-  .hint {
+  .tags {
     display: none;
   }
 
@@ -372,7 +373,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .rows,
   .fold {
     transition: none;
   }

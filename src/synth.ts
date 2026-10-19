@@ -215,6 +215,9 @@ export interface Synth {
   now(): number;
   // Silences everything without stopping it, over `fade` seconds.
   mute(muted: boolean, fade?: number): void;
+  // Copies the latest samples of the mix into `into`, muted or not; zeros
+  // before anything has played. For drawing, not for listening.
+  scope(into: Float32Array<ArrayBuffer>): void;
   play(
     sound: SoundId,
     midi: number,
@@ -228,6 +231,8 @@ export interface Synth {
 export function createSynth(): Synth {
   let context: AudioContext | undefined;
   let master: GainNode | undefined;
+  let out: GainNode | undefined;
+  let analyser: AnalyserNode | undefined;
   let send: GainNode | undefined;
   let muted = false;
 
@@ -246,9 +251,15 @@ export function createSynth(): Synth {
     limiter.ratio.value = 4;
     limiter.attack.value = 0.004;
     limiter.release.value = 0.2;
+    // The mix, then the mute, so the scope still sees a muted mix.
     master = context.createGain();
-    master.gain.value = muted ? 0 : 0.9;
-    master.connect(limiter).connect(context.destination);
+    master.gain.value = 0.9;
+    out = context.createGain();
+    out.gain.value = muted ? 0 : 1;
+    master.connect(out).connect(limiter).connect(context.destination);
+    analyser = context.createAnalyser();
+    analyser.fftSize = 1024;
+    master.connect(analyser);
     // One shared echo, for space.
     const delay = context.createDelay(1);
     delay.delayTime.value = 0.32;
@@ -275,15 +286,15 @@ export function createSynth(): Synth {
     },
     mute(value, fade = 0.06): void {
       muted = value;
-      if (context !== undefined && master !== undefined) {
+      if (context !== undefined && out !== undefined) {
         // setTargetAtTime is within 5% of the target after three time
         // constants.
-        master.gain.setTargetAtTime(
-          value ? 0 : 0.9,
-          context.currentTime,
-          fade / 3,
-        );
+        out.gain.setTargetAtTime(value ? 0 : 1, context.currentTime, fade / 3);
       }
+    },
+    scope(into): void {
+      if (analyser === undefined) into.fill(0);
+      else analyser.getFloatTimeDomainData(into);
     },
     play(sound, midi, when, hold, scale = 1): void {
       const g = graph();

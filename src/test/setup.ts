@@ -1,6 +1,6 @@
-// Runs before every test file. jsdom lacks two browser APIs Mantine asks
-// for when it renders; these stand-ins answer the way a desktop browser
-// with no media-query matches would.
+// Runs before every test file. jsdom lacks a few browser APIs the site
+// touches when it renders; these stand-ins answer the way a desktop
+// browser with no media-query matches would.
 
 import "@testing-library/jest-dom/vitest";
 import { cleanup } from "@testing-library/react";
@@ -19,6 +19,11 @@ window.matchMedia = (query: string): MediaQueryList => ({
   addEventListener: () => undefined,
   removeEventListener: () => undefined,
   dispatchEvent: () => false,
+});
+
+// jsdom has no canvas; a component that draws must cope with no context.
+Object.defineProperty(HTMLCanvasElement.prototype, "getContext", {
+  value: () => null,
 });
 
 window.ResizeObserver = class {
