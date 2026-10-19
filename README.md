@@ -23,17 +23,11 @@ npm run dev
 
 ## Deployment
 
-Pushing to `main` publishes to GitHub Pages. Pull requests only run checks, and
-cannot merge until those pass.
+Pushing to `main` publishes to GitHub Pages. Pull requests run checks and cannot
+merge until those pass; a pull request from a branch in this repository is also
+deployed as a preview behind the team's shared login.
 
 ## Repository settings
 
-Pages, branch protection and alerts live in `terraform/`, not the web UI. State
-is not committed: the first apply adopts what already exists. DNS for
-`presetter.audio` is set by hand at Porkbun, and `tofu plan` fails until it
-matches what Pages needs.
-
-```sh
-gh auth login
-cd terraform && tofu init && tofu apply
-```
+GitHub settings are managed with OpenTofu in `terraform/`, not the web UI. Its
+README covers credentials and running it.
