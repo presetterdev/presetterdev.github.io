@@ -213,8 +213,8 @@ export interface Synth {
   // Starts the audio context, which browsers allow only after a gesture.
   wake(): void;
   now(): number;
-  // Silences everything without stopping it.
-  mute(muted: boolean): void;
+  // Silences everything without stopping it, over `fade` seconds.
+  mute(muted: boolean, fade?: number): void;
   play(
     sound: SoundId,
     midi: number,
@@ -273,10 +273,16 @@ export function createSynth(): Synth {
     now(): number {
       return graph().context.currentTime;
     },
-    mute(value): void {
+    mute(value, fade = 0.06): void {
       muted = value;
       if (context !== undefined && master !== undefined) {
-        master.gain.setTargetAtTime(value ? 0 : 0.9, context.currentTime, 0.02);
+        // setTargetAtTime is within 5% of the target after three time
+        // constants.
+        master.gain.setTargetAtTime(
+          value ? 0 : 0.9,
+          context.currentTime,
+          fade / 3,
+        );
       }
     },
     play(sound, midi, when, hold, scale = 1): void {

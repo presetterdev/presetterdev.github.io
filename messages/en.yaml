@@ -36,7 +36,7 @@ hero:
 library:
   label: A small library of sounds
   sounds: SOUNDS
-  makers: MAKERS
+  characters: CHARACTER
   name: NAME
   sound_off: Sound off
   sound_on: Sound on
@@ -44,18 +44,19 @@ library:
   stop: Stop the clip
   row: "{plugin} {category}"
   empty: Nothing matches both filters.
+  # Under the panel, about the selected row, which carries the asterisk.
   caption: >-
-    Sounds made on this site, in the spirit of each plugin. In Live, yours play
-    from your own plugins.
+    *Not a real {plugin} patch, just a website doing its best impression. In
+    Live, yours play from your own plugins.
   tags:
-    diva_lead: Mono · Fat
-    omnisphere_pad: Evolving · Airy
-    serum2_bass: Wobble · Distorted
-    keyscape_keys: Electric Piano · Warm
-    pigments_pad: Wide · Bright
-    massivex_bass: Sub · Dark
-    serum_lead: Pluck · Bright
-    kontakt_keys: Piano · Soft
+    diva_lead: Mono
+    omnisphere_pad: Evolving
+    serum2_bass: Wobble
+    keyscape_keys: Electric Piano
+    pigments_pad: Wide
+    massivex_bass: Sub
+    serum_lead: Pluck
+    kontakt_keys: Piano
   clip:
     edit: Edit the clip
     step: "Step {step}, {note}"
@@ -64,6 +65,13 @@ library:
     reset: Reset
     clear: Clear
     hint: Tap a dot to change the riff.
+
+# Live's Character tags, as the library's second filter.
+characters:
+  bright: Bright
+  dark: Dark
+  warm: Warm
+  soft: Soft
 
 # The kinds of sound.
 categories:

@@ -9,10 +9,10 @@ import {
 
 import {
   type LibrarySound,
-  type Maker,
+  type Character,
   categories,
   librarySounds,
-  makers,
+  characters,
 } from "../content";
 import { m } from "../paraglide/messages.js";
 import {
@@ -33,6 +33,10 @@ import {
 import classes from "./Library.module.css";
 
 const first: LibrarySound | undefined = librarySounds[0];
+// How long the library may sit out of view before it fades out, and how
+// long the fade takes, in milliseconds.
+const offscreenWait = 3000;
+const fadeLength = 1500;
 const steps = Array.from({ length: columns }, (_, column) => column);
 const notes = Array.from({ length: rows }, (_, row) => row);
 
@@ -51,6 +55,10 @@ function optionId(id: SoundId): string {
 
 function categoryLabel(id: Category): string {
   return categories.find((item) => item.id === id)?.label() ?? "";
+}
+
+function characterLabel(id: Character): string {
+  return characters.find((item) => item.id === id)?.label() ?? "";
 }
 
 function rowName(sound: LibrarySound): string {
@@ -138,7 +146,7 @@ function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
 // toggle, all of which count as the gesture browsers require.
 export function Library(): ReactElement {
   const [category, setCategory] = useState<Category | undefined>(undefined);
-  const [maker, setMaker] = useState<Maker | undefined>(undefined);
+  const [character, setCharacter] = useState<Character | undefined>(undefined);
   const [selected, setSelected] = useState<SoundId>(first?.id ?? "diva-lead");
   const [muted, setMuted] = useState(true);
   const [running, setRunning] = useState(false);
@@ -156,11 +164,12 @@ export function Library(): ReactElement {
     live.current = { pattern, sound: selected, bpm };
   }, [pattern, selected, bpm]);
   const flashes = useRef<{ step: number; at: number }[]>([]);
+  const root = useRef<HTMLElement>(null);
 
   const visible = librarySounds.filter(
     (sound) =>
       (category === undefined || sound.category === category) &&
-      (maker === undefined || sound.maker === maker),
+      (character === undefined || sound.character === character),
   );
   const sound = librarySounds.find((item) => item.id === selected) ?? first;
 
@@ -204,14 +213,14 @@ export function Library(): ReactElement {
   // one still shown, so what plays is always on screen.
   function filterBy(
     nextCategory: Category | undefined,
-    nextMaker: Maker | undefined,
+    nextCharacter: Character | undefined,
   ): void {
     setCategory(nextCategory);
-    setMaker(nextMaker);
+    setCharacter(nextCharacter);
     const shown = librarySounds.filter(
       (item) =>
         (nextCategory === undefined || item.category === nextCategory) &&
-        (nextMaker === undefined || item.maker === nextMaker),
+        (nextCharacter === undefined || item.character === nextCharacter),
     );
     const [head] = shown;
     if (head !== undefined && !shown.some((item) => item.id === selected)) {
@@ -273,6 +282,38 @@ export function Library(): ReactElement {
     };
   }, [running]);
 
+  // Playing on out of sight is a nuisance: after a while off screen, the
+  // clip fades out and stops. Scrolling back does not restart it.
+  useEffect(() => {
+    const node = root.current;
+    if (!running || node === null) return undefined;
+    let wait: number | undefined;
+    let fade: number | undefined;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry?.isIntersecting === true) {
+        window.clearTimeout(wait);
+        wait = undefined;
+        return;
+      }
+      wait ??= window.setTimeout(() => {
+        engine().mute(true, fadeLength / 1000);
+        setMuted(true);
+        fade = window.setTimeout(() => {
+          clock.current?.stop();
+          flashes.current = [];
+          setRunning(false);
+          setCurrent(undefined);
+        }, fadeLength);
+      }, offscreenWait);
+    });
+    observer.observe(node);
+    return (): void => {
+      observer.disconnect();
+      window.clearTimeout(wait);
+      window.clearTimeout(fade);
+    };
+  }, [running]);
+
   // Nothing keeps sounding once the page goes away.
   useEffect(
     () => (): void => {
@@ -282,7 +323,11 @@ export function Library(): ReactElement {
   );
 
   return (
-    <section className={classes["library"]} aria-label={m.library_label()}>
+    <section
+      ref={root}
+      className={classes["library"]}
+      aria-label={m.library_label()}
+    >
       <div className={classes["panel"]} data-category={sound?.category}>
         <div className={classes["filters"]}>
           <span className={classes["key"]}>{m.library_sounds()}</span>
@@ -295,7 +340,10 @@ export function Library(): ReactElement {
                 data-category={item.id}
                 aria-pressed={category === item.id}
                 onClick={() => {
-                  filterBy(category === item.id ? undefined : item.id, maker);
+                  filterBy(
+                    category === item.id ? undefined : item.id,
+                    character,
+                  );
                 }}
               >
                 <span className={classes["chipDot"]} aria-hidden="true" />
@@ -303,19 +351,22 @@ export function Library(): ReactElement {
               </button>
             ))}
           </div>
-          <span className={classes["key"]}>{m.library_makers()}</span>
+          <span className={classes["key"]}>{m.library_characters()}</span>
           <div className={classes["chips"]}>
-            {makers.map((name) => (
+            {characters.map((item) => (
               <button
-                key={name}
+                key={item.id}
                 type="button"
                 className={classes["chip"]}
-                aria-pressed={maker === name}
+                aria-pressed={character === item.id}
                 onClick={() => {
-                  filterBy(category, maker === name ? undefined : name);
+                  filterBy(
+                    category,
+                    character === item.id ? undefined : item.id,
+                  );
                 }}
               >
-                {name}
+                {item.label()}
               </button>
             ))}
           </div>
@@ -366,9 +417,17 @@ export function Library(): ReactElement {
                 }}
               >
                 <span className={classes["dot"]} aria-hidden="true" />
-                <span className={classes["name"]}>{rowName(item)}</span>
+                <span className={classes["name"]}>
+                  {rowName(item)}
+                  {item.id === selected ? (
+                    <span className={classes["mark"]} aria-hidden="true">
+                      *
+                    </span>
+                  ) : undefined}
+                </span>
                 <span className={classes["tags"]}>
-                  {categoryLabel(item.category)} · {item.tags()}
+                  {categoryLabel(item.category)} ·{" "}
+                  {characterLabel(item.character)} · {item.tags()}
                 </span>
               </li>
             ))}
@@ -474,7 +533,9 @@ export function Library(): ReactElement {
           </div>
         ) : undefined}
       </div>
-      <p className={classes["caption"]}>{m.library_caption()}</p>
+      <p className={classes["caption"]}>
+        {m.library_caption({ plugin: sound?.plugin ?? "" })}
+      </p>
     </section>
   );
 }

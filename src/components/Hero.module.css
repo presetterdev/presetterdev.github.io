@@ -1,9 +1,11 @@
-/* Headline beside the library on wide screens, above it on narrow ones. */
+/* Headline beside the library on wide screens, above it on narrow ones.
+   Both start at the top, so opening the clip editor grows the library
+   downwards and nothing beside it moves. */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: rem(40px);
-  align-items: center;
+  align-items: start;
 }
 
 .title {

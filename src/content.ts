@@ -52,20 +52,26 @@ export const categories: readonly CategoryLabel[] = [
   { id: "lead", label: m.categories_lead },
 ];
 
-export const makers = [
-  "Xfer",
-  "Spectrasonics",
-  "NI",
-  "Arturia",
-  "u-he",
-] as const;
+export type Character = "bright" | "dark" | "warm" | "soft";
 
-export type Maker = (typeof makers)[number];
+export interface CharacterLabel {
+  id: Character;
+  label: Words;
+}
+
+// The second filter, after Live's Character tags. A plugin's maker would be
+// the obvious one, but it reads as the maker having made these sounds.
+export const characters: readonly CharacterLabel[] = [
+  { id: "bright", label: m.characters_bright },
+  { id: "dark", label: m.characters_dark },
+  { id: "warm", label: m.characters_warm },
+  { id: "soft", label: m.characters_soft },
+];
 
 export interface LibrarySound {
   id: SoundId;
   plugin: string;
-  maker: Maker;
+  character: Character;
   category: Category;
   tags: Words;
 }
@@ -77,56 +83,56 @@ export const librarySounds: readonly LibrarySound[] = [
   {
     id: "diva-lead",
     plugin: "Diva",
-    maker: "u-he",
+    character: "warm",
     category: "lead",
     tags: m.library_tags_diva_lead,
   },
   {
     id: "omnisphere-pad",
     plugin: "Omnisphere",
-    maker: "Spectrasonics",
+    character: "soft",
     category: "pad",
     tags: m.library_tags_omnisphere_pad,
   },
   {
     id: "serum2-bass",
     plugin: "Serum 2",
-    maker: "Xfer",
+    character: "dark",
     category: "bass",
     tags: m.library_tags_serum2_bass,
   },
   {
     id: "keyscape-keys",
     plugin: "Keyscape",
-    maker: "Spectrasonics",
+    character: "warm",
     category: "keys",
     tags: m.library_tags_keyscape_keys,
   },
   {
     id: "pigments-pad",
     plugin: "Pigments",
-    maker: "Arturia",
+    character: "bright",
     category: "pad",
     tags: m.library_tags_pigments_pad,
   },
   {
     id: "massivex-bass",
     plugin: "Massive X",
-    maker: "NI",
+    character: "dark",
     category: "bass",
     tags: m.library_tags_massivex_bass,
   },
   {
     id: "serum-lead",
     plugin: "Serum",
-    maker: "Xfer",
+    character: "bright",
     category: "lead",
     tags: m.library_tags_serum_lead,
   },
   {
     id: "kontakt-keys",
     plugin: "Kontakt",
-    maker: "NI",
+    character: "soft",
     category: "keys",
     tags: m.library_tags_kontakt_keys,
   },
