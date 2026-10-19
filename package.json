@@ -12,6 +12,7 @@
     "preview": "vite preview",
     "lint": "oxlint --type-aware --type-check",
     "lint:md": "markdownlint-cli2",
+    "lint:tf": "tflint --chdir=terraform --recursive",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "npm run lint && npm run lint:md && npm run format:check",

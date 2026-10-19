@@ -19,6 +19,11 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check
+      # Kept out of `npm run check`, which needs nothing installed beyond npm.
+      - uses: terraform-linters/setup-tflint@6ffdbaa3be476b3431f7275c26966ef32ff60337 # v6.3.2
+        with:
+          tflint_version: v0.64.0
+      - run: npm run lint:tf
       - run: npm run build
       # The build regenerates the route tree; a diff means it was committed
       # stale.
