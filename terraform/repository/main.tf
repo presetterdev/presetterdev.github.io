@@ -130,6 +130,10 @@ resource "github_branch_protection" "main" {
 # its postcondition can say anything. "no such host" therefore means the
 # record is missing; the comment above each one names what to create.
 #
+# Nothing refers to these data sources, which tflint takes for unused; each
+# one is ignored for that. A check block would avoid it, but its failures are
+# only warnings, and these should stop the plan.
+#
 # Any other A, AAAA or ALIAS record on the apex, such as Porkbun's parking
 # page, keeps GitHub from issuing a certificate. The postconditions compare
 # whole sets, so a stray record fails the plan too. Porkbun's email-forwarding
@@ -157,6 +161,7 @@ locals {
 #   185.199.109.153
 #   185.199.110.153
 #   185.199.111.153
+# tflint-ignore: terraform_unused_declarations
 data "dns_a_record_set" "apex" {
   host = local.domain
 
@@ -173,6 +178,7 @@ data "dns_a_record_set" "apex" {
 #   2606:50c0:8001::153
 #   2606:50c0:8002::153
 #   2606:50c0:8003::153
+# tflint-ignore: terraform_unused_declarations
 data "dns_aaaa_record_set" "apex" {
   host = local.domain
 
@@ -186,6 +192,7 @@ data "dns_aaaa_record_set" "apex" {
 
 # A CNAME for www to presetterdev.github.io. Pages then redirects www to the
 # apex.
+# tflint-ignore: terraform_unused_declarations
 data "dns_cname_record_set" "www" {
   host = "www.${local.domain}"
 
@@ -206,6 +213,7 @@ locals {
   pages_challenge = "7d9346a961c6b5c4c87da8462d2749"
 }
 
+# tflint-ignore: terraform_unused_declarations
 data "dns_txt_record_set" "pages_challenge" {
   host = "_github-pages-challenge-${var.github_owner}.${local.domain}"
 
