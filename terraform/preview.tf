@@ -49,3 +49,12 @@ module "preview" {
     enabled = local.cloudflare
   }
 }
+
+# A check that fails is reported as a warning, not an error, on plan and
+# apply; it only makes the skip visible.
+check "preview_managed" {
+  assert {
+    condition     = local.cloudflare
+    error_message = "Skipping the pull request previews (Cloudflare Pages project, deploy token, GitHub secret): no Cloudflare token. Set TF_VAR_cloudflare_api_token to manage them."
+  }
+}
