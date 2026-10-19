@@ -9,15 +9,18 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { ParaglideMessage } from "@inlang/paraglide-js-react";
 import {
   type ChangeEvent,
   type FormEvent,
   type ReactElement,
+  type ReactNode,
   useEffect,
   useState,
 } from "react";
 
-import { beta } from "../content";
+import { betaDownload as download, betaSteps } from "../content";
+import { m } from "../paraglide/messages.js";
 import { site } from "../seo";
 import { Section } from "./Section";
 
@@ -29,8 +32,6 @@ type Status =
   | "ready"
   | "wrong"
   | "failed";
-
-const { download } = beta;
 
 function fromBase64(text: string): Uint8Array<ArrayBuffer> {
   const binary = atob(text);
@@ -112,9 +113,35 @@ async function unseal(
   return URL.createObjectURL(blob);
 }
 
+// What the page says while it works, and when it fails.
+const said: Record<
+  "checking" | "fetching" | "decrypting" | "wrong" | "failed",
+  () => string
+> = {
+  checking: m.beta_status_checking,
+  fetching: m.beta_status_fetching,
+  decrypting: m.beta_status_decrypting,
+  wrong: m.beta_status_wrong,
+  failed: m.beta_status_failed,
+};
+
 function megabytes(bytes: number): string {
   return `${(bytes / 1_000_000).toFixed(1)} MB`;
 }
+
+// Where the messages' link tags render.
+const howToMarkup = {
+  link: ({ children }: { children?: ReactNode }): ReactElement => (
+    <Anchor href="/#how-it-works">{children}</Anchor>
+  ),
+};
+const agreementMarkup = {
+  link: ({ children }: { children?: ReactNode }): ReactElement => (
+    <Anchor href="/license" c="dimmed" underline="always">
+      {children}
+    </Anchor>
+  ),
+};
 
 export function BetaDownload(): ReactElement {
   const [password, setPassword] = useState("");
@@ -122,7 +149,7 @@ export function BetaDownload(): ReactElement {
   const [url, setUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
-    document.title = `${beta.title} — ${site.name}`;
+    document.title = `${m.beta_title()} — ${site.name}`;
   }, []);
 
   // The object URL holds the whole build in memory; release it on leave.
@@ -164,16 +191,16 @@ export function BetaDownload(): ReactElement {
     <Section id="beta" tight>
       <Stack gap="md" maw={640}>
         <Title order={1} fz={{ base: 34, md: 44 }}>
-          {beta.title}
+          {m.beta_title()}
         </Title>
         <Text size="lg" lh={1.55}>
-          {beta.lede}
+          {m.beta_lede()}
         </Text>
 
         {status === "ready" && url !== undefined ? (
           <Stack gap="sm" mt="sm">
-            <Title order={3}>{beta.ready.title}</Title>
-            <Text c="dimmed">{beta.ready.body}</Text>
+            <Title order={3}>{m.beta_ready_title()}</Title>
+            <Text c="dimmed">{m.beta_ready_body()}</Text>
             <Group gap="md" align="center">
               <Button
                 component="a"
@@ -182,22 +209,25 @@ export function BetaDownload(): ReactElement {
                 color="ink"
                 c="brand.4"
               >
-                {beta.ready.button}
+                {m.beta_ready_button()}
               </Button>
               <Text size="sm" c="dimmed">
-                {download.name} · {megabytes(download.size)} · v
-                {download.version}
+                {m.beta_ready_file({
+                  name: download.name,
+                  size: megabytes(download.size),
+                  version: download.version,
+                })}
               </Text>
             </Group>
             <Text size="xs" c="dimmed" ff="monospace">
-              SHA-256 {download.sha256}
+              {m.beta_ready_sha({ digest: download.sha256 })}
             </Text>
           </Stack>
         ) : (
           <form onSubmit={onSubmit}>
             <Stack gap="sm" mt="sm">
               <PasswordInput
-                label={beta.passwordLabel}
+                label={m.beta_password()}
                 value={password}
                 onChange={onChange}
                 autoComplete="off"
@@ -212,17 +242,17 @@ export function BetaDownload(): ReactElement {
                   color="ink"
                   c="brand.4"
                 >
-                  {beta.unlock}
+                  {m.beta_unlock()}
                 </Button>
                 {busy ? (
                   <Text size="sm" c="dimmed">
-                    {beta.states[status]}
+                    {said[status]()}
                   </Text>
                 ) : undefined}
               </Group>
               {status === "wrong" || status === "failed" ? (
                 <Alert color="red" variant="light" maw={480}>
-                  {beta.states[status]}
+                  {said[status]()}
                 </Alert>
               ) : undefined}
             </Stack>
@@ -230,24 +260,26 @@ export function BetaDownload(): ReactElement {
         )}
 
         <Title order={3} mt="xl">
-          {beta.stepsTitle}
+          {m.beta_install_title()}
         </Title>
         <List type="ordered" spacing="xs">
-          {beta.steps.map((step) => (
-            <List.Item key={step}>
-              <Text lh={1.55}>{step}</Text>
+          {betaSteps.map((step) => (
+            <List.Item key={step()}>
+              <Text lh={1.55}>{step()}</Text>
             </List.Item>
           ))}
         </List>
         <Text lh={1.55}>
-          {beta.afterSteps}{" "}
-          <Anchor href={beta.howToHref}>{beta.howToLabel}</Anchor>
+          <ParaglideMessage
+            message={m.beta_install_after}
+            markup={howToMarkup}
+          />
         </Text>
         <Text size="sm" c="dimmed" mt="md">
-          {beta.agreement}{" "}
-          <Anchor href={beta.agreementHref} c="dimmed" underline="always">
-            {beta.agreementLabel}
-          </Anchor>
+          <ParaglideMessage
+            message={m.beta_agreement}
+            markup={agreementMarkup}
+          />
         </Text>
       </Stack>
     </Section>

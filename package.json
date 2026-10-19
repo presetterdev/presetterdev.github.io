@@ -8,17 +8,20 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr src/prerender.ts --outDir dist-ssr && node dist-ssr/prerender.js",
+    "build": "npm run messages && vite build && vite build --ssr src/prerender.ts --outDir dist-ssr && node dist-ssr/prerender.js",
     "preview": "vite preview",
     "lint": "oxlint --type-aware --type-check",
     "lint:md": "markdownlint-cli2",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "npm run lint && npm run lint:md && npm run format:check",
+    "check": "npm run messages && npm run lint && npm run lint:md && npm run format:check",
     "preview-password": "node scripts/preview-password.ts",
-    "renovate:apply": "npx --yes renovate@44.155.8 presetterdev/presetterdev.github.io"
+    "messages": "node scripts/messages.ts && paraglide-js compile --silent --strategy baseLocale --output-structure message-modules --emit-ts-declarations",
+    "renovate:apply": "npx --yes renovate@44.155.8 presetterdev/presetterdev.github.io",
+    "postinstall": "npm run messages"
   },
   "dependencies": {
+    "@inlang/paraglide-js-react": "^1.0.3",
     "@mantine/core": "^9.5.1",
     "@mantine/hooks": "^9.5.1",
     "@tanstack/react-router": "^1.170.18",
@@ -29,6 +32,8 @@
     "@cloudflare/workers-types": "^5.20261019.1",
     "@commitlint/cli": "^21.2.1",
     "@commitlint/config-conventional": "^21.2.0",
+    "@inlang/paraglide-js": "^2.29.0",
+    "@inlang/plugin-message-format": "^4.5.4",
     "@tanstack/router-plugin": "^1.168.23",
     "@tsconfig/strictest": "^2.0.8",
     "@tsconfig/vite-react": "^8.1.1",
@@ -37,6 +42,7 @@
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
     "eslint-plugin-comment-length": "^2.3.1",
+    "eslint-plugin-i18next": "^6.1.5",
     "markdownlint-cli2": "^0.23.2",
     "oxlint": "^1.77.0",
     "oxlint-tsgolint": "^7.0.2001",
@@ -46,6 +52,7 @@
     "prettier": "^3.9.6",
     "typescript": "^7.0.2",
     "vite": "^8.2.0",
-    "wrangler": "^4.151.1"
+    "wrangler": "^4.151.1",
+    "yaml": "^2.9.1"
   }
 }

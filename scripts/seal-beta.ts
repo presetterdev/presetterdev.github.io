@@ -3,8 +3,8 @@
 //   node scripts/seal-beta.ts <build.dmg> <password>
 //
 // Writes public/dl/<build>.enc — the DMG encrypted with AES-256-GCM under a
-// key derived from the password with PBKDF2 — and prints the `download`
-// object to paste into `beta` in src/content.ts. The repository is public,
+// key derived from the password with PBKDF2 — and prints the object to
+// paste in as `betaDownload` in src/content.ts. The repository is public,
 // so the file it holds has to be useless without the password; the page
 // decrypts it in the browser with the same WebCrypto calls used here.
 //
@@ -79,4 +79,4 @@ const download = {
   check: { iv: base64(checkIv), data: base64(check) },
 };
 console.log(`wrote ${join(outDir, outName)} (${sealed.byteLength} bytes)\n`);
-console.log(`download: ${JSON.stringify(download, undefined, 2)},`);
+console.log(JSON.stringify(download, undefined, 2));

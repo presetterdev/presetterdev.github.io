@@ -23,3 +23,7 @@ npm-debug.log*
 /terraform/terraform.tfstate
 /terraform/terraform.tfstate.backup
 /terraform/terraform.tfvars
+
+# Compiled from messages/en.yaml by `npm run messages`.
+/project.inlang/messages/
+/src/paraglide/

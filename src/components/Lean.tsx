@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
-import { lean } from "../content";
+import { leanPoints } from "../content";
+import { m } from "../paraglide/messages.js";
 import classes from "./Lean.module.css";
 import { Section } from "./Section";
 
@@ -12,17 +13,17 @@ export function Lean(): ReactElement {
   return (
     <Section id="lean" wide>
       <ul className={classes["list"]}>
-        {lean.points.map((point, index) => (
+        {leanPoints.map((point, index) => (
           <li
-            key={point}
+            key={point()}
             className={classes["item"]}
             data-category={colours[index % colours.length]}
           >
-            {point}
+            {point()}
           </li>
         ))}
       </ul>
-      <p className={classes["specs"]}>{lean.specs}</p>
+      <p className={classes["specs"]}>{m.lean_specs()}</p>
     </Section>
   );
 }

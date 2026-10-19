@@ -1,6 +1,7 @@
 import { type ReactElement, useEffect, useRef, useState } from "react";
 
-import { type SoundRow, sounds } from "../content";
+import { type Patch, patches, soundRows } from "../content";
+import { m } from "../paraglide/messages.js";
 import {
   type PresetId,
   type Synth,
@@ -49,6 +50,10 @@ function Wave({ patch }: { patch: PresetId }): ReactElement {
   );
 }
 
+const rows: readonly Patch[] = soundRows.flatMap((id) =>
+  patches.filter((patch) => patch.id === id),
+);
+
 // Four rows, each playing one of the hidden synth's patches when tapped.
 export function Sounds(): ReactElement {
   const synth = useRef<Synth | undefined>(undefined);
@@ -68,37 +73,37 @@ export function Sounds(): ReactElement {
     };
   }, [playing]);
 
-  function hear(row: SoundRow): void {
+  function hear(row: Patch): void {
     synth.current ??= createSynth();
-    playPhrase(synth.current, row.patch);
-    setPlaying(row.patch);
+    playPhrase(synth.current, row.id);
+    setPlaying(row.id);
   }
 
   return (
-    <Section id="sounds" title={sounds.title} wide>
+    <Section id="sounds" title={m.sounds_title()} wide>
       <ul className={classes["rows"]}>
-        {sounds.rows.map((row) => (
-          <li key={row.patch}>
+        {rows.map((row) => (
+          <li key={row.id}>
             <button
               type="button"
               className={classes["row"]}
-              data-category={row.patch}
-              data-playing={playing === row.patch || undefined}
-              aria-label={`${sounds.label} ${row.name}`}
+              data-category={row.id}
+              data-playing={playing === row.id || undefined}
+              aria-label={m.sounds_play({ name: row.name() })}
               onClick={() => {
                 hear(row);
               }}
             >
               <span className={classes["dot"]} aria-hidden="true" />
-              <span className={classes["name"]}>{row.name}</span>
-              <span className={classes["kind"]}>{row.kind}</span>
-              <Wave patch={row.patch} />
+              <span className={classes["name"]}>{row.name()}</span>
+              <span className={classes["kind"]}>{row.kind()}</span>
+              <Wave patch={row.id} />
             </button>
           </li>
         ))}
       </ul>
       <p className={classes["note"]}>
-        {sounds.note}{" "}
+        {m.sounds_note()}{" "}
         <button
           type="button"
           className={classes["open"]}
@@ -106,7 +111,7 @@ export function Sounds(): ReactElement {
             window.dispatchEvent(new Event(openEvent));
           }}
         >
-          {sounds.noteAction}
+          {m.sounds_note_action()}
         </button>
       </p>
     </Section>

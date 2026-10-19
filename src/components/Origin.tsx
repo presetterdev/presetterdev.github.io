@@ -1,13 +1,13 @@
 import type { ReactElement } from "react";
 
-import { origin } from "../content";
+import { m } from "../paraglide/messages.js";
 import { Prose } from "./Prose";
 import { Section } from "./Section";
 
 export function Origin(): ReactElement {
   return (
-    <Section id="why" title={origin.title}>
-      <Prose paragraphs={origin.body} lede />
+    <Section id="why" title={m.origin_title()}>
+      <Prose text={m.origin_body()} lede />
     </Section>
   );
 }

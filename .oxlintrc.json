@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["react", "typescript", "unicorn", "oxc", "import"],
-  "jsPlugins": ["eslint-plugin-comment-length"],
+  "jsPlugins": ["eslint-plugin-comment-length", "eslint-plugin-i18next"],
   "categories": {
     "correctness": "error",
     "suspicious": "error",
@@ -15,7 +15,12 @@
   "env": {
     "browser": true
   },
-  "ignorePatterns": ["dist", "node_modules", "src/routeTree.gen.ts"],
+  "ignorePatterns": [
+    "dist",
+    "node_modules",
+    "src/routeTree.gen.ts",
+    "src/paraglide"
+  ],
   "rules": {
     "comment-length/limit-single-line-comments": [
       "error",
@@ -52,6 +57,22 @@
     "typescript/explicit-function-return-type": [
       "error",
       { "allowExpressions": true }
+    ],
+    // Words on the page come from messages/en.yaml, never from the markup.
+    // Checked in JSX children and the attributes that carry text; strings
+    // elsewhere are far more often data than copy. Strings without a letter
+    // in them, like "404" or "·", are not words.
+    "i18next/no-literal-string": [
+      "error",
+      {
+        "mode": "jsx-only",
+        "jsx-attributes": {
+          "include": ["label", "title", "aria-label", "alt", "placeholder"]
+        },
+        "object-properties": { "exclude": [".*"] },
+        "words": { "exclude": ["^[^A-Za-z]*$"] },
+        "should-validate-template": true
+      }
     ],
     "react/rules-of-hooks": "error",
     "react/exhaustive-deps": "error",

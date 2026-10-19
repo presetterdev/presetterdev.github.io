@@ -1,8 +1,9 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 
-import { beta, license, notFound, privacy } from "./content";
 import { render } from "./entry-server";
+import { license, privacy } from "./legal";
+import { m } from "./paraglide/messages.js";
 import { site } from "./seo";
 
 // Runs after `vite build`, as the SSR bundle's entry: renders each page to
@@ -16,36 +17,35 @@ const rootTag = '<div id="root"></div>';
 
 interface Page {
   path: string;
-  // The home page keeps the title and description index.html carries.
-  head: { title: string; description: string; noindex?: boolean } | undefined;
+  head: { title: string; description: string; noindex?: boolean };
   // Where the page lands, when not dist/<path>/index.html.
   file?: string;
 }
 
 const pages: readonly Page[] = [
-  { path: "/", head: undefined },
+  {
+    path: "/",
+    head: { title: m.meta_title(), description: m.meta_description() },
+  },
   {
     path: "/license",
     head: {
-      title: license.title,
-      description: `${license.title}, beta terms included.`,
+      title: `${license.title} — ${site.name}`,
+      description: m.meta_pages_license({ title: license.title }),
     },
   },
   {
     path: "/privacy",
     head: {
-      title: privacy.title,
-      description:
-        "What Presetter collects and why: your presets stay on your Mac; an " +
-        "email address if you give one; a license-key check when the app " +
-        "runs.",
+      title: `${privacy.title} — ${site.name}`,
+      description: m.meta_pages_privacy(),
     },
   },
   {
     path: "/beta",
     head: {
-      title: beta.title,
-      description: "Download page for invited Presetter beta testers.",
+      title: `${m.beta_title()} — ${site.name}`,
+      description: m.meta_pages_beta(),
       noindex: true,
     },
   },
@@ -54,8 +54,8 @@ const pages: readonly Page[] = [
     // Pages serves 404.html for every address without a file.
     path: "/404",
     head: {
-      title: notFound.title,
-      description: notFound.body,
+      title: `${m.not_found_title()} — ${site.name}`,
+      description: m.not_found_body(),
       noindex: true,
     },
     file: join(dist, "404.html"),
@@ -79,22 +79,20 @@ async function prerender(page: Page): Promise<void> {
   let output = template
     .replace(rootTag, `<div id="root">${html}</div>`)
     .replace("</head>", `    ${head}\n  </head>`);
-  if (page.head !== undefined) {
-    output = output
-      .replace(
-        /<title>[\s\S]*?<\/title>/,
-        `<title>${escape(page.head.title)} — ${site.name}</title>`,
-      )
-      .replace(
-        /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
-        `<meta name="description" content="${escape(page.head.description)}" />`,
-      );
-    if (page.head.noindex === true) {
-      output = output.replace(
-        "</head>",
-        '    <meta name="robots" content="noindex, nofollow" />\n  </head>',
-      );
-    }
+  output = output
+    .replace(
+      /<title>[\s\S]*?<\/title>/,
+      `<title>${escape(page.head.title)}</title>`,
+    )
+    .replace(
+      /<meta\s+name="description"\s+content="[^"]*"\s*\/>/,
+      `<meta name="description" content="${escape(page.head.description)}" />`,
+    );
+  if (page.head.noindex === true) {
+    output = output.replace(
+      "</head>",
+      '    <meta name="robots" content="noindex, nofollow" />\n  </head>',
+    );
   }
   const file =
     page.file ??

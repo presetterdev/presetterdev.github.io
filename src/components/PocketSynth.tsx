@@ -1,13 +1,16 @@
+import { ParaglideMessage } from "@inlang/paraglide-js-react";
 import { Button, Group, Kbd, Modal, Slider, Text, Title } from "@mantine/core";
 import {
   type ReactElement,
+  type ReactNode,
   useCallback,
   useEffect,
   useRef,
   useState,
 } from "react";
 
-import { pocketSynth } from "../content";
+import { patches } from "../content";
+import { m } from "../paraglide/messages.js";
 import {
   type Clock,
   type Pattern,
@@ -24,6 +27,13 @@ import {
 } from "../synth";
 import { Mark } from "./Mark";
 import classes from "./PocketSynth.module.css";
+
+// Where the keyboard help's key tags render.
+const keysMarkup = {
+  key: ({ children }: { children?: ReactNode }): ReactElement => (
+    <Kbd>{children}</Kbd>
+  ),
+};
 
 interface Key {
   key: string;
@@ -102,10 +112,8 @@ export function PocketSynth(): ReactElement {
     window.setTimeout(() => {
       setLit((value) => (value === midi ? undefined : value));
     }, 180);
-    const label = pocketSynth.presets.find(
-      (item) => item.id === live.current.preset,
-    );
-    setLastNote(`${midiName(midi)} · ${label?.label ?? ""}`);
+    const patch = patches.find((item) => item.id === live.current.preset);
+    setLastNote(`${midiName(midi)} · ${patch?.name() ?? ""}`);
   }, []);
 
   function stop(): void {
@@ -225,20 +233,20 @@ export function PocketSynth(): ReactElement {
       title={
         <span className={classes["heading"]}>
           <Mark className={classes["mark"]} />
-          <span>{pocketSynth.title}</span>
+          <span>{m.synth_title()}</span>
         </span>
       }
       classNames={{ content: classes["content"] ?? "" }}
     >
       <Text c="dimmed" mb="md" maw={560} lh={1.5}>
-        {pocketSynth.lede}
+        {m.synth_lede()}
       </Text>
 
-      <Group gap={8} mb="md" role="group" aria-label={pocketSynth.presetLabel}>
+      <Group gap={8} mb="md" role="group" aria-label={m.synth_preset()}>
         <Text size="xs" c="dimmed" mr={4}>
-          {pocketSynth.presetLabel}
+          {m.synth_preset()}
         </Text>
-        {pocketSynth.presets.map((item) => (
+        {patches.map((item) => (
           <button
             key={item.id}
             type="button"
@@ -249,7 +257,7 @@ export function PocketSynth(): ReactElement {
               choosePreset(item.id);
             }}
           >
-            {item.label}
+            {item.name()}
           </button>
         ))}
       </Group>
@@ -257,7 +265,7 @@ export function PocketSynth(): ReactElement {
       <section
         className={classes["sequencer"]}
         data-category={preset}
-        aria-label={pocketSynth.size}
+        aria-label={m.synth_size()}
       >
         <div className={classes["grid"]} role="grid">
           {Array.from({ length: rows }, (_, row) =>
@@ -270,7 +278,10 @@ export function PocketSynth(): ReactElement {
                   column === current ? classes["dotNow"] : classes["dot"]
                 }
                 aria-pressed={pattern[column]?.[row] === true}
-                aria-label={`Step ${column + 1}, ${midiName(rowMidi[row] ?? 60)}`}
+                aria-label={m.synth_step({
+                  step: column + 1,
+                  note: midiName(rowMidi[row] ?? 60),
+                })}
                 onClick={() => {
                   toggle(column, row);
                 }}
@@ -279,8 +290,8 @@ export function PocketSynth(): ReactElement {
           )}
         </div>
         <div className={classes["scale"]}>
-          <span>{pocketSynth.scale}</span>
-          <span>{pocketSynth.size}</span>
+          <span>{m.synth_scale()}</span>
+          <span>{m.synth_size()}</span>
         </div>
         <Group gap="sm" align="center">
           <Button
@@ -290,7 +301,7 @@ export function PocketSynth(): ReactElement {
             }}
             miw={88}
           >
-            {running ? pocketSynth.stop : pocketSynth.play}
+            {running ? m.synth_stop() : m.synth_play()}
           </Button>
           <Button
             variant="default"
@@ -300,7 +311,7 @@ export function PocketSynth(): ReactElement {
               live.current = { ...live.current, pattern: next };
             }}
           >
-            {pocketSynth.reset}
+            {m.synth_reset()}
           </Button>
           <Button
             variant="default"
@@ -310,11 +321,11 @@ export function PocketSynth(): ReactElement {
               live.current = { ...live.current, pattern: next };
             }}
           >
-            {pocketSynth.clear}
+            {m.synth_clear()}
           </Button>
           <Group gap="sm" ml="auto" className={classes["tempo"]}>
             <Text size="sm" c="dimmed">
-              {pocketSynth.tempo}
+              {m.synth_tempo()}
             </Text>
             <Slider
               min={80}
@@ -325,12 +336,12 @@ export function PocketSynth(): ReactElement {
                 setBpm(value);
                 live.current = { ...live.current, bpm: value };
               }}
-              label={(value) => `${value} BPM`}
-              aria-label={pocketSynth.tempo}
+              label={(value) => m.synth_bpm({ bpm: value })}
+              aria-label={m.synth_tempo()}
               w={140}
             />
             <Text size="sm" ff="monospace" miw={64}>
-              {bpm} BPM
+              {m.synth_bpm({ bpm })}
             </Text>
           </Group>
         </Group>
@@ -339,15 +350,14 @@ export function PocketSynth(): ReactElement {
       <section
         className={classes["keysWrap"]}
         data-category={preset}
-        aria-label={pocketSynth.keysTitle}
+        aria-label={m.synth_keys_title()}
       >
         <div className={classes["keysHead"]}>
           <Title order={3} fz={15}>
-            {pocketSynth.keysTitle}
+            {m.synth_keys_title()}
           </Title>
           <Text size="sm" c="dimmed">
-            <Kbd>A</Kbd>–<Kbd>K</Kbd> white, <Kbd>W</Kbd> <Kbd>E</Kbd>{" "}
-            <Kbd>T</Kbd> <Kbd>Y</Kbd> <Kbd>U</Kbd> black. Or tap.
+            <ParaglideMessage message={m.synth_keys_help} markup={keysMarkup} />
           </Text>
         </div>
         <div className={classes["keys"]}>
@@ -389,7 +399,7 @@ export function PocketSynth(): ReactElement {
       </section>
 
       <Text size="xs" c="dimmed" mt="md">
-        {pocketSynth.dismiss}
+        {m.synth_dismiss()}
       </Text>
     </Modal>
   );

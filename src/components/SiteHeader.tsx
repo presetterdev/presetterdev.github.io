@@ -17,7 +17,7 @@ export function SiteHeader(): ReactElement {
           <Group gap="xl" visibleFrom="sm" component="nav">
             {nav.map((item) => (
               <a key={item.href} href={item.href} className={classes["link"]}>
-                {item.label}
+                {item.label()}
               </a>
             ))}
           </Group>

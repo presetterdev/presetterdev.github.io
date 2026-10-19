@@ -2,14 +2,17 @@ import { Text } from "@mantine/core";
 import type { ReactElement } from "react";
 
 interface ProseProps {
-  paragraphs: readonly string[];
+  // One paragraph per line. In messages/en.yaml that is a blank line, since
+  // the long texts are folded blocks, where single line breaks are spaces.
+  text: string;
   // Sets the first paragraph larger, as the lede.
   lede?: boolean;
 }
 
-// Running text, one paragraph per entry. Sections pass their copy through
-// here so every block of prose on the site has the same size and rhythm.
-export function Prose({ paragraphs, lede = false }: ProseProps): ReactElement {
+// Running text. Sections pass their copy through here so every block of
+// prose on the site has the same size and rhythm.
+export function Prose({ text, lede = false }: ProseProps): ReactElement {
+  const paragraphs = text.split(/\n+/);
   return (
     <>
       {paragraphs.map((paragraph, index) => {

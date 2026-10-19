@@ -1,12 +1,13 @@
 import { Text } from "@mantine/core";
 import { type ReactElement, useEffect, useState } from "react";
 
-import { worksWith } from "../content";
+import { nksExamples, vendors } from "../content";
+import { m } from "../paraglide/messages.js";
 import { DotText } from "./DotText";
 import { Section } from "./Section";
 import classes from "./WorksWith.module.css";
 
-const names = worksWith.vendors.flatMap((vendor) => vendor.plugins);
+const names = vendors.flatMap((vendor) => vendor.plugins);
 const dwell = 2200;
 
 // The plugin names, one at a time, in the dot face. It holds still while
@@ -53,36 +54,36 @@ function Cycler(): ReactElement {
 
 export function WorksWith(): ReactElement {
   return (
-    <Section id="plugins" title={worksWith.title} wide>
+    <Section id="plugins" title={m.works_title()} wide>
       <p className={classes["lead"]}>
-        <span>{worksWith.lead}</span>
+        <span>{m.works_lead()}</span>
         <Cycler />
       </p>
       <Text size="lg" lh={1.55} maw="64ch" mt="xl">
-        {worksWith.intro}
+        {m.works_intro()}
       </Text>
       <dl className={classes["vendors"]}>
-        {worksWith.vendors.map((vendor) => (
+        {vendors.map((vendor) => (
           <div key={vendor.name} className={classes["vendor"]}>
             <dt className={classes["vendorName"]}>{vendor.name}</dt>
             <dd className={classes["plugins"]}>{vendor.plugins.join(", ")}</dd>
             {vendor.effects === undefined ? undefined : (
               <dd className={classes["effects"]}>
-                {worksWith.effectsLabel}: {vendor.effects.join(", ")}
+                {m.works_effects({ plugins: vendor.effects.join(", ") })}
               </dd>
             )}
           </div>
         ))}
       </dl>
-      <p className={classes["nksTitle"]}>{worksWith.nksTitle}</p>
+      <p className={classes["nksTitle"]}>{m.works_nks_title()}</p>
       <Text lh={1.55} mt={6} maw="64ch">
-        {worksWith.nks}
+        {m.works_nks_body()}
       </Text>
       <Text c="dimmed" mt={6} maw="64ch">
-        {worksWith.nksChips.join(", ")}, and more.
+        {m.works_nks_more({ plugins: nksExamples.join(", ") })}
       </Text>
       <Text size="sm" c="dimmed" mt="lg" maw="64ch">
-        {worksWith.request}
+        {m.works_request()}
       </Text>
     </Section>
   );

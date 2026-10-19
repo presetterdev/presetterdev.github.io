@@ -20,6 +20,7 @@ than 80 columns (URLs and code samples may overflow).
 ## Layout
 
 ```text
+messages/en.yaml   every word on the site
 src/routes/        one file per page
 src/components/    components shared between pages
 src/media/         images/ and video/
@@ -27,6 +28,12 @@ src/theme.ts       colors, fonts, radii, spacing
 src/index.css      global styles
 terraform/         the GitHub repository's settings
 ```
+
+## Changing words
+
+Edit `messages/en.yaml`. Components never contain text of their own; lint
+rejects words written into markup. The legal pages are the exception: each is
+one dated document in `src/legal.ts`.
 
 ## Adding a page
 

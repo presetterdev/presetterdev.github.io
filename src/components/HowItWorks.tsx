@@ -1,7 +1,8 @@
 import { VisuallyHidden } from "@mantine/core";
 import type { ReactElement } from "react";
 
-import { howItWorks } from "../content";
+import { features, setupSteps } from "../content";
+import { m } from "../paraglide/messages.js";
 import { DotText } from "./DotText";
 import classes from "./HowItWorks.module.css";
 import { Screenshot } from "./Screenshot";
@@ -13,29 +14,29 @@ const meter = ["bass", "keys", "pad"] as const;
 
 export function HowItWorks(): ReactElement {
   return (
-    <Section id="how-it-works" title={howItWorks.title} wide>
+    <Section id="how-it-works" title={m.how_title()} wide>
       <div className={classes["grid"]}>
         <Screenshot />
         <ul className={classes["features"]}>
-          {howItWorks.features.map((feature) => (
+          {features.map((feature) => (
             <li
-              key={feature.title}
+              key={feature.category}
               className={classes["feature"]}
               data-category={feature.category}
             >
-              <h3 className={classes["featureTitle"]}>{feature.title}</h3>
-              <p className={classes["featureBody"]}>{feature.body}</p>
+              <h3 className={classes["featureTitle"]}>{feature.title()}</h3>
+              <p className={classes["featureBody"]}>{feature.body()}</p>
             </li>
           ))}
         </ul>
       </div>
       <h3 className={classes["stepsTitle"]}>
-        <VisuallyHidden>{howItWorks.stepsTitle}</VisuallyHidden>
-        <DotText lines={[howItWorks.stepsTitle]} pitch={3.2} />
+        <VisuallyHidden>{m.how_setup_title()}</VisuallyHidden>
+        <DotText lines={[m.how_setup_title()]} pitch={3.2} />
       </h3>
       <ol className={classes["steps"]}>
-        {howItWorks.steps.map((step, index) => (
-          <li key={step} className={classes["step"]}>
+        {setupSteps.map((step, index) => (
+          <li key={step()} className={classes["step"]}>
             <span className={classes["meter"]} aria-hidden="true">
               {meter.map((category, dot) => (
                 <span
@@ -46,11 +47,11 @@ export function HowItWorks(): ReactElement {
                 />
               ))}
             </span>
-            {step}
+            {step()}
           </li>
         ))}
       </ol>
-      <p className={classes["note"]}>{howItWorks.note}</p>
+      <p className={classes["note"]}>{m.how_setup_note()}</p>
     </Section>
   );
 }

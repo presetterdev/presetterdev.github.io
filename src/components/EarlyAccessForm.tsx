@@ -1,9 +1,12 @@
 import type { ReactElement } from "react";
 
+import { cta } from "../content";
+import { m } from "../paraglide/messages.js";
+
 // The Tally form. The embed script in index.html resizes the frame to the
 // form's real height once it loads; this height is the fallback.
 const src =
-  "https://tally.so/embed/gD2NoO?alignLeft=1&hideTitle=1" +
+  `https://tally.so/embed/${cta.tallyId}?alignLeft=1&hideTitle=1` +
   "&transparentBackground=1&dynamicHeight=1";
 
 export function EarlyAccessForm(): ReactElement {
@@ -17,7 +20,7 @@ export function EarlyAccessForm(): ReactElement {
       loading="lazy"
       width="100%"
       height={492}
-      title="Presetter early-access form"
+      title={m.waitlist_form_title()}
       style={{ border: 0, display: "block" }}
     />
   );
