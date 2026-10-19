@@ -49,6 +49,13 @@
   /* The unlit dots of the dot face, a shade under the page. */
   --pt-unlit: color-mix(in oklab, var(--pt-ink) 7%, var(--pt-page));
 
+  /* The sound categories again, dark enough to hold 3:1 against the blue:
+     forest, burnt orange, deep violet, raspberry. */
+  --pt-cat-pad: #0b6b3a;
+  --pt-cat-keys: #b8440b;
+  --pt-cat-bass: #4c1d95;
+  --pt-cat-lead: #b0125b;
+
   --mantine-color-text: var(--pt-ink);
   --mantine-color-dimmed: var(--pt-ink-dim);
   --mantine-color-anchor: var(--pt-ink);
