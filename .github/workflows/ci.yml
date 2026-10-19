@@ -52,3 +52,39 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  # Each pull request is also deployed to Cloudflare Pages as a preview, at a
+  # stable address per pull request (pr-<number>) that the pull request links
+  # to as its "preview" deployment. functions/_middleware.ts puts every
+  # preview behind one login the team shares. The project, the token and the
+  # "preview" environment's contents come from terraform/preview.tf.
+  #
+  # Pull requests from forks get no secrets, so they get no preview.
+  preview:
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    concurrency:
+      group: preview-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+    environment:
+      name: preview
+      url: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.151.1"
+          command: >-
+            pages deploy dist --project-name=presetter-site-preview
+            --branch=pr-${{ github.event.pull_request.number }}
