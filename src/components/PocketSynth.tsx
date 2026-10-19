@@ -78,9 +78,9 @@ function toggled(pattern: Pattern, column: number, row: number): Pattern {
   );
 }
 
-// The easter egg: the mark as a step sequencer, with four presets in the
-// site's category colours and a keyboard to play over the loop. Hidden
-// behind the P key on every page; the not-found page is the only hint.
+// The mark as a step sequencer, with four presets in the site's category
+// colours and a keyboard to play over the loop. Opened by a link in the
+// footer and one under the sound rows.
 export function PocketSynth(): ReactElement {
   const [open, setOpen] = useState(false);
   const [preset, setPreset] = useState<PresetId>("pad");
@@ -161,19 +161,14 @@ export function PocketSynth(): ReactElement {
     };
   }, [running]);
 
-  // P opens and closes it; while open, the home row plays and space runs
-  // the clock. Nothing is captured while the visitor is typing in a field.
+  // While it is open, the home row plays and space runs the clock. Nothing
+  // is captured while the visitor is typing in a field.
   useEffect(() => {
     const onKey = (event: KeyboardEvent): void => {
       if (event.metaKey || event.ctrlKey || event.altKey) return;
       if (isTyping(event.target)) return;
-      const key = event.key.toLowerCase();
-      if (key === "p") {
-        event.preventDefault();
-        setOpen((value) => !value);
-        return;
-      }
       if (!open) return;
+      const key = event.key.toLowerCase();
       if (key === " ") {
         event.preventDefault();
         if (clock.current?.running() === true) stop();

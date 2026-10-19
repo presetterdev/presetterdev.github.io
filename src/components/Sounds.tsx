@@ -54,7 +54,7 @@ const rows: readonly Patch[] = soundRows.flatMap((id) =>
   patches.filter((patch) => patch.id === id),
 );
 
-// Four rows, each playing one of the hidden synth's patches when tapped.
+// Four rows, each playing one of the synth's patches when tapped.
 export function Sounds(): ReactElement {
   const synth = useRef<Synth | undefined>(undefined);
   const [playing, setPlaying] = useState<PresetId | undefined>(undefined);

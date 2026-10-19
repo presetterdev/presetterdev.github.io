@@ -12,7 +12,7 @@ export const Route = createRootRoute({
 });
 
 // Wraps every page: header above, footer below. Sections size themselves.
-// The pocket synth renders nothing until someone presses P.
+// The synth renders nothing until a link opens it.
 function RootLayout(): ReactElement {
   return (
     <>

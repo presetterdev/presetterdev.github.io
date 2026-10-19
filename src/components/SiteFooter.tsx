@@ -22,6 +22,15 @@ export function SiteFooter(): ReactElement {
             <a href={contact.href} className={classes["link"]}>
               {contact.email}
             </a>
+            <button
+              type="button"
+              className={classes["link"]}
+              onClick={() => {
+                window.dispatchEvent(new Event(openEvent));
+              }}
+            >
+              {m.footer_synth()}
+            </button>
           </nav>
         </div>
         <div className={classes["bottom"]}>
@@ -31,15 +40,6 @@ export function SiteFooter(): ReactElement {
           <Text size="xs" c="dimmed" maw={640} mt={6} lh={1.5}>
             {m.footer_disclaimer()}
           </Text>
-          <button
-            type="button"
-            className={classes["hint"]}
-            onClick={() => {
-              window.dispatchEvent(new Event(openEvent));
-            }}
-          >
-            {m.footer_hint()}
-          </button>
         </div>
       </Container>
     </Box>

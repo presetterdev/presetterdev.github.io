@@ -17,13 +17,21 @@
   gap: rem(8px) rem(20px);
 }
 
+/* Also styles the button that opens the synth. */
 .link {
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
   color: var(--pt-ink-dim);
   text-decoration: none;
   font-size: rem(14px);
 }
 
-.link:hover {
+.link:hover,
+.link:focus-visible {
   color: var(--pt-ink);
 }
 
@@ -32,28 +40,4 @@
   margin-top: rem(32px);
   padding-top: rem(20px);
   border-top: 1px solid var(--pt-line);
-}
-
-/* The second hint to the hidden synth, as quiet as the first. */
-.hint {
-  appearance: none;
-  -webkit-appearance: none;
-  border: 0;
-  background: none;
-  padding: 0;
-  margin-top: rem(16px);
-  font: inherit;
-  font-size: rem(12px);
-  color: var(--pt-ink-faint);
-  cursor: pointer;
-}
-
-.hint:hover {
-  color: var(--pt-ink);
-}
-
-.hint:focus-visible {
-  color: var(--pt-ink);
-  outline: 2px solid var(--pt-accent);
-  outline-offset: 3px;
 }

@@ -1,6 +1,6 @@
 /* Matches MantineProvider's defaultColorScheme so the first paint is not a
    flash of white. The scheme stays dark for Mantine's own components: the
-   hidden synth's panel is a dark device sitting on the blue page. */
+   synth's panel is a dark device sitting on the blue page. */
 :root {
   color-scheme: dark;
   /* Keeps content clear of phone system bars on notched screens. */
@@ -9,7 +9,7 @@
 }
 
 /* The dark palette, for anything rendered outside the page itself: the
-   hidden synth's panel is portaled to <body>, outside #root. */
+   synth's panel is portaled to <body>, outside #root. */
 [data-mantine-color-scheme="dark"] {
   --mantine-color-body: #161617;
   --pt-panel: #1f1f21;

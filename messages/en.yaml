@@ -35,10 +35,10 @@ hero:
 sounds:
   title: TAP ONE TO HEAR IT
   play: "Play {name}"
-  note: These four come from the little synth hidden on this site.
-  note_action: Press P to play it.
+  note: These four come from a little synth built into this site.
+  note_action: Play with it.
 
-# The hidden synth's four patches: the sound rows and the synth itself.
+# The synth's four patches: the sound rows and the synth itself.
 patches:
   bass:
     name: Sub Bass
@@ -226,13 +226,12 @@ footer:
     in no way associated or affiliated with Presetter. They are used solely to
     identify the products Presetter works with and do not suggest affiliation,
     sponsorship, or endorsement. Ableton and Live are trademarks of Ableton AG.
-  hint: Press P.
+  synth: Synth
 
 # The page for addresses that don't exist.
 not_found:
   title: There's nothing here.
   body: That address doesn't exist. The home page has everything that does.
-  hint: "Well, almost. {#open}Press P.{/open}"
   home: Go to the home page
 
 # The legal pages' furniture. Their text is in src/legal.ts.
@@ -279,9 +278,9 @@ beta:
     Downloading means you accept the license agreement, beta terms included.
     {#link}Read the license agreement{/link}
 
-# The synth that opens from the not-found page and the footer.
+# The synth, opened from the footer and from under the sound rows.
 synth:
-  title: You found the synth.
+  title: The synth
   lede: >-
     The mark is a grid of dots. Each dot is a step: columns are time, rows are
     notes, and the P is the first riff.
@@ -300,7 +299,7 @@ synth:
     help: >-
       {#key}A{/key}–{#key}K{/key} white, {#key}W{/key} {#key}E{/key}
       {#key}T{/key} {#key}Y{/key} {#key}U{/key} black. Or tap.
-  dismiss: Esc closes it. P brings it back.
+  dismiss: Esc closes it.
 
 # What search engines and link previews show. Not on the page itself.
 meta:

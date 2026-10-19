@@ -1,4 +1,4 @@
-/* The hidden synth: the mark's dot grid as a sequencer, in the modal. An
+/* The synth: the mark's dot grid as a sequencer, in the modal. An
    active element takes its sound category's colour through --chip, which
    index.css sets from data-category on an ancestor. */
 

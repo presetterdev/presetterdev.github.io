@@ -45,7 +45,7 @@ export interface Patch {
   kind: Words;
 }
 
-// The hidden synth's patches, in the order its preset chips show them.
+// The synth's patches, in the order its preset chips show them.
 export const patches: readonly Patch[] = [
   { id: "pad", name: m.patches_pad_name, kind: m.patches_pad_kind },
   { id: "keys", name: m.patches_keys_name, kind: m.patches_keys_kind },
@@ -54,7 +54,7 @@ export const patches: readonly Patch[] = [
 ];
 
 // The playable rows under the hero, in the order they are listed. They play
-// the hidden synth's own patches, so the page shows no one else's preset
+// the site's own synth patches, so the page shows no one else's preset
 // names.
 export const soundRows: readonly PresetId[] = ["bass", "keys", "pad", "lead"];
 
