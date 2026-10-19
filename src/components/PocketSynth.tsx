@@ -3,7 +3,6 @@ import { Button, Group, Kbd, Modal, Slider, Text, Title } from "@mantine/core";
 import {
   type ReactElement,
   type ReactNode,
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -58,9 +57,13 @@ const keyboard: readonly Key[] = [
   { key: "k", midi: 72, black: false },
 ];
 const whiteKeys = keyboard.filter((key) => !key.black).length;
+// How many white keys sit left of each key; a black key straddles the gap
+// after that many.
+const whitesBefore: readonly number[] = keyboard.map(
+  (_, index) => keyboard.slice(0, index).filter((key) => !key.black).length,
+);
 
-// Dispatched on window by anything that wants to open the synth without a
-// keyboard, such as the not-found page's hint on a phone.
+// Dispatched on window by the links that open the synth.
 export const openEvent = "presetter:synth";
 
 function isTyping(target: EventTarget | null): boolean {
@@ -95,8 +98,11 @@ export function PocketSynth(): ReactElement {
 
   const synth = useRef<Synth | undefined>(undefined);
   const clock = useRef<Clock | undefined>(undefined);
+  // What the clock reads on each tick, kept current without restarting it.
   const live = useRef({ pattern, preset, bpm });
-  live.current = { pattern, preset, bpm };
+  useEffect(() => {
+    live.current = { pattern, preset, bpm };
+  }, [pattern, preset, bpm]);
   const flashes = useRef<{ step: number; at: number }[]>([]);
 
   function engine(): Synth {
@@ -104,7 +110,7 @@ export function PocketSynth(): ReactElement {
     return synth.current;
   }
 
-  const noteOn = useCallback((midi: number): void => {
+  function noteOn(midi: number): void {
     const s = engine();
     s.wake();
     s.play(live.current.preset, midi, s.now(), 0.35);
@@ -114,7 +120,7 @@ export function PocketSynth(): ReactElement {
     }, 180);
     const patch = patches.find((item) => item.id === live.current.preset);
     setLastNote(`${midiName(midi)} · ${patch?.name() ?? ""}`);
-  }, []);
+  }
 
   function stop(): void {
     clock.current?.stop();
@@ -214,8 +220,6 @@ export function PocketSynth(): ReactElement {
       s.play(live.current.preset, midi, s.now(), 0.25);
     }
   }
-
-  let whiteIndex = 0;
 
   return (
     <Modal
@@ -356,9 +360,8 @@ export function PocketSynth(): ReactElement {
           </Text>
         </div>
         <div className={classes["keys"]}>
-          {keyboard.map((key) => {
-            const position = whiteIndex;
-            if (!key.black) whiteIndex += 1;
+          {keyboard.map((key, index) => {
+            const position = whitesBefore[index] ?? 0;
             const style = key.black
               ? {
                   left: `calc(100% / ${whiteKeys} * ${position} - 100% / ${whiteKeys} * 0.31)`,
