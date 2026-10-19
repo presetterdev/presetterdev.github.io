@@ -1,0 +1,101 @@
+// Dependency updates: Renovate opens the pull requests, monthly.
+//
+// When it runs is the cron in .github/workflows/renovate.yml and
+// nothing else. A schedule here as well is a second clock that has to
+// agree with the first, and when it does not, every run opens nothing.
+//
+// JSON5 for these comments; Renovate reads renovate.json5 as readily
+// as renovate.json.
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended", ":semanticCommits"],
+
+  // Actions by digest, so that what runs is what was reviewed: a tag
+  // is a moving target.
+  pinDigests: true,
+
+  // A malicious release is usually found and pulled within hours, so
+  // declining to look at one until it has survived a few days removes
+  // most of the exposure. Strict means such an update is skipped rather
+  // than branched and left pending. Only where the datasource reports a
+  // release time; elsewhere there is no delay.
+  minimumReleaseAge: "5 days",
+  internalChecksFilter: "strict",
+
+  // The defaults, 2 an hour and 10 open, suit a bot that runs hourly.
+  // This one runs once a month, so they would let two updates through a
+  // month and hold the rest; the schedule is the limit that matters.
+  prHourlyLimit: 0,
+  prConcurrentLimit: 0,
+
+  enabledManagers: [
+    "npm",
+    "nodenv",
+    "github-actions",
+    "terraform",
+    "custom.regex",
+  ],
+
+  dependencyDashboardFooter: '### Updates to `.github/workflows`\n\nThese wait above under *Pending Approval*: the scheduled run authenticates as the repository\'s own `GITHUB_TOKEN`, which cannot write a workflow file. Tick the ones you want, then run Renovate with your own GitHub CLI login, which can:\n\n```\nRENOVATE_TOKEN="$(gh auth token)" npm run renovate:apply\n```\n\nIf that is refused, the login is missing the scope: `gh auth refresh -s workflow`. The run reads this same configuration, so it also opens anything else that has come due.',
+
+  lockFileMaintenance: {
+    enabled: true,
+    // Renovate gives lock file maintenance a schedule of its own by
+    // default.
+    schedule: ["at any time"],
+  },
+
+  customManagers: [
+    {
+      customType: "regex",
+      description: "The Renovate the scheduled run uses and the one `npm run renovate:apply` uses; one decision, two files.",
+      managerFilePatterns: [".github/workflows/renovate.yml", "package.json"],
+      matchStrings: ["renovate@(?<currentValue>\\d+\\.\\d+\\.\\d+)"],
+      depNameTemplate: "renovate",
+      datasourceTemplate: "npm",
+    },
+  ],
+
+  packageRules: [
+    {
+      description: "Tooling that never reaches the site moves together. Listed first: the groups below are narrower and take precedence.",
+      matchDepTypes: ["devDependencies"],
+      matchUpdateTypes: ["minor", "patch"],
+      groupName: "dev dependencies",
+    },
+    {
+      matchPackageNames: [
+        "react",
+        "react-dom",
+        "@types/react",
+        "@types/react-dom",
+      ],
+      groupName: "react",
+    },
+    {
+      description: "Mantine's packages are released together and expect one another at the same version, as does the PostCSS preset its styles are written for.",
+      matchPackageNames: ["@mantine/*", "postcss-preset-mantine"],
+      groupName: "mantine",
+    },
+    {
+      description: "The router plugin generates the route tree the router reads.",
+      matchPackageNames: ["@tanstack/react-router", "@tanstack/router-plugin"],
+      groupName: "tanstack router",
+    },
+    {
+      description: "The Node .node-version pins, which every workflow installs, and the types for it.",
+      matchDepNames: ["node", "@types/node"],
+      groupName: "node",
+    },
+    {
+      description: "The scheduled run's GITHUB_TOKEN cannot write under .github/workflows, so an update there would be refused at the push and read as a broken run. Held for approval instead, which lists it on the dashboard; the footer says how to apply it.",
+      matchFileNames: [".github/workflows/**"],
+      dependencyDashboardApproval: true,
+    },
+  ],
+
+  vulnerabilityAlerts: {
+    labels: ["security"],
+    schedule: ["at any time"],
+  },
+}

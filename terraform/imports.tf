@@ -25,6 +25,11 @@ import {
 }
 
 import {
+  to = github_workflow_repository_permissions.repo
+  id = var.github_repository_name
+}
+
+import {
   to = github_repository_environment.preview
   id = "${var.github_repository_name}:preview"
 }

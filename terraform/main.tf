@@ -78,6 +78,25 @@ resource "github_repository_vulnerability_alerts" "repo" {
   repository = github_repository.repo.name
 }
 
+# Renovate runs as the repository's own GITHUB_TOKEN rather than a provisioned
+# secret, and GitHub refuses to let a workflow open a pull request at all unless
+# can_approve_pull_request_reviews is set. The name is misleading: the setting it
+# controls is "Allow GitHub Actions to create and approve pull requests", and
+# creating is the half that matters here. Approving is still no risk: the
+# branch protection below wants a passing check, and every workflow run on a
+# pull request the token opened waits for a human to release it.
+#
+# The organization-level switch it also needs is managed in the presetter
+# repository's configuration, which owns the organization's settings.
+#
+# Workflows get read by default and ask for more in their own permissions block,
+# so a new workflow starts with the least it can have.
+resource "github_workflow_repository_permissions" "repo" {
+  repository                       = github_repository.repo.name
+  default_workflow_permissions     = "read"
+  can_approve_pull_request_reviews = true
+}
+
 # What actually stops an unreviewed change reaching production: main only
 # moves through a pull request whose CI job passed.
 #
