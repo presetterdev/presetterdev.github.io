@@ -234,7 +234,8 @@ export function createSynth(): Synth {
   let out: GainNode | undefined;
   let analyser: AnalyserNode | undefined;
   let send: GainNode | undefined;
-  let muted = false;
+  // Silent until someone asks for sound.
+  let muted = true;
 
   function graph(): {
     context: AudioContext;

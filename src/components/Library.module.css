@@ -271,6 +271,16 @@
   fill: var(--chip);
 }
 
+/* The playhead, as in the opened editor: a darker column, and the notes
+   it is sounding in ink. */
+.thumb [data-now] {
+  fill: var(--pt-line-strong);
+}
+
+.thumb .thumbOn[data-now] {
+  fill: var(--pt-ink);
+}
+
 /* The clip editor folds open: a grid row going from nothing to its
    content's height animates where a height transition could not. */
 .fold {

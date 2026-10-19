@@ -190,7 +190,15 @@ function Scope({ synth }: { synth: Synth }): ReactElement {
 }
 
 // The clip in miniature: the button that opens the editor.
-function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
+// The column the audio is on shows here too, so a folded clip still says
+// it is playing.
+function Thumbnail({
+  pattern,
+  current,
+}: {
+  pattern: Pattern;
+  current: number | undefined;
+}): ReactElement {
   const dots: ReactElement[] = [];
   for (const column of steps) {
     for (const row of notes) {
@@ -203,6 +211,7 @@ function Thumbnail({ pattern }: { pattern: Pattern }): ReactElement {
           className={
             pattern[column]?.[row] === true ? classes["thumbOn"] : undefined
           }
+          data-now={column === current || undefined}
         />,
       );
     }
@@ -231,6 +240,9 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   const [muted, setMuted] = useState(true);
   const [running, setRunning] = useState(false);
   const [editing, setEditing] = useState(false);
+  // Whether the visitor has chosen a sound themselves. The disclaimer is
+  // about the sound they chose, so it waits for that.
+  const [picked, setPicked] = useState(false);
   const [pattern, setPattern] = useState<Pattern>(() =>
     patternFrom(markPattern),
   );
@@ -256,10 +268,11 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   );
   const sound = librarySounds.find((item) => item.id === selected) ?? first;
 
-  // Starts the clip. Sound stays as the visitor set it: only the sound
-  // toggle turns it on.
-  function play(): void {
+  // Starts the clip, with sound on or off as asked. The synth is told every
+  // time rather than trusted to agree with the button.
+  function play(quiet: boolean): void {
     const s = audio.synth();
+    s.mute(quiet, 0);
     clock.current ??= audio.clock(
       s,
       () => live.current,
@@ -281,7 +294,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
   function toggleSound(): void {
     audio.synth().mute(!muted);
     setMuted(!muted);
-    if (muted && !running) play();
+    if (muted && !running) play(false);
   }
 
   function choose(id: SoundId): void {
@@ -319,13 +332,14 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
     if (event.key === " " || event.key === "Enter") {
       event.preventDefault();
       if (running) stop();
-      else play();
+      else play(muted);
       return;
     }
     const target = next === undefined ? undefined : visible[next];
     if (target === undefined) return;
     event.preventDefault();
     choose(target.id);
+    setPicked(true);
   }
 
   // Reads the pattern from the ref, which updates at once, so a fast drag
@@ -550,13 +564,14 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
                   data-category={item.category}
                   onClick={() => {
                     choose(item.id);
-                    if (!running) play();
+                    setPicked(true);
+                    if (!running) play(muted);
                   }}
                 >
                   <span className={classes["dot"]} aria-hidden="true" />
                   <span className={classes["name"]}>
                     {rowName(item)}
-                    {item.id === selected ? (
+                    {picked && item.id === selected ? (
                       <span className={classes["mark"]} aria-hidden="true">
                         *
                       </span>
@@ -579,7 +594,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
             aria-label={running ? m.library_stop() : m.library_play()}
             onClick={() => {
               if (running) stop();
-              else play();
+              else play(muted);
             }}
           >
             <svg viewBox="0 0 10 10" aria-hidden="true" focusable="false">
@@ -607,7 +622,7 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
               setEditing((value) => !value);
             }}
           >
-            <Thumbnail pattern={pattern} />
+            <Thumbnail pattern={pattern} current={current} />
           </button>
         </div>
 
@@ -692,8 +707,10 @@ export function Library({ audio = pageAudio }: LibraryProps): ReactElement {
           </div>
         </div>
       </div>
+      {/* Space is kept for it from the start, so it appearing moves
+          nothing. */}
       <p className={classes["caption"]}>
-        {m.library_caption({ plugin: sound?.plugin ?? "" })}
+        {picked ? m.library_caption({ plugin: sound?.plugin ?? "" }) : ""}
       </p>
     </section>
   );

@@ -159,15 +159,33 @@ describe("Library", () => {
     ).toBeInTheDocument();
     expect(rows()).toHaveLength(8);
     expect(selectedName()).toBe("Diva Lead");
-    expect(screen.getByText(/Not a real Diva patch/u)).toBeInTheDocument();
     expect(document.querySelector("canvas")).toBeNull();
+  });
+
+  it("says a sound is not real only once the visitor picks one", async () => {
+    setup();
+    expect(screen.queryByText(/Not a real/u)).toBeNull();
+    expect(
+      screen.getByRole("option", { selected: true }),
+    ).not.toHaveTextContent("*");
+    await userEvent.click(screen.getByRole("listbox"));
+    await userEvent.keyboard("{ArrowDown}");
+    expect(
+      screen.getByText(/Not a real Omnisphere patch/u),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("option", { selected: true })).toHaveTextContent(
+      "*",
+    );
   });
 
   it("plays a clicked row silently, with a scope showing it", async () => {
     const fake = setup();
     await userEvent.click(screen.getByText("Omnisphere Pad"));
     expect(fake.running()).toBe(true);
-    expect(fake.mutes).toEqual([]);
+    // The synth is told the clip is silent as it starts. It once trusted
+    // the synth to start muted, which it did not, and the page played out
+    // loud under a button saying "Sound off".
+    expect(fake.mutes).toEqual([[true, 0]]);
     expect(fake.heard()?.sound).toBe("omnisphere-pad");
     expect(
       screen.getByRole("button", { name: m.library_sound_off() }),
@@ -266,6 +284,9 @@ describe("Library", () => {
     });
     const row = within(grid).getAllByRole("row")[0];
     expect(row?.children[5]).toHaveAttribute("data-now");
+    // The folded clip's thumbnail marks the same column, one dot per note.
+    const thumb = screen.getByRole("button", { name: m.library_clip_edit() });
+    expect(thumb.querySelectorAll("[data-now]")).toHaveLength(7);
   });
 
   it("fades out and stops a while after leaving the screen", () => {
