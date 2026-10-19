@@ -43,9 +43,8 @@ const ink: MantineColorsTuple = [
   "#01070a",
 ];
 
-// Everything visual that is site-wide belongs here rather than in per-component
-// styles, so a restyle is one file. Accent and category colours for plain CSS
-// are the --pt-* custom properties in index.css, derived from this palette.
+// Mantine's side of the theme: the two base colours, type, radii. Every other
+// colour is a --pt-* custom property in tokens.css, mixed from these two.
 export const theme = createTheme({
   colors: { brand, ink },
   primaryColor: "brand",

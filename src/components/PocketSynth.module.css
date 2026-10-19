@@ -1,6 +1,6 @@
 /* The synth: the mark's dot grid as a sequencer, in the modal. An
    active element takes its sound category's colour through --chip, which
-   index.css sets from data-category on an ancestor. */
+   tokens.css sets from data-category on an ancestor. */
 
 .content {
   background: var(--mantine-color-body);
@@ -48,7 +48,11 @@
     var(--chip, var(--pt-accent)) 60%,
     transparent
   );
-  color: color-mix(in srgb, var(--chip, var(--pt-accent)) 80%, white);
+  color: color-mix(
+    in srgb,
+    var(--chip, var(--pt-accent)) 80%,
+    var(--mantine-color-white)
+  );
 }
 
 .sequencer {
@@ -91,7 +95,7 @@
 /* The column the audio is on. */
 .dotNow {
   composes: dot;
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+  box-shadow: inset 0 0 0 2px var(--pt-line-strong);
 }
 
 .dotNow[aria-pressed="true"] {

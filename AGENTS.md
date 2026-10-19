@@ -14,8 +14,9 @@ until CI is green.
 Never relax a rule, add an ignore comment, or ignore a file to make an error go
 away. Fix the code. Changing a rule is its own commit, explaining why.
 
-Enforced: no `any`, no type assertions, explicit return types, comments no wider
-than 80 columns (URLs and code samples may overflow).
+Enforced: no `any`, no type assertions, explicit return types, no colours
+outside `src/tokens.css`, comments no wider than 80 columns (URLs and code
+samples may overflow).
 
 ## Layout
 
@@ -24,7 +25,8 @@ messages/en.yaml   every word on the site
 src/routes/        one file per page
 src/components/    components shared between pages
 src/media/         images/ and video/
-src/theme.ts       colors, fonts, radii, spacing
+src/theme.ts       Mantine: the two base colours, fonts, radii
+src/tokens.css     every other colour
 src/index.css      global styles
 terraform/         the GitHub repository's settings
 ```
@@ -55,8 +57,10 @@ broken image, and the build fingerprints the file for cache busting.
 
 ## Building UI
 
-Prefer Mantine components over raw HTML and hand-written CSS. Site-wide visual
-choices belong in `src/theme.ts`.
+Prefer Mantine components over raw HTML and hand-written CSS. Colours live in
+`src/tokens.css` as `--pt-*` custom properties; component styles use those, and
+lint rejects a colour written anywhere else. Fonts and radii are in
+`src/theme.ts`.
 
 ## Commits
 

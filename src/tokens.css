@@ -1,0 +1,90 @@
+/* Every colour the site uses, as custom properties. Component styles only
+   ever refer to these (stylelint rejects a colour written anywhere else), so
+   changing a colour is an edit to this file.
+
+   The two base colours are Mantine's, from theme.ts: --mantine-color-brand-4
+   (the logo blue, the page) and --mantine-color-ink-4 (the navy it is
+   printed in). Everything on the page is mixed from those two, so changing
+   either one carries through.
+
+   There are two surfaces, and components are written once for both: they
+   ask for --pt-ink or --pt-line and get whatever the surface they sit on
+   defines.
+   - The page, inside #root: navy on the blue.
+   - The panel: near-black, for anything Mantine portals out of #root (the
+     synth's modal). Mantine's dark scheme stays on for its own components
+     there. */
+
+/* The panel, and the defaults everything inherits. */
+[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: #161617;
+  --pt-panel: #1f1f21;
+  --pt-panel-raised: #262629;
+  --pt-line: color-mix(in srgb, white 9%, transparent);
+  --pt-line-strong: color-mix(in srgb, white 16%, transparent);
+  --pt-accent: var(--mantine-color-brand-4);
+
+  /* Sound categories: each kind of sound keeps one colour wherever it
+     appears, so they read as a system rather than as decoration. Bright,
+     for the dark panel. */
+  --pt-cat-pad: #34d3b5;
+  --pt-cat-keys: #f4b740;
+  --pt-cat-bass: #a78bfa;
+  --pt-cat-lead: #ff7aa8;
+}
+
+/* The page. Mantine's text and dimmed colours follow, so its components
+   read correctly without per-call colours. */
+#root {
+  --pt-page: var(--mantine-color-brand-4);
+  --pt-ink: var(--mantine-color-ink-4);
+  --pt-ink-dim: color-mix(in oklab, var(--pt-ink) 74%, var(--pt-page));
+  --pt-ink-faint: color-mix(in oklab, var(--pt-ink) 50%, var(--pt-page));
+  --pt-heading: var(--pt-ink);
+  --pt-raised: color-mix(in oklab, white 15%, var(--pt-page));
+  --pt-line: color-mix(in srgb, var(--pt-ink) 16%, transparent);
+  --pt-line-strong: color-mix(in srgb, var(--pt-ink) 28%, transparent);
+  --pt-shadow: color-mix(in srgb, var(--pt-ink) 28%, transparent);
+  --pt-accent: var(--pt-ink);
+  /* The unlit dots of the dot face, a shade under the page. */
+  --pt-unlit: color-mix(in oklab, var(--pt-ink) 7%, var(--pt-page));
+
+  --mantine-color-text: var(--pt-ink);
+  --mantine-color-dimmed: var(--pt-ink-dim);
+  --mantine-color-anchor: var(--pt-ink);
+  color: var(--pt-ink);
+}
+
+/* The dot texture behind the whole page, on <body> and so outside #root:
+   the mark's grid, a shade off the blue, with a sparser darker grid over
+   it. */
+:root {
+  --pt-texture: color-mix(
+    in oklab,
+    var(--mantine-color-ink-4) 2%,
+    var(--mantine-color-brand-4)
+  );
+  --pt-texture-sparse: color-mix(
+    in oklab,
+    var(--mantine-color-ink-4) 8%,
+    var(--mantine-color-brand-4)
+  );
+}
+
+/* Anything tagged with a sound category takes its colour as --chip, from
+   the surface it sits on. */
+[data-category="pad"] {
+  --chip: var(--pt-cat-pad);
+}
+
+[data-category="keys"] {
+  --chip: var(--pt-cat-keys);
+}
+
+[data-category="bass"] {
+  --chip: var(--pt-cat-bass);
+}
+
+[data-category="lead"] {
+  --chip: var(--pt-cat-lead);
+}
