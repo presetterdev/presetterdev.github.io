@@ -17,6 +17,9 @@ interface DotTextProps {
 const cellWidth = glyphColumns + 1;
 const lineHeight = glyphRows + 2;
 const radius = 0.4;
+// Unlit dots only hint at the display behind the letters. Much above this
+// and the grid competes with the lit dots and the words stop reading.
+const unlitOpacity = 0.08;
 
 // Text set in the mark's dot face, as one SVG in the current text colour.
 // It is decoration: put the same words in the document as real text next to
@@ -48,7 +51,7 @@ export function DotText({
             cx={column + 0.5}
             cy={top + row + 0.5}
             r={radius}
-            opacity={on ? 1 : 0.16}
+            opacity={on ? 1 : unlitOpacity}
           />,
         );
       }
