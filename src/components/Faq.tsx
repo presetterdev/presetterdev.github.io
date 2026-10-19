@@ -1,6 +1,7 @@
 import type { ReactElement } from "react";
 
 import { faq } from "../content";
+import { m } from "../paraglide/messages.js";
 import classes from "./Faq.module.css";
 import { Section } from "./Section";
 
@@ -8,12 +9,12 @@ import { Section } from "./Section";
 // manual. Nothing to click.
 export function Faq(): ReactElement {
   return (
-    <Section id="faq" title={faq.title} wide>
+    <Section id="faq" title={m.faq_title()} wide>
       <dl className={classes["list"]}>
-        {faq.items.map((item) => (
-          <div key={item.question} className={classes["row"]}>
-            <dt className={classes["question"]}>{item.question}</dt>
-            <dd className={classes["answer"]}>{item.answer}</dd>
+        {faq.map((item) => (
+          <div key={item.question()} className={classes["row"]}>
+            <dt className={classes["question"]}>{item.question()}</dt>
+            <dd className={classes["answer"]}>{item.answer()}</dd>
           </div>
         ))}
       </dl>

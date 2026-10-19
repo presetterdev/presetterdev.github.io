@@ -7,6 +7,7 @@ import { routeTree } from "./routeTree.gen";
 import { theme } from "./theme";
 
 import "@mantine/core/styles.css";
+import "./tokens.css";
 import "./index.css";
 
 // Keeps the router's idea of the URL prefix in step with Vite's `base`, so

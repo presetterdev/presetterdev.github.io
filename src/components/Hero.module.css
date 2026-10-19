@@ -1,29 +1,24 @@
-.copy {
-  max-width: rem(760px);
+/* Headline beside the library on wide screens, above it on narrow ones.
+   Both start at the top, so opening the clip editor grows the library
+   downwards and nothing beside it moves. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: rem(40px);
+  align-items: start;
 }
 
 .title {
-  font-size: rem(44px);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-weight: 600;
-  color: var(--mantine-color-white);
   margin: 0;
-  /* On phones the lines run on; balance keeps the last from being one
-     word. */
-  text-wrap: balance;
-}
-
-.line {
-  display: inline;
+  color: var(--pt-ink);
 }
 
 .lede {
   font-size: rem(19px);
   line-height: 1.5;
-  color: var(--mantine-color-dark-0);
-  max-width: 32em;
-  margin: rem(24px) 0 0;
+  color: var(--pt-ink-dim);
+  max-width: 34em;
+  margin: rem(32px) 0 0;
 }
 
 .actions {
@@ -36,48 +31,26 @@
 
 .micro {
   margin: 0;
-  font-size: rem(14px);
-  color: var(--mantine-color-dark-2);
+  font-size: rem(15px);
+  color: var(--pt-ink-dim);
 }
 
 .contact {
   margin: rem(14px) 0 0;
   font-size: rem(14px);
-  color: var(--mantine-color-dark-2);
+  color: var(--pt-ink-dim);
 }
 
 .email {
-  color: var(--mantine-color-dark-0);
+  color: var(--pt-ink);
   text-decoration: underline;
   text-decoration-color: var(--pt-line-strong);
   text-underline-offset: 3px;
 }
 
-.email:hover {
-  color: var(--mantine-color-white);
-}
-
-.readout {
-  margin-top: rem(40px);
-}
-
-@media (min-width: $mantine-breakpoint-sm) {
-  .title {
-    font-size: rem(60px);
-  }
-
-  .line {
-    display: block;
-  }
-}
-
 @media (min-width: $mantine-breakpoint-md) {
-  /* The loudest thing on the page by a clear margin. */
-  .title {
-    font-size: rem(76px);
-  }
-
-  .readout {
-    margin-top: rem(56px);
+  .layout {
+    grid-template-columns: minmax(0, 1fr) rem(540px);
+    gap: rem(56px);
   }
 }

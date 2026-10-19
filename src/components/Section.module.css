@@ -1,6 +1,6 @@
 .section {
   padding-block: rem(56px);
-  /* Decorative glows may spill sideways; sections clip them, not the page. */
+  /* Wide rows may spill sideways; sections clip them, not the page. */
   overflow-x: clip;
 }
 
@@ -10,15 +10,12 @@
 
 .tight {
   padding-top: rem(40px);
-}
-
-.grid {
-  display: grid;
-  gap: rem(16px);
+  border-top: 0;
 }
 
 .title {
-  margin: 0;
+  margin: 0 0 rem(28px);
+  color: var(--pt-ink);
 }
 
 .body {
@@ -32,16 +29,10 @@
 
 @media (min-width: $mantine-breakpoint-md) {
   .section {
-    padding-block: rem(88px);
+    padding-block: rem(80px);
   }
 
   .tight {
-    padding-top: rem(64px);
-  }
-
-  .grid {
-    grid-template-columns: rem(220px) minmax(0, 1fr);
-    column-gap: rem(64px);
-    align-items: start;
+    padding-top: rem(72px);
   }
 }

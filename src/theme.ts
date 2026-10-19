@@ -27,11 +27,26 @@ const brand: MantineColorsTuple = [
   "#175c7c",
 ];
 
-// Everything visual that is site-wide belongs here rather than in per-component
-// styles, so a restyle is one file. Accent and category colours for plain CSS
-// are the --pt-* custom properties in index.css, derived from this palette.
+// The ink the page is printed in: navy on the brand blue. Index 4 is the
+// primary shade like brand's, so a button in "ink" is the navy itself, and
+// its hover (index 5) goes one step darker.
+const ink: MantineColorsTuple = [
+  "#e3f1f7",
+  "#9fc3d4",
+  "#4f879f",
+  "#123f54",
+  "#04212e",
+  "#031b26",
+  "#02161f",
+  "#021118",
+  "#010c11",
+  "#01070a",
+];
+
+// Mantine's side of the theme: the two base colours, type, radii. Every other
+// colour is a --pt-* custom property in tokens.css, mixed from these two.
 export const theme = createTheme({
-  colors: { brand },
+  colors: { brand, ink },
   primaryColor: "brand",
   primaryShade: 4,
   autoContrast: true,
@@ -43,16 +58,15 @@ export const theme = createTheme({
     fontWeight: "600",
     sizes: {
       h1: { fontSize: rem(56), lineHeight: "1.02" },
-      // Section titles sit in the margin beside their content, so they
-      // are a step above body text rather than a second headline.
       h2: { fontSize: rem(24), lineHeight: "1.2" },
       h3: { fontSize: rem(20), lineHeight: "1.3" },
     },
   },
   components: {
-    // Headings in white so they sit a step above body text.
+    // Headings in the page's ink; white anywhere outside #root, which sets
+    // no --pt-heading.
     Title: Title.extend({
-      defaultProps: { c: "white" },
+      defaultProps: { c: "var(--pt-heading, white)" },
       styles: { root: { letterSpacing: "-0.02em" } },
     }),
     Button: Button.extend({

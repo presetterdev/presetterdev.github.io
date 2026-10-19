@@ -1,0 +1,313 @@
+# Every word on the site, in the order the page shows them.
+#
+# Edit the text after a colon; leave the names before it alone, the
+# components look words up by them. {name} is filled in by the page.
+# {#link}...{/link} and {#email/} mark where a link or the email
+# address goes. Long text may wrap onto the following lines.
+
+# Header and footer navigation.
+nav:
+  how_it_works: How it works
+  plugins: Plugins
+  price: Price
+  faq: FAQ
+  waitlist: Waitlist
+  license: License
+  privacy: Privacy
+
+# The waitlist button, everywhere it appears.
+cta:
+  join: Join the waitlist
+  micro: Free beta · Mac · Ableton Live 12
+
+# Top of the home page. The title is drawn in the dot face, one line per
+# line here; the face has capitals only.
+hero:
+  title: |-
+    EVERY PRESET,
+    SORTED BY SOUND.
+  lede: >-
+    From every plugin you own, in Live's browser. Click one and the plugin opens
+    on it.
+  questions: "Questions: {#email/}"
+
+# The library beside the headline. Its sounds are made on this site; the
+# rows name the plugin each one stands in for.
+library:
+  label: A small library of sounds
+  sounds: SOUNDS
+  characters: CHARACTER
+  name: NAME
+  sound_off: Sound off
+  sound_on: Sound on
+  play: Play the clip
+  stop: Stop the clip
+  row: "{plugin} {category}"
+  empty: Nothing matches both filters.
+  # Under the panel, about the selected row, which carries the asterisk.
+  caption: >-
+    *Not a real {plugin} patch, just a website doing its best impression. In
+    Live, yours play from your own plugins.
+  clip:
+    edit: Edit the clip
+    step: "Step {step}, {note}"
+    tempo: Tempo
+    bpm: "{bpm} BPM"
+    reset: Reset
+    clear: Clear
+
+# Live's Character tags, as the library's second filter.
+characters:
+  bright: Bright
+  dark: Dark
+  warm: Warm
+  soft: Soft
+
+# The kinds of sound.
+categories:
+  bass: Bass
+  keys: Keys
+  pad: Pad
+  lead: Lead
+
+# How it works: the screenshot, four features, then setup.
+how:
+  title: HOW IT WORKS
+  screenshot:
+    alt: >-
+      Ableton Live 12's browser with a Presetter pack open: a saved filter for
+      Arturia selected, Organ chosen under Sounds, B-3 V2 presets listed.
+    caption: Live 12's browser with a pack open.
+    placeholder: >-
+      Screenshot goes here. Save Live's browser with a pack open as
+      src/media/images/live-browser.png and it appears.
+  features:
+    sorted:
+      title: Sorted by sound.
+      body: Bass, keys, pads, from every plugin at once.
+    preview:
+      title: Hear it first.
+      body: Every preset has a short preview.
+    no_window:
+      title: No plugin window.
+      body: Click a sound and the plugin opens on it.
+    per_maker:
+      title: One click per maker.
+      body: Save a filter for Arturia, NI, anyone.
+  setup:
+    title: SET UP ONCE
+    pick: Pick your plugins.
+    build: Presetter builds the pack.
+    drag: Drag it into Live's Places.
+    note: >-
+      The first build takes a while. Your plugins and their original presets
+      aren't touched.
+
+# Works with. The lead is followed by a cycling plugin name.
+works:
+  title: WORKS WITH
+  lead: Every preset from
+  intro: Each of these has been run through Presetter and checked in Live.
+  effects: "Effects: {plugins}"
+  nks:
+    title: Plus anything NKS-ready.
+    body: >-
+      NKS is Native Instruments' preset standard, and a couple of hundred
+      developers use it. If a plugin is NKS-ready, Presetter reads its presets.
+    more: "{plugins}, and more."
+  request: Missing one? Email us. Requests decide what gets built next.
+
+# What Presetter stays out of.
+lean:
+  points:
+    not_plugin: Not a plugin
+    no_account: No account
+    no_background: Nothing in the background
+    one_folder: One folder, delete it any time
+  specs: >-
+    macOS 11 or newer, Intel or Apple silicon. Ableton Live 12 or newer. VST3
+    plugins, installed and licensed on the same Mac. Windows is planned, not
+    yet.
+
+# Why it exists. A blank line starts a new paragraph.
+origin:
+  title: WHY IT EXISTS
+  body: >-
+    Presetter started as one producer's way into their own library. Years of
+    plugins meant thousands of presets, and the only way to hear them was to
+    open each plugin in turn. Live's browser could already sort and preview
+    sounds; it just didn't know about these. Presetter taught it, and became the
+    way its maker finds sounds.
+
+# Price. The amounts themselves are numbers in src/content.ts.
+pricing:
+  title: PRICE
+  amount: "${amount}"
+  launch: if you're on the beta list.
+  regular: after launch.
+  model: One-time purchase. No subscription.
+  beta: >-
+    Free while it's a beta. Beta testers get the launch price when it ships.
+  opinion: >-
+    Think that's wrong, either way? Email us. We're two people and we read
+    everything.
+  unpriced: >-
+    We haven't locked the number. The beta decides it, so if you have an opinion
+    about what this should cost, we want it: email us.
+
+# The sign-up section.
+waitlist:
+  title: JOIN THE WAITLIST
+  body: >-
+    Free while it's a beta. Mac and Live 12. We'll email you when there's a
+    build for you.
+  or_email: "Or just email us: {#email/}"
+  form_title: Presetter early-access form
+
+# Questions, in the order they appear.
+faq:
+  title: QUESTIONS
+  copy:
+    question: Does it copy or share presets?
+    answer: >-
+      No. It reads preset files already on your Mac and writes them into a
+      folder on the same Mac. Previews are rendered from your own licensed
+      plugins. Nothing is uploaded and nothing is redistributed.
+  plugins_needed:
+    question: Do I still need the plugins?
+    answer: >-
+      Yes. A preset is a list of settings; the plugin makes the sound. Presets
+      for a plugin you don't have won't load.
+  tags:
+    question: Where do the tags come from?
+    answer: >-
+      From the plugin makers. Serum says Pads, Omnisphere says Pads + Strings,
+      Kontakt says Synth Pad. Presetter reads each maker's categories and maps
+      them onto Live 12's tags, so everything filters the same way.
+  load:
+    question: What happens when I load one?
+    answer: >-
+      The plugin loads in your device chain with the preset selected and its
+      macros mapped. Tweak it from Live, or open the plugin if you want to go
+      deeper.
+  plugin:
+    question: Is it a plugin? Will it slow Live down?
+    answer: >-
+      No and no. It's a standalone Mac app you run to build or update the pack.
+      Nothing runs inside Live.
+  live:
+    question: Which versions of Live?
+    answer: >-
+      Live 12 and newer. The tag filtering uses browser features that arrived in
+      12.
+  windows:
+    question: Windows?
+    answer: Not yet. It's planned. Get on the list and we'll tell you.
+  effects:
+    question: Effects too?
+    answer: >-
+      Yes. Effect presets get indexed, tagged and previewed like instruments.
+  missing:
+    question: My plugin isn't on the list.
+    answer: >-
+      If it's NKS-ready, it works. If it isn't, email us. Requests set the order
+      we build in.
+  format:
+    question: What if a plugin changes its preset format?
+    answer: >-
+      Run Presetter again. We keep the adapters current as vendors change
+      things, and a license includes updates for a year.
+  ni:
+    question: Do I need Komplete Kontrol or other NI software?
+    answer: No. Presetter reads the preset files directly.
+  beta:
+    question: How does the beta work?
+    answer: >-
+      It's running now, Mac only, closed. We pick testers from the list to cover
+      different plugin collections, so email us what you own. Beta builds come
+      with a free license key that expires when the beta ends.
+  refunds:
+    question: Refunds?
+    answer: >-
+      All sales are final. The pack stays on your Mac whether or not the app
+      does, so there's nothing to give back. Check the plugin list before you
+      buy.
+
+# Bottom of every page.
+footer:
+  nav_label: Footer
+  copyright: "© 2026 Presetter"
+  disclaimer: >-
+    Presetter is independent software. All manufacturer and product names
+    mentioned on this site are trademarks of their respective owners, which are
+    in no way associated or affiliated with Presetter. They are used solely to
+    identify the products Presetter works with and do not suggest affiliation,
+    sponsorship, or endorsement. Ableton and Live are trademarks of Ableton AG.
+
+# The page for addresses that don't exist.
+not_found:
+  title: There's nothing here.
+  body: That address doesn't exist. The home page has everything that does.
+  home: Go to the home page
+
+# The legal pages' furniture. Their text is in src/legal.ts.
+legal:
+  updated: "Updated {date}"
+
+# The password-gated download page for testers, /beta.
+beta:
+  title: Presetter beta
+  lede: >-
+    This page is for invited testers. Enter the password from your invitation to
+    download the current build.
+  password: Password
+  unlock: Unlock
+  status:
+    checking: Checking…
+    fetching: Downloading the build…
+    decrypting: Unlocking…
+    wrong: That password didn't work. Check your invitation and try again.
+    failed: >-
+      The download didn't complete. Reload the page and try again; if it keeps
+      failing, email support@presetter.audio.
+  ready:
+    title: Your download is ready.
+    body: If it didn't start on its own, use the button.
+    button: Download
+    file: "{name} · {size} · v{version}"
+    sha: "SHA-256 {digest}"
+  install:
+    title: Installing
+    disk_image: Open the disk image and drag Presetter into Applications.
+    documents: >-
+      Open Presetter. If macOS asks for access to your Documents folder, allow
+      it — some plugins keep their presets there.
+    key: >-
+      Enter the license key from your invitation. It works on one Mac and
+      expires on the date in the invitation.
+    backup: >-
+      Back up your Ableton User Library before building your first pack. This is
+      a beta.
+    after: >-
+      Then follow the five steps on the home page. {#link}How it works{/link}
+  agreement: >-
+    Downloading means you accept the license agreement, beta terms included.
+    {#link}Read the license agreement{/link}
+
+# What search engines and link previews show. Not on the page itself.
+meta:
+  title: >-
+    Presetter — search and preview every sound you own inside Ableton Live 12
+  social_title: >-
+    Presetter — every sound you own, inside Ableton Live 12's browser
+  description: >-
+    Stop opening plugin after plugin to find a sound. Presetter puts every
+    preset from every plugin you own inside Ableton Live 12's browser — filtered
+    with Live's own tags, previewed without loading anything. macOS. Early
+    access open.
+  pages:
+    license: "{title}, beta terms included."
+    privacy: >-
+      What Presetter collects and why: your presets stay on your Mac; an email
+      address if you give one; a license-key check when the app runs.
+    beta: Download page for invited Presetter beta testers.

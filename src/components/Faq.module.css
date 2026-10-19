@@ -16,13 +16,13 @@
 
 .question {
   font-weight: 600;
-  color: var(--mantine-color-white);
+  color: var(--pt-ink);
   line-height: 1.4;
 }
 
 .answer {
   margin: 0;
-  color: var(--mantine-color-dark-1);
+  color: var(--pt-ink-dim);
   line-height: 1.55;
 }
 

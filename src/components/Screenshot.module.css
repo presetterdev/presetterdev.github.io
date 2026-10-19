@@ -1,28 +1,29 @@
 .figure {
-  margin: rem(36px) 0 0;
+  margin: 0;
+  max-width: rem(380px);
 }
 
 .image {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: rem(8px);
-  border: 1px solid var(--pt-line-strong);
+  border-radius: rem(6px);
+  box-shadow: 0 rem(18px) rem(48px) var(--pt-shadow);
 }
 
 .caption {
-  margin: rem(10px) 0 0;
+  margin: rem(12px) 0 0;
   font-size: rem(14px);
-  color: var(--mantine-color-dark-2);
+  color: var(--pt-ink-dim);
 }
 
 /* Development only: where the screenshot will go. */
 .placeholder {
-  margin: rem(36px) 0 0;
+  margin: 0;
   padding: rem(40px) rem(24px);
   border: 1px dashed var(--pt-line-strong);
   border-radius: rem(8px);
-  color: var(--mantine-color-dark-2);
+  color: var(--pt-ink-dim);
   font-size: rem(14px);
   text-align: center;
 }

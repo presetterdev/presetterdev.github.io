@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
 import { LegalPage } from "../components/LegalPage";
-import { privacy } from "../content";
+import { privacy } from "../legal";
 
 export const Route = createFileRoute("/privacy")({ component: Privacy });
 

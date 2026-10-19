@@ -2,6 +2,7 @@ import { Button, type ButtonProps, type MantineSpacing } from "@mantine/core";
 import type { ReactElement } from "react";
 
 import { cta } from "../content";
+import { m } from "../paraglide/messages.js";
 
 interface CtaButtonProps {
   size?: ButtonProps["size"];
@@ -22,6 +23,8 @@ export function CtaButton({
       href={cta.href}
       size={size}
       mt={mt}
+      color="ink"
+      c="brand.4"
       data-tally-open={cta.tallyId}
       data-tally-layout="modal"
       data-tally-width="480"
@@ -29,7 +32,7 @@ export function CtaButton({
       data-tally-emoji-text="🎛️"
       data-tally-emoji-animation="wave"
     >
-      {cta.label}
+      {m.cta_join()}
     </Button>
   );
 }

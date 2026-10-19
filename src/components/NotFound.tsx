@@ -1,9 +1,8 @@
-import { Anchor, Button, Stack, Text, Title } from "@mantine/core";
+import { Button, Stack, Text, Title } from "@mantine/core";
 import { type ReactElement, useEffect } from "react";
 
-import { notFound } from "../content";
+import { m } from "../paraglide/messages.js";
 import { site } from "../seo";
-import { openEvent } from "./PocketSynth";
 import { Section } from "./Section";
 
 // Rendered by the router for any path without a route, inside the usual
@@ -12,7 +11,7 @@ import { Section } from "./Section";
 // page and not the home page swapped out after hydration.
 export function NotFound(): ReactElement {
   useEffect(() => {
-    document.title = `${notFound.title} — ${site.name}`;
+    document.title = `${m.not_found_title()} — ${site.name}`;
   }, []);
   return (
     <Section id="not-found" tight>
@@ -21,28 +20,13 @@ export function NotFound(): ReactElement {
           404
         </Text>
         <Title order={1} fz={{ base: 34, md: 44 }}>
-          {notFound.title}
+          {m.not_found_title()}
         </Title>
         <Text size="lg" lh={1.55}>
-          {notFound.body}
+          {m.not_found_body()}
         </Text>
-        <Text size="sm" c="dimmed">
-          {notFound.hint}{" "}
-          <Anchor
-            component="button"
-            type="button"
-            size="sm"
-            c="dimmed"
-            underline="always"
-            onClick={() => {
-              window.dispatchEvent(new Event(openEvent));
-            }}
-          >
-            {notFound.hintAction}
-          </Anchor>
-        </Text>
-        <Button component="a" href={notFound.href} mt="sm">
-          {notFound.cta}
+        <Button component="a" href="/" mt="sm" color="ink" c="brand.4">
+          {m.not_found_home()}
         </Button>
       </Stack>
     </Section>

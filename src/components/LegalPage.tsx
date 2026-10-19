@@ -1,7 +1,8 @@
 import { List, Stack, Text, Title } from "@mantine/core";
 import { type ReactElement, useEffect } from "react";
 
-import { type LegalDoc, type LegalSection } from "../content";
+import { type LegalDoc, type LegalSection } from "../legal";
+import { m } from "../paraglide/messages.js";
 import { site } from "../seo";
 import { Section } from "./Section";
 
@@ -64,7 +65,7 @@ export function LegalPage({ doc }: LegalPageProps): ReactElement {
         <Title order={1} fz={{ base: 34, md: 44 }}>
           {doc.title}
         </Title>
-        <Text c="dimmed">Updated {doc.updated}</Text>
+        <Text c="dimmed">{m.legal_updated({ date: doc.updated })}</Text>
         <Paragraphs items={doc.intro} />
         {doc.sections.map((section) => (
           <LegalSectionBlock key={section.heading} section={section} />

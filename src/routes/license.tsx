@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type { ReactElement } from "react";
 
 import { LegalPage } from "../components/LegalPage";
-import { license } from "../content";
+import { license } from "../legal";
 
 export const Route = createFileRoute("/license")({ component: License });
 
