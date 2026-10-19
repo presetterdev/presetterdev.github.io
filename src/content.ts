@@ -3,7 +3,7 @@
 // messages/en.yaml; entries here point at them by message.
 
 import { m } from "./paraglide/messages.js";
-import type { PresetId } from "./synth";
+import type { Category, SoundId } from "./synth";
 
 // A message with no inputs, called when the page renders.
 type Words = () => string;
@@ -39,30 +39,104 @@ export const cta = {
   tallyId: "gD2NoO",
 } as const;
 
-export interface Patch {
-  id: PresetId;
-  name: Words;
-  kind: Words;
+export interface CategoryLabel {
+  id: Category;
+  label: Words;
 }
 
-// The synth's patches, in the order its preset chips show them.
-export const patches: readonly Patch[] = [
-  { id: "pad", name: m.patches_pad_name, kind: m.patches_pad_kind },
-  { id: "keys", name: m.patches_keys_name, kind: m.patches_keys_kind },
-  { id: "bass", name: m.patches_bass_name, kind: m.patches_bass_kind },
-  { id: "lead", name: m.patches_lead_name, kind: m.patches_lead_kind },
+// The kinds of sound, in the order the library's filter shows them.
+export const categories: readonly CategoryLabel[] = [
+  { id: "bass", label: m.categories_bass },
+  { id: "keys", label: m.categories_keys },
+  { id: "pad", label: m.categories_pad },
+  { id: "lead", label: m.categories_lead },
 ];
 
-// The playable rows under the hero, in the order they are listed. They play
-// the site's own synth patches, so the page shows no one else's preset
-// names.
-export const soundRows: readonly PresetId[] = ["bass", "keys", "pad", "lead"];
+export const makers = [
+  "Xfer",
+  "Spectrasonics",
+  "NI",
+  "Arturia",
+  "u-he",
+] as const;
+
+export type Maker = (typeof makers)[number];
+
+export interface LibrarySound {
+  id: SoundId;
+  plugin: string;
+  maker: Maker;
+  category: Category;
+  tags: Words;
+}
+
+// The library beside the headline, in list order. The sounds are the site's
+// own synth patches labelled with the plugin they stand in for, so the page
+// shows no one's real preset names and plays no one's real sound.
+export const librarySounds: readonly LibrarySound[] = [
+  {
+    id: "diva-lead",
+    plugin: "Diva",
+    maker: "u-he",
+    category: "lead",
+    tags: m.library_tags_diva_lead,
+  },
+  {
+    id: "omnisphere-pad",
+    plugin: "Omnisphere",
+    maker: "Spectrasonics",
+    category: "pad",
+    tags: m.library_tags_omnisphere_pad,
+  },
+  {
+    id: "serum2-bass",
+    plugin: "Serum 2",
+    maker: "Xfer",
+    category: "bass",
+    tags: m.library_tags_serum2_bass,
+  },
+  {
+    id: "keyscape-keys",
+    plugin: "Keyscape",
+    maker: "Spectrasonics",
+    category: "keys",
+    tags: m.library_tags_keyscape_keys,
+  },
+  {
+    id: "pigments-pad",
+    plugin: "Pigments",
+    maker: "Arturia",
+    category: "pad",
+    tags: m.library_tags_pigments_pad,
+  },
+  {
+    id: "massivex-bass",
+    plugin: "Massive X",
+    maker: "NI",
+    category: "bass",
+    tags: m.library_tags_massivex_bass,
+  },
+  {
+    id: "serum-lead",
+    plugin: "Serum",
+    maker: "Xfer",
+    category: "lead",
+    tags: m.library_tags_serum_lead,
+  },
+  {
+    id: "kontakt-keys",
+    plugin: "Kontakt",
+    maker: "NI",
+    category: "keys",
+    tags: m.library_tags_kontakt_keys,
+  },
+];
 
 export interface Feature {
   title: Words;
   body: Words;
   // Which sound category's colour the bullet takes.
-  category: PresetId;
+  category: Category;
 }
 
 export const features: readonly Feature[] = [

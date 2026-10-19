@@ -63,8 +63,8 @@ export const theme = createTheme({
     },
   },
   components: {
-    // Headings in the ink of whatever surface they sit on: navy on the
-    // page, white inside the dark synth panel, which sets no --pt-heading.
+    // Headings in the page's ink; white anywhere outside #root, which sets
+    // no --pt-heading.
     Title: Title.extend({
       defaultProps: { c: "var(--pt-heading, white)" },
       styles: { root: { letterSpacing: "-0.02em" } },

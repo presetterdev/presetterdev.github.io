@@ -3,7 +3,6 @@ import type { ReactElement } from "react";
 
 import { contact, footerLinks } from "../content";
 import { m } from "../paraglide/messages.js";
-import { openEvent } from "./PocketSynth";
 import classes from "./SiteFooter.module.css";
 import { Wordmark } from "./Wordmark";
 
@@ -22,15 +21,6 @@ export function SiteFooter(): ReactElement {
             <a href={contact.href} className={classes["link"]}>
               {contact.email}
             </a>
-            <button
-              type="button"
-              className={classes["link"]}
-              onClick={() => {
-                window.dispatchEvent(new Event(openEvent));
-              }}
-            >
-              {m.footer_synth()}
-            </button>
           </nav>
         </div>
         <div className={classes["bottom"]}>

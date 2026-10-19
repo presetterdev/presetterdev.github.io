@@ -5,33 +5,7 @@
    The two base colours are Mantine's, from theme.ts: --mantine-color-brand-4
    (the logo blue, the page) and --mantine-color-ink-4 (the navy it is
    printed in). Everything on the page is mixed from those two, so changing
-   either one carries through.
-
-   There are two surfaces, and components are written once for both: they
-   ask for --pt-ink or --pt-line and get whatever the surface they sit on
-   defines.
-   - The page, inside #root: navy on the blue.
-   - The panel: near-black, for anything Mantine portals out of #root (the
-     synth's modal). Mantine's dark scheme stays on for its own components
-     there. */
-
-/* The panel, and the defaults everything inherits. */
-[data-mantine-color-scheme="dark"] {
-  --mantine-color-body: #161617;
-  --pt-panel: #1f1f21;
-  --pt-panel-raised: #262629;
-  --pt-line: color-mix(in srgb, white 9%, transparent);
-  --pt-line-strong: color-mix(in srgb, white 16%, transparent);
-  --pt-accent: var(--mantine-color-brand-4);
-
-  /* Sound categories: each kind of sound keeps one colour wherever it
-     appears, so they read as a system rather than as decoration. Bright,
-     for the dark panel. */
-  --pt-cat-pad: #34d3b5;
-  --pt-cat-keys: #f4b740;
-  --pt-cat-bass: #a78bfa;
-  --pt-cat-lead: #ff7aa8;
-}
+   either one carries through. */
 
 /* The page. Mantine's text and dimmed colours follow, so its components
    read correctly without per-call colours. */
@@ -42,15 +16,20 @@
   --pt-ink-faint: color-mix(in oklab, var(--pt-ink) 50%, var(--pt-page));
   --pt-heading: var(--pt-ink);
   --pt-raised: color-mix(in oklab, white 15%, var(--pt-page));
+  /* A panel sitting on the page, a little lighter than it. */
+  --pt-surface: color-mix(in oklab, white 10%, var(--pt-page));
   --pt-line: color-mix(in srgb, var(--pt-ink) 16%, transparent);
   --pt-line-strong: color-mix(in srgb, var(--pt-ink) 28%, transparent);
   --pt-shadow: color-mix(in srgb, var(--pt-ink) 28%, transparent);
+  --pt-shadow-soft: color-mix(in srgb, var(--pt-ink) 12%, transparent);
   --pt-accent: var(--pt-ink);
   /* The unlit dots of the dot face, a shade under the page. */
   --pt-unlit: color-mix(in oklab, var(--pt-ink) 7%, var(--pt-page));
 
-  /* The sound categories again, dark enough to hold 3:1 against the blue:
-     forest, burnt orange, deep violet, raspberry. */
+  /* Sound categories: each kind of sound keeps one colour wherever it
+     appears, so they read as a system rather than as decoration. Dark
+     enough to hold 3:1 against the blue: forest, burnt orange, deep violet,
+     raspberry. */
   --pt-cat-pad: #0b6b3a;
   --pt-cat-keys: #b8440b;
   --pt-cat-bass: #4c1d95;
@@ -79,7 +58,7 @@
 }
 
 /* Anything tagged with a sound category takes its colour as --chip, from
-   the surface it sits on. */
+   its nearest ancestor. */
 [data-category="pad"] {
   --chip: var(--pt-cat-pad);
 }

@@ -1,6 +1,5 @@
 /* Matches MantineProvider's defaultColorScheme so the first paint is not a
-   flash of white. The scheme stays dark for Mantine's own components: the
-   synth's panel is a dark device sitting on the blue page. */
+   flash of white. */
 :root {
   color-scheme: dark;
   /* Keeps content clear of phone system bars on notched screens. */

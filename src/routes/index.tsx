@@ -8,7 +8,6 @@ import { HowItWorks } from "../components/HowItWorks";
 import { Lean } from "../components/Lean";
 import { Origin } from "../components/Origin";
 import { Pricing } from "../components/Pricing";
-import { Sounds } from "../components/Sounds";
 import { WorksWith } from "../components/WorksWith";
 
 export const Route = createFileRoute("/")({ component: Home });
@@ -20,7 +19,6 @@ function Home(): ReactElement {
   return (
     <>
       <Hero />
-      <Sounds />
       <HowItWorks />
       <WorksWith />
       <Lean />

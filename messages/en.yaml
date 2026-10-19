@@ -31,27 +31,46 @@ hero:
     on it.
   questions: "Questions: {#email/}"
 
-# The playable rows under the hero.
-sounds:
-  title: TAP ONE TO HEAR IT
-  play: "Play {name}"
-  note: These four come from a little synth built into this site.
-  note_action: Play with it.
+# The library beside the headline. Its sounds are made on this site; the
+# rows name the plugin each one stands in for.
+library:
+  label: A small library of sounds
+  sounds: SOUNDS
+  makers: MAKERS
+  name: NAME
+  sound_off: Sound off
+  sound_on: Sound on
+  play: Play the clip
+  stop: Stop the clip
+  row: "{plugin} {category}"
+  empty: Nothing matches both filters.
+  caption: >-
+    Sounds made on this site, in the spirit of each plugin. In Live, yours play
+    from your own plugins.
+  tags:
+    diva_lead: Mono · Fat
+    omnisphere_pad: Evolving · Airy
+    serum2_bass: Wobble · Distorted
+    keyscape_keys: Electric Piano · Warm
+    pigments_pad: Wide · Bright
+    massivex_bass: Sub · Dark
+    serum_lead: Pluck · Bright
+    kontakt_keys: Piano · Soft
+  clip:
+    edit: Edit the clip
+    step: "Step {step}, {note}"
+    tempo: Tempo
+    bpm: "{bpm} BPM"
+    reset: Reset
+    clear: Clear
+    hint: Tap a dot to change the riff.
 
-# The synth's four patches: the sound rows and the synth itself.
-patches:
-  bass:
-    name: Sub Bass
-    kind: Bass
-  keys:
-    name: Glass Keys
-    kind: Keys
-  pad:
-    name: Warm Pad
-    kind: Pad
-  lead:
-    name: Saw Lead
-    kind: Lead
+# The kinds of sound.
+categories:
+  bass: Bass
+  keys: Keys
+  pad: Pad
+  lead: Lead
 
 # How it works: the screenshot, four features, then setup.
 how:
@@ -226,7 +245,6 @@ footer:
     in no way associated or affiliated with Presetter. They are used solely to
     identify the products Presetter works with and do not suggest affiliation,
     sponsorship, or endorsement. Ableton and Live are trademarks of Ableton AG.
-  synth: Synth
 
 # The page for addresses that don't exist.
 not_found:
@@ -277,29 +295,6 @@ beta:
   agreement: >-
     Downloading means you accept the license agreement, beta terms included.
     {#link}Read the license agreement{/link}
-
-# The synth, opened from the footer and from under the sound rows.
-synth:
-  title: The synth
-  lede: >-
-    The mark is a grid of dots. Each dot is a step: columns are time, rows are
-    notes, and the P is the first riff.
-  preset: Preset
-  step: "Step {step}, {note}"
-  scale: C minor pentatonic, C4 at the bottom
-  size: 16 steps · 7 notes
-  play: Play
-  stop: Stop
-  reset: Reset to P
-  clear: Clear
-  tempo: Tempo
-  bpm: "{bpm} BPM"
-  keys:
-    title: Play over it
-    help: >-
-      {#key}A{/key}–{#key}K{/key} white, {#key}W{/key} {#key}E{/key}
-      {#key}T{/key} {#key}Y{/key} {#key}U{/key} black. Or tap.
-  dismiss: Esc closes it.
 
 # What search engines and link previews show. Not on the page itself.
 meta:

@@ -1,3 +1,11 @@
+/* Headline beside the library on wide screens, above it on narrow ones. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: rem(40px);
+  align-items: center;
+}
+
 .title {
   margin: 0;
   color: var(--pt-ink);
@@ -39,7 +47,8 @@
 }
 
 @media (min-width: $mantine-breakpoint-md) {
-  .lede {
-    font-size: rem(22px);
+  .layout {
+    grid-template-columns: minmax(0, 1fr) rem(540px);
+    gap: rem(56px);
   }
 }

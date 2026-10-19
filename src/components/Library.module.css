@@ -1,0 +1,333 @@
+/* Compact on purpose: row heights and type sizes follow Live's browser more
+   than the rest of the page. Category colours arrive as --chip from
+   data-category (tokens.css); the panel itself carries the selected
+   sound's, for the waveform and the clip. */
+
+.library {
+  width: 100%;
+}
+
+.panel {
+  border: 1px solid var(--pt-line);
+  border-radius: rem(10px);
+  background: var(--pt-surface);
+  overflow: hidden;
+  font-size: rem(13px);
+  box-shadow: 0 rem(10px) rem(30px) var(--pt-shadow-soft);
+}
+
+.key {
+  font-size: rem(10.5px);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--pt-ink-dim);
+}
+
+.filters {
+  display: grid;
+  grid-template-columns: rem(62px) minmax(0, 1fr);
+  align-items: center;
+  row-gap: rem(6px);
+  padding: rem(9px) rem(12px);
+  border-bottom: 1px solid var(--pt-line);
+}
+
+.chips {
+  display: flex;
+  gap: rem(4px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.chip {
+  appearance: none;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: rem(5px);
+  padding: rem(2px) rem(8px);
+  border: 1px solid var(--pt-line);
+  border-radius: rem(4px);
+  background: none;
+  font: inherit;
+  color: var(--pt-ink);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.chip:hover {
+  border-color: var(--pt-line-strong);
+}
+
+.chip[aria-pressed="true"] {
+  background: var(--pt-ink);
+  border-color: var(--pt-ink);
+  color: var(--pt-page);
+}
+
+.chipDot {
+  width: rem(7px);
+  height: rem(7px);
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: rem(5px) rem(12px);
+  border-bottom: 1px solid var(--pt-line);
+}
+
+.sound {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: rem(5px);
+  padding: rem(2px) rem(9px) rem(2px) rem(7px);
+  border: 1px solid var(--pt-ink-faint);
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-size: rem(12px);
+  font-weight: 600;
+  color: var(--pt-ink);
+  cursor: pointer;
+}
+
+.sound svg {
+  width: rem(13px);
+  height: rem(13px);
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.sound[aria-pressed="true"] {
+  background: var(--pt-ink);
+  border-color: var(--pt-ink);
+  color: var(--pt-page);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list:focus-visible {
+  outline: 2px solid var(--pt-ink);
+  outline-offset: -2px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: rem(12px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: rem(9px);
+  height: rem(27px);
+  padding: 0 rem(12px);
+  cursor: pointer;
+}
+
+.row:nth-child(even) {
+  background: var(--pt-raised);
+}
+
+.row[aria-selected="true"] {
+  background: var(--pt-ink);
+  color: var(--pt-page);
+}
+
+.dot {
+  width: rem(7px);
+  height: rem(7px);
+  border-radius: 50%;
+  background: var(--chip);
+}
+
+.row[aria-selected="true"] .dot {
+  background: var(--pt-page);
+}
+
+.name {
+  font-size: rem(14px);
+  font-weight: 550;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tags {
+  font-size: rem(12px);
+  color: var(--pt-ink-dim);
+  white-space: nowrap;
+}
+
+.row[aria-selected="true"] .tags {
+  color: var(--pt-page);
+  opacity: 0.75;
+}
+
+.empty {
+  margin: 0;
+  padding: rem(14px) rem(12px);
+  color: var(--pt-ink-dim);
+}
+
+.strip {
+  display: flex;
+  align-items: center;
+  gap: rem(10px);
+  padding: rem(7px) rem(12px);
+  border-top: 1px solid var(--pt-line);
+}
+
+.play {
+  appearance: none;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: rem(22px);
+  height: rem(22px);
+  border: 0;
+  border-radius: 50%;
+  background: var(--pt-ink);
+  color: var(--pt-page);
+  cursor: pointer;
+}
+
+.play svg {
+  width: rem(9px);
+  height: rem(9px);
+  fill: currentColor;
+}
+
+.wave {
+  flex: 1;
+  min-width: 0;
+  height: rem(18px);
+  color: var(--chip);
+}
+
+/* The clip, folded: nothing but its dots and a pointer cursor. */
+.clip {
+  appearance: none;
+  flex: none;
+  padding: rem(3px) rem(5px);
+  border: 0;
+  border-radius: rem(5px);
+  background: none;
+  cursor: pointer;
+}
+
+.clip:hover,
+.clip[aria-expanded="true"] {
+  background: var(--pt-raised);
+}
+
+.clip:focus-visible,
+.chip:focus-visible,
+.sound:focus-visible,
+.play:focus-visible,
+.cell:focus-visible {
+  outline: 2px solid var(--pt-ink);
+  outline-offset: 2px;
+}
+
+.thumb {
+  display: block;
+  width: rem(63px);
+  height: auto;
+  fill: var(--pt-unlit);
+}
+
+.thumbOn {
+  fill: var(--chip);
+}
+
+.editor {
+  display: flex;
+  flex-direction: column;
+  gap: rem(9px);
+  padding: rem(10px) rem(12px);
+  border-top: 1px solid var(--pt-line);
+  background: var(--pt-raised);
+}
+
+.grid {
+  display: grid;
+  gap: rem(4px);
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: repeat(16, rem(13px));
+  gap: rem(4px);
+}
+
+.cell {
+  appearance: none;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--pt-unlit);
+  cursor: pointer;
+}
+
+.cell[aria-pressed="true"] {
+  background: var(--chip);
+}
+
+/* The column the audio is on: a shade darker, ringed where a note plays. */
+.cell[data-now] {
+  background: var(--pt-line-strong);
+}
+
+.cell[data-now][aria-pressed="true"] {
+  background: var(--chip);
+  box-shadow: 0 0 0 2px var(--pt-ink);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: rem(6px) rem(8px);
+}
+
+.bpm {
+  font-size: rem(12px);
+  font-weight: 600;
+  min-width: 4.5em;
+}
+
+.hint {
+  margin-left: auto;
+  font-size: rem(12px);
+  color: var(--pt-ink-dim);
+}
+
+.caption {
+  margin: rem(10px) rem(2px) 0;
+  font-size: rem(12px);
+  color: var(--pt-ink-dim);
+}
+
+@media (max-width: $mantine-breakpoint-xs) {
+  .tags,
+  .hint {
+    display: none;
+  }
+
+  .gridRow {
+    grid-template-columns: repeat(16, 1fr);
+    gap: rem(3px);
+  }
+
+  .grid {
+    gap: rem(3px);
+  }
+}
