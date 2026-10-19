@@ -12,8 +12,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: npm
@@ -35,7 +35,7 @@ jobs:
       # other address; it hydrates the app, so client-side navigation still
       # works from there.
       - if: github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -51,7 +51,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   # Each pull request is also deployed to Cloudflare Pages as a preview, at a
   # stable address per pull request (pr-<number>) that the pull request links
@@ -72,19 +72,21 @@ jobs:
       name: preview
       url: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version-file: .node-version
           cache: npm
       - run: npm ci
       - run: npm run build
+      # Uses the wrangler from package.json. Left to install its own, the
+      # action edits package.json, and wrangler then deploys from a checkout
+      # it reports as dirty.
       - id: deploy
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "4.151.1"
           command: >-
             pages deploy dist --project-name=presetter-site-preview
             --branch=pr-${{ github.event.pull_request.number }}
