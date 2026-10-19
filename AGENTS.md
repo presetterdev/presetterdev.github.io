@@ -25,7 +25,7 @@ src/components/    components shared between pages
 src/media/         images/ and video/
 src/theme.ts       colors, fonts, radii, spacing
 src/index.css      global styles
-terraform/         the GitHub repository's settings
+terraform/         GitHub settings and the previews' Cloudflare setup
 ```
 
 ## Adding a page

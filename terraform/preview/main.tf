@@ -3,67 +3,84 @@
 # workflow. The login in front of the previews needs nothing here; see
 # functions/_middleware.ts.
 
-terraform {
-  required_providers {
-    cloudflare = {
-      source = "cloudflare/cloudflare"
-    }
-    github = {
-      source = "integrations/github"
-    }
-  }
+variable "github_owner" {
+  description = "GitHub organization that owns the repository."
+  type        = string
+  default     = "presetterdev"
 }
 
-variable "account_id" {
-  description = "Cloudflare account that hosts the previews."
+variable "github_repository_name" {
+  description = "Repository whose pull requests are previewed."
   type        = string
+  default     = "presetterdev.github.io"
 }
 
-variable "repository" {
-  description = "GitHub repository whose pull requests are previewed."
+variable "cloudflare_api_token" {
+  description = "Cloudflare API token to manage the previews with."
   type        = string
-}
-
-variable "environment" {
-  description = "GitHub environment the preview job runs in."
-  type        = string
+  sensitive   = true
 }
 
 variable "replace_token" {
   description = "Set on the apply that replaces the deploy token on purpose."
   type        = bool
+  default     = false
+}
+
+# Use the GitHub CLI for auth.
+provider "github" {
+  owner = var.github_owner
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
 
 locals {
+  # Not a secret: it names the account, it doesn't grant access to it. It's
+  # the first part of the dashboard's URL after logging in.
+  account_id = "2428fd89017b196e35a0cd4374de4c50"
+
+  repository   = var.github_repository_name
+  environment  = "preview"
   project_name = "presetter-site-preview"
   token_name   = "presetter-site preview deploys"
   secret_name  = "CLOUDFLARE_API_TOKEN"
   account_name = "CLOUDFLARE_ACCOUNT_ID"
 }
 
-# What already exists, so the root module can adopt it with import blocks
-# instead of failing to create it twice.
+# The environment the preview job runs in, which holds nothing but what this
+# configuration puts in it.
+resource "github_repository_environment" "preview" {
+  repository  = local.repository
+  environment = local.environment
+}
+
+# What already exists, so imports.tf can adopt it instead of failing to create
+# it twice. These name the environment rather than refer to the resource above:
+# a data source depending on a resource with pending changes, an import among
+# them, is read only at apply, too late for the imports.
 
 data "cloudflare_pages_projects" "all" {
-  account_id = var.account_id
+  account_id = local.account_id
 }
 
 data "cloudflare_account_tokens" "all" {
-  account_id = var.account_id
+  account_id = local.account_id
 }
 
 data "cloudflare_account_api_token_permission_groups_list" "all" {
-  account_id = var.account_id
+  account_id = local.account_id
 }
 
 data "github_actions_environment_secrets" "preview" {
-  name        = var.repository
-  environment = var.environment
+  name        = local.repository
+  environment = local.environment
 }
 
 data "github_actions_environment_variables" "preview" {
-  name        = var.repository
-  environment = var.environment
+  name        = local.repository
+  environment = local.environment
 }
 
 locals {
@@ -79,43 +96,35 @@ locals {
     for group in data.cloudflare_account_api_token_permission_groups_list.all.result :
     group.id if group.name == "Pages Write"
   ])
-}
 
-output "adopt" {
-  description = "Import IDs of the objects that already exist, null for those that don't."
-  value = {
-    project = contains([for project in data.cloudflare_pages_projects.all.result : project.name], local.project_name) ? "${var.account_id}/${local.project_name}" : null
-    token   = local.existing_token == null ? null : "${var.account_id}/${local.existing_token}"
-    secret  = contains(local.secret_names, local.secret_name) ? "${var.repository}:${var.environment}:${local.secret_name}" : null
-    account = contains(local.variable_names, local.account_name) ? "${var.repository}:${var.environment}:${local.account_name}" : null
+  # Import IDs of the objects that already exist, null for those that don't.
+  adopt = {
+    project = contains([for project in data.cloudflare_pages_projects.all.result : project.name], local.project_name) ? "${local.account_id}/${local.project_name}" : null
+    token   = local.existing_token == null ? null : "${local.account_id}/${local.existing_token}"
+    secret  = contains(local.secret_names, local.secret_name) ? "${local.repository}:${local.environment}:${local.secret_name}" : null
+    account = contains(local.variable_names, local.account_name) ? "${local.repository}:${local.environment}:${local.account_name}" : null
   }
 }
 
 # Nothing deploys to main here, so every deployment is a preview.
 resource "cloudflare_pages_project" "preview" {
-  account_id        = var.account_id
+  account_id        = local.account_id
   name              = local.project_name
   production_branch = "main"
-
-  lifecycle {
-    # Running without a Cloudflare token disables this module; that must
-    # forget the project, not delete it.
-    destroy = false
-  }
 }
 
 # The token CI deploys with. Nobody needs to know its value: anyone with a
 # Cloudflare token of their own can replace it, which revokes the old one, and
-# the GitHub secret below follows. See terraform/README.md for the command.
+# the GitHub secret below follows. See the README for the command.
 resource "cloudflare_account_token" "deploy" {
-  account_id = var.account_id
+  account_id = local.account_id
   name       = local.token_name
 
   policies = [{
     effect            = "allow"
     permission_groups = [{ id = local.pages_write }]
     resources = jsonencode({
-      "com.cloudflare.api.account.${var.account_id}" = "*"
+      "com.cloudflare.api.account.${local.account_id}" = "*"
     })
   }]
 }
@@ -139,8 +148,8 @@ resource "terraform_data" "token_seen" {
 # replaces it, never updates it. For a state that adopted the token rather
 # than created it, the value is unknown and the secret is left alone.
 resource "github_actions_environment_secret" "token" {
-  repository  = var.repository
-  environment = var.environment
+  repository  = local.repository
+  environment = github_repository_environment.preview.environment
   secret_name = local.secret_name
   value       = cloudflare_account_token.deploy.value == null ? "" : cloudflare_account_token.deploy.value
 
@@ -152,7 +161,6 @@ resource "github_actions_environment_secret" "token" {
     # secret changed elsewhere.
     ignore_changes       = all
     replace_triggered_by = [cloudflare_account_token.deploy.id]
-    destroy              = false
 
     precondition {
       condition = (
@@ -160,7 +168,7 @@ resource "github_actions_environment_secret" "token" {
         local.existing_token == null ||
         local.existing_token == terraform_data.token_seen.output
       )
-      error_message = "Someone else has replaced the preview deploy token since your last apply. Forget the old one, and the next plan adopts the current one: tofu state rm module.preview.cloudflare_account_token.deploy module.preview.terraform_data.token_seen"
+      error_message = "Someone else has replaced the preview deploy token since your last apply. Forget the old one, and the next plan adopts the current one: tofu state rm cloudflare_account_token.deploy terraform_data.token_seen"
     }
 
     precondition {
@@ -168,18 +176,14 @@ resource "github_actions_environment_secret" "token" {
         cloudflare_account_token.deploy.value != null ||
         contains(local.secret_names, local.secret_name)
       )
-      error_message = "The ${local.secret_name} secret is missing and this state doesn't hold the token's value to recreate it. Replace the token: tofu apply -var replace_preview_token=true -replace=module.preview.cloudflare_account_token.deploy"
+      error_message = "The ${local.secret_name} secret is missing and this state doesn't hold the token's value to recreate it. Replace the token: tofu apply -var replace_token=true -replace=cloudflare_account_token.deploy"
     }
   }
 }
 
 resource "github_actions_environment_variable" "account" {
-  repository    = var.repository
-  environment   = var.environment
+  repository    = local.repository
+  environment   = github_repository_environment.preview.environment
   variable_name = local.account_name
-  value         = var.account_id
-
-  lifecycle {
-    destroy = false
-  }
+  value         = local.account_id
 }

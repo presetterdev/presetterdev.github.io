@@ -30,38 +30,6 @@ import {
 }
 
 import {
-  to = github_repository_environment.preview
-  id = "${var.github_repository_name}:preview"
-}
-
-# The preview objects are adopted only when they exist, so these need no
-# commenting out. The module looks them up; see terraform/preview/main.tf.
-
-import {
-  for_each = toset(compact([try(module.preview.adopt.project, null)]))
-  to       = module.preview.cloudflare_pages_project.preview
-  id       = each.value
-}
-
-import {
-  for_each = toset(compact([try(module.preview.adopt.token, null)]))
-  to       = module.preview.cloudflare_account_token.deploy
-  id       = each.value
-}
-
-import {
-  for_each = toset(compact([try(module.preview.adopt.secret, null)]))
-  to       = module.preview.github_actions_environment_secret.token
-  id       = each.value
-}
-
-import {
-  for_each = toset(compact([try(module.preview.adopt.account, null)]))
-  to       = module.preview.github_actions_environment_variable.account
-  id       = each.value
-}
-
-import {
   to = github_branch_protection.main
   id = "${var.github_repository_name}:${local.protected_branch}"
 }

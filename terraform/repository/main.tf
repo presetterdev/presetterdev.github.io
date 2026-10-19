@@ -67,13 +67,6 @@ resource "github_repository_pages" "repo" {
   https_enforced = true
 }
 
-# The environment the pull request preview job runs in. preview.tf fills it
-# with what the job deploys with.
-resource "github_repository_environment" "preview" {
-  repository  = github_repository.repo.name
-  environment = "preview"
-}
-
 resource "github_repository_vulnerability_alerts" "repo" {
   repository = github_repository.repo.name
 }
