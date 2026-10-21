@@ -21,14 +21,7 @@ import { beta } from "../content";
 import { site } from "../seo";
 import { Section } from "./Section";
 
-type Status =
-  | "idle"
-  | "checking"
-  | "fetching"
-  | "decrypting"
-  | "ready"
-  | "wrong"
-  | "failed";
+type Status = "idle" | "checking" | "ready" | "wrong" | "failed";
 
 const { download } = beta;
 
@@ -41,13 +34,8 @@ function fromBase64(text: string): Uint8Array<ArrayBuffer> {
   return bytes;
 }
 
-function toHex(buffer: ArrayBuffer): string {
-  return Array.from(new Uint8Array(buffer), (byte) =>
-    byte.toString(16).padStart(2, "0"),
-  ).join("");
-}
-
-// The same derivation scripts/seal-beta.mjs used to seal the build.
+// The same derivation scripts/beta-password.ts used to seal the check
+// token.
 async function deriveKey(password: string): Promise<CryptoKey> {
   const raw = await crypto.subtle.importKey(
     "raw",
@@ -70,46 +58,21 @@ async function deriveKey(password: string): Promise<CryptoKey> {
   );
 }
 
-function decrypt(
-  key: CryptoKey,
-  iv: string,
-  sealed: ArrayBuffer | Uint8Array<ArrayBuffer>,
-): Promise<ArrayBuffer> {
-  return crypto.subtle.decrypt(
-    { name: "AES-GCM", iv: fromBase64(iv) },
-    key,
-    sealed,
-  );
-}
-
-// A wrong password fails the small check token, before the build is
-// fetched; the build itself is fetched sealed and opened in the browser, so
-// the copy the public repository holds is useless on its own.
-async function unseal(
-  password: string,
-  setStatus: (status: Status) => void,
-): Promise<string | undefined> {
+// The password is right when it opens the small sealed token; nothing else
+// is encrypted. The build is a public GitHub release, so the gate keeps the
+// link out of the open rather than the build itself.
+async function checkPassword(password: string): Promise<boolean> {
   const key = await deriveKey(password);
   try {
-    await decrypt(key, download.check.iv, fromBase64(download.check.data));
+    await crypto.subtle.decrypt(
+      { name: "AES-GCM", iv: fromBase64(download.check.iv) },
+      key,
+      fromBase64(download.check.data),
+    );
+    return true;
   } catch {
-    setStatus("wrong");
-    return undefined;
+    return false;
   }
-  setStatus("fetching");
-  const response = await fetch(download.file);
-  if (!response.ok) {
-    throw new Error(`${download.file}: ${response.status}`);
-  }
-  const sealed = await response.arrayBuffer();
-  setStatus("decrypting");
-  const plain = await decrypt(key, download.iv, sealed);
-  const digest = toHex(await crypto.subtle.digest("SHA-256", plain));
-  if (digest !== download.sha256) {
-    throw new Error("digest mismatch");
-  }
-  const blob = new Blob([plain], { type: "application/x-apple-diskimage" });
-  return URL.createObjectURL(blob);
 }
 
 function megabytes(bytes: number): string {
@@ -119,35 +82,28 @@ function megabytes(bytes: number): string {
 export function BetaDownload(): ReactElement {
   const [password, setPassword] = useState("");
   const [status, setStatus] = useState<Status>("idle");
-  const [url, setUrl] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     document.title = `${beta.title} — ${site.name}`;
   }, []);
 
-  // The object URL holds the whole build in memory; release it on leave.
-  useEffect(
-    () => (): void => {
-      if (url !== undefined) URL.revokeObjectURL(url);
-    },
-    [url],
-  );
-
-  const busy =
-    status === "checking" || status === "fetching" || status === "decrypting";
+  const busy = status === "checking";
 
   function onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
     if (busy || password === "") return;
     setStatus("checking");
-    unseal(password, setStatus)
-      .then((result) => {
-        if (result === undefined) return;
-        setUrl(result);
+    checkPassword(password)
+      .then((ok) => {
+        if (!ok) {
+          setStatus("wrong");
+          return;
+        }
         setStatus("ready");
+        // GitHub serves the asset as an attachment, so following the link
+        // starts the download without leaving the page.
         const anchor = document.createElement("a");
-        anchor.href = result;
-        anchor.download = download.name;
+        anchor.href = download.url;
         anchor.click();
       })
       .catch(() => {
@@ -170,12 +126,12 @@ export function BetaDownload(): ReactElement {
           {beta.lede}
         </Text>
 
-        {status === "ready" && url !== undefined ? (
+        {status === "ready" ? (
           <Stack gap="sm" mt="sm">
             <Title order={3}>{beta.ready.title}</Title>
             <Text c="dimmed">{beta.ready.body}</Text>
             <Group gap="md" align="center">
-              <Button component="a" href={url} download={download.name}>
+              <Button component="a" href={download.url}>
                 {beta.ready.button}
               </Button>
               <Text size="sm" c="dimmed">

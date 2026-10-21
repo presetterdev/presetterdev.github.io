@@ -871,8 +871,14 @@ export const privacy: LegalDoc = {
 
 // The password-gated download page at /beta. It is not linked from the
 // site, not in the sitemap, and carries a noindex tag; testers get the URL
-// and the password in their invitation. `download` is printed by
-// scripts/seal-beta.mjs — rerun it for each build and paste the result.
+// and the password in their invitation.
+//
+// The build itself is a GitHub release asset. For a new build, change
+// `url`, `name` and `version` to the release's, and `size` and `sha256` to
+// the file's (`shasum -a 256 Presetter.dmg`); the page shows them so a
+// tester can check what they got. `salt`, `iterations` and `check` prove
+// the password and are printed by scripts/beta-password.ts — rerun it only
+// when the password changes.
 export const beta = {
   title: "Presetter beta",
   lede:
@@ -882,12 +888,10 @@ export const beta = {
   unlock: "Unlock",
   states: {
     checking: "Checking…",
-    fetching: "Downloading the build…",
-    decrypting: "Unlocking…",
     wrong: "That password didn't work. Check your invitation and try again.",
     failed:
-      "The download didn't complete. Reload the page and try again; if " +
-      "it keeps failing, email support@presetter.audio.",
+      "Something went wrong. Reload the page and try again; if it keeps " +
+      "failing, email support@presetter.audio.",
   },
   ready: {
     title: "Your download is ready.",
@@ -913,14 +917,13 @@ export const beta = {
   agreementLabel: "Read the license agreement",
   agreementHref: "/license",
   download: {
-    file: "/dl/Presetter_0.2.0_universal.enc",
-    name: "Presetter_0.2.0_universal.dmg",
-    version: "0.2.0",
-    size: 25416439,
-    sha256: "1e9a58c6d3280e0159992ae6b979390031fa61a5b1278f78e4da36575ea55cea",
+    url: "https://github.com/presetterdev/presetter-releases/releases/download/v0.3.0-alpha.2/Presetter.dmg",
+    name: "Presetter.dmg",
+    version: "0.3.0-alpha.2",
+    size: 24137177,
+    sha256: "bb179618390a420fb25b247200170e0b4d93b518b7d77d6a39bff5c09b9f9397",
     iterations: 600000,
     salt: "NJmbXObHHhb/8a1d5TLplw==",
-    iv: "uuYBo5mnQgqPMNZb",
     check: {
       iv: "PQNbNTc3AfMiumB/",
       data: "74NepbRxEt40/V2aS/mGSTVsdj05KKo96JzvFh1j",
